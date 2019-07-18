@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':api')
+    compile "com.github.ben-manes.caffeine:caffeine:$caffeine_version"
+}
