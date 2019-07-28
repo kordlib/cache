@@ -1,8 +1,9 @@
 package com.gitlab.kord.cache.map
 
-import com.gitlab.kord.cache.api.Query
+import com.gitlab.kord.cache.api.DataCache
+import com.gitlab.kord.cache.api.query.Query
 import com.gitlab.kord.cache.api.QueryBuilder
-import com.gitlab.kord.cache.api.data.DataDescriptor
+import com.gitlab.kord.cache.api.data.DataDescription
 import com.gitlab.kord.cache.map.query.AllQuery
 import com.gitlab.kord.cache.map.query.MapQuery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -11,15 +12,16 @@ import kotlin.reflect.KProperty1
 
 @Suppress("UNCHECKED_CAST")
 @ExperimentalCoroutinesApi
-internal class MapQueryBuilder<KEY, VALUE : Any>(
+internal class MapQueryBuilder<KEY: Any, VALUE : Any>(
         private val map: MutableMap<KEY, VALUE>,
-        private val descriptor: DataDescriptor<VALUE, KEY>
+        private val holder: DataCache,
+        private val description: DataDescription<VALUE, KEY>
 ) : QueryBuilder<VALUE> {
 
     private var keyQuery: ((Map<KEY, VALUE>) -> Flow<VALUE>)? = null
     private val queries: MutableList<(VALUE) -> Boolean> = mutableListOf()
 
-    private val KProperty1<VALUE, *>.isPrimary get() = descriptor.indexField.property == this && keyQuery == null
+    private val KProperty1<VALUE, *>.isPrimary get() = description.indexField.property == this && keyQuery == null
 
     override fun <R> KProperty1<VALUE, R>.eq(value: R) = when {
         isPrimary -> keyQuery = { map ->
@@ -57,8 +59,8 @@ internal class MapQueryBuilder<KEY, VALUE : Any>(
 
     @ExperimentalCoroutinesApi
     override fun build(): Query<VALUE> = when {
-        keyQuery == null && queries.isEmpty() -> AllQuery(map)
-        else -> MapQuery(map, descriptor, keyQuery ?: { it.values.asFlow() }, queries.toList())
+        keyQuery == null && queries.isEmpty() -> AllQuery(map, description, holder)
+        else -> MapQuery(map, description, holder, keyQuery ?: { it.values.asFlow() }, queries.toList())
     }
 
 }
