@@ -1,6 +1,9 @@
 package com.gitlab.kord.cache.api
 
+import com.gitlab.kord.cache.api.query.Query
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlin.reflect.KProperty1
 
 /**
@@ -73,4 +76,16 @@ interface QueryBuilder<T : Any> {
      */
     @ExperimentalCoroutinesApi
     fun build(): Query<T>
+
+    companion object {
+
+        fun<T: Any> none() = object : QueryBuilder<T> {
+            override fun <R> KProperty1<T, R>.predicate(predicate: (T) -> Boolean) {}
+            override fun build(): Query<T> = object : Query<T> {
+                override suspend fun asFlow(): Flow<T> = emptyFlow()
+                override suspend fun remove() {}
+            }
+        }
+
+    }
 }
