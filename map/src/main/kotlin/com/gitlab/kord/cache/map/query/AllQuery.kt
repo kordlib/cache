@@ -1,10 +1,18 @@
 package com.gitlab.kord.cache.map.query
 
-import com.gitlab.kord.cache.api.Query
+import com.gitlab.kord.cache.api.DataCache
+import com.gitlab.kord.cache.api.data.DataDescription
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 
-internal class AllQuery<KEY, VALUE : Any>(private val map: MutableMap<KEY, VALUE>) : Query<VALUE> {
+
+@ExperimentalCoroutinesApi
+internal class AllQuery<KEY: Any, VALUE : Any>(
+        private val map: MutableMap<KEY, VALUE>,
+        description: DataDescription<VALUE, KEY>,
+        holder: DataCache
+) : CascadingQuery<VALUE>(description, holder) {
 
     override suspend fun asFlow(): Flow<VALUE> = map.values.asFlow()
 
@@ -26,6 +34,15 @@ internal class AllQuery<KEY, VALUE : Any>(private val map: MutableMap<KEY, VALUE
 
     override suspend fun toCollection(): Collection<VALUE> = map.values
 
-    override suspend fun remove() = map.clear()
+    override suspend fun remove() {
+        removeFromLinks()
+        map.clear()
+    }
+
+    private suspend fun removeFromLinks() {
+        if (description.links.isNotEmpty()) {
+            cascadeAll()
+        }
+    }
 
 }

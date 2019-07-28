@@ -1,4 +1,4 @@
-package com.gitlab.kord.cache.api
+package com.gitlab.kord.cache.api.query
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*

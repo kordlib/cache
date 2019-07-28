@@ -1,20 +1,25 @@
 package com.gitlab.kord.cache.caffeine.query
 
-import com.gitlab.kord.cache.api.Query
-import com.gitlab.kord.cache.api.data.DataDescriptor
+import com.gitlab.kord.cache.api.DataCache
+import com.gitlab.kord.cache.api.data.DataDescription
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
 
 @ExperimentalCoroutinesApi
 internal class AllQuery<VALUE : Any>(
-        private val cache: com.github.benmanes.caffeine.cache.Cache<*, VALUE>
-) : Query<VALUE> {
+        private val cache: com.github.benmanes.caffeine.cache.Cache<*, VALUE>,
+        description: DataDescription<VALUE, out Any>,
+        holder: DataCache
+) : CascadingQuery<VALUE>(description, holder) {
     override suspend fun asFlow(): Flow<VALUE> = cache.asMap().values.asFlow()
+
+    override suspend fun toCollection(): Collection<VALUE> = cache.asMap().values
 
     override suspend fun count(): Long = cache.estimatedSize()
 
-    override suspend fun remove() = cache.invalidateAll()
+    override suspend fun remove() {
+        cascadeAll()
+        cache.invalidateAll()
+    }
 }

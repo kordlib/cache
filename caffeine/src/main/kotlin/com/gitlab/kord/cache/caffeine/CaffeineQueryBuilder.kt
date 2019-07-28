@@ -1,8 +1,9 @@
 package com.gitlab.kord.cache.caffeine
 
-import com.gitlab.kord.cache.api.Query
+import com.gitlab.kord.cache.api.DataCache
 import com.gitlab.kord.cache.api.QueryBuilder
-import com.gitlab.kord.cache.api.data.DataDescriptor
+import com.gitlab.kord.cache.api.data.DataDescription
+import com.gitlab.kord.cache.api.query.Query
 import com.gitlab.kord.cache.caffeine.query.AllQuery
 import com.gitlab.kord.cache.caffeine.query.CacheQuery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,13 +13,14 @@ import kotlin.reflect.KProperty1
 @ExperimentalCoroutinesApi
 internal class CaffeineQueryBuilder<KEY : Any, VALUE : Any>(
         private val cache: com.github.benmanes.caffeine.cache.Cache<KEY, VALUE>,
-        private val descriptor: DataDescriptor<VALUE, KEY>
+        private val description: DataDescription<VALUE, KEY>,
+        private val holder: DataCache
 ) : QueryBuilder<VALUE> {
 
     private var keyQuery: ((com.github.benmanes.caffeine.cache.Cache<KEY, VALUE>) -> Flow<VALUE>)? = null
     private val queries: MutableList<(VALUE) -> Boolean> = mutableListOf()
 
-    private val KProperty1<VALUE, *>.isPrimary get() = descriptor.indexField.property == this && keyQuery == null
+    private val KProperty1<VALUE, *>.isPrimary get() = description.indexField.property == this && keyQuery == null
 
     override fun <R> KProperty1<VALUE, R>.eq(value: R) = when {
         isPrimary -> keyQuery = { cache -> cache.getIfPresent(value as KEY)?.let(::flowOf) ?: emptyFlow() }
@@ -47,8 +49,8 @@ internal class CaffeineQueryBuilder<KEY : Any, VALUE : Any>(
 
     @ExperimentalCoroutinesApi
     override fun build(): Query<VALUE> = when {
-        keyQuery == null && queries.isEmpty() -> AllQuery(cache)
-        else -> CacheQuery(cache, descriptor, keyQuery ?: { it.asMap().values.asFlow() }, queries.toList())
+        keyQuery == null && queries.isEmpty() -> AllQuery(cache, description, holder)
+        else -> CacheQuery(cache, keyQuery ?: { it.asMap().values.asFlow() }, queries.toList(), description, holder)
     }
 
 }
