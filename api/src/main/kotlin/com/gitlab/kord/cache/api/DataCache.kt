@@ -9,7 +9,9 @@ interface DataCache : Comparable<DataCache> {
 
     val priority: Long
 
-    suspend fun <T : Any> register(description: DataDescription<T, out Any>)
+    suspend fun register(description: DataDescription<out Any, out Any>)
+    suspend fun register(vararg descriptions: DataDescription<out Any, out Any>) = descriptions.forEach(::register)
+    suspend fun register(descriptions: Iterable<DataDescription<out Any, out Any>>) = descriptions.forEach(::register)
 
     fun <T : Any> query(clazz: KClass<T>): QueryBuilder<T>
 
@@ -23,7 +25,7 @@ interface DataCache : Comparable<DataCache> {
             override val priority: Long
                 get() = Long.MIN_VALUE
 
-            override suspend fun <T : Any> register(description: DataDescription<T, out Any>) {}
+            override suspend fun register(description: DataDescription<out Any  , out Any>) {}
             override fun <T : Any> query(clazz: KClass<T>): QueryBuilder<T> = QueryBuilder.none()
             override suspend fun <T : Any> put(item: T) {}
         }
