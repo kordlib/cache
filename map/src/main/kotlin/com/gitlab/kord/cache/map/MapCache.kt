@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 internal class MapCache<KEY : Any, VALUE : Any> internal constructor(
         private val description: DataDescription<VALUE, KEY>,
-        private val holder: DataCache
+        private val holder: MapDataCache
 ) {
 
     private val map: MutableMap<KEY, VALUE> = ConcurrentHashMap()

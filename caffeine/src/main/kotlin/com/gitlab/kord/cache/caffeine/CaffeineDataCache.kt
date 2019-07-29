@@ -15,12 +15,18 @@ class CaffeineDataCache(
     override val priority: Long
         get() = Long.MAX_VALUE - 1
 
-    override suspend fun <T : Any> register(description: DataDescription<T, out Any>) {
+    override suspend fun register(description: DataDescription<out Any, out Any>) {
         require(description.clazz !in caches) { "description already registered :$description" }
         val cache =
                 CaffeineCache(description, this, Caffeine.newBuilder().let(generator).build())
 
         caches[description.clazz] = cache
+    }
+
+
+    internal fun <T : Any> getOptionally(clazz: KClass<T>): QueryBuilder<T>? = when {
+        caches.containsKey(clazz) -> query(clazz)
+        else -> null
     }
 
     @Suppress("UNCHECKED_CAST")

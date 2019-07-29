@@ -8,7 +8,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 internal class CaffeineCache<KEY : Any, VALUE : Any> constructor(
         private val description: DataDescription<VALUE, KEY>,
-        private val holder: DataCache,
+        private val holder: CaffeineDataCache,
         private val cache: Cache<KEY, VALUE>
 ) {
 

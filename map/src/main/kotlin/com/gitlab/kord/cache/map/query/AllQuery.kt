@@ -2,6 +2,7 @@ package com.gitlab.kord.cache.map.query
 
 import com.gitlab.kord.cache.api.DataCache
 import com.gitlab.kord.cache.api.data.DataDescription
+import com.gitlab.kord.cache.map.MapDataCache
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.asFlow
 internal class AllQuery<KEY: Any, VALUE : Any>(
         private val map: MutableMap<KEY, VALUE>,
         description: DataDescription<VALUE, KEY>,
-        holder: DataCache
+        holder: MapDataCache
 ) : CascadingQuery<VALUE>(description, holder) {
 
     override suspend fun asFlow(): Flow<VALUE> = map.values.asFlow()

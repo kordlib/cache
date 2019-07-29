@@ -12,15 +12,20 @@ class MapDataCache : DataCache {
     override val priority: Long
         get() = 0L
 
-    override suspend fun <T : Any> register(description: DataDescription<T, out Any>) {
+    override suspend fun register(description: DataDescription<out Any, out Any>) {
         require(description.clazz !in caches) { "description already registered :$description" }
         caches[description.clazz] = MapCache(description, this)
+    }
+
+    internal fun <T : Any> getOptionally(clazz: KClass<T>): QueryBuilder<T>? = when {
+        caches.containsKey(clazz) -> query(clazz)
+        else -> null
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any> query(clazz: KClass<T>): QueryBuilder<T> =
             caches[clazz]?.query() as? QueryBuilder<T>
-                    ?: error("class not registered $clazz")
+                    ?: error("class not registered ${clazz.java}")
 
     @Suppress("UNCHECKED_CAST")
     override suspend fun <T : Any> put(item: T) {

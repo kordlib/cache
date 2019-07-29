@@ -2,7 +2,7 @@ package com.gitlab.kord.cache.caffeine.query
 
 import com.gitlab.kord.cache.api.DataCache
 import com.gitlab.kord.cache.api.data.DataDescription
-import com.gitlab.kord.cache.api.query.CascadingQuery
+import com.gitlab.kord.cache.caffeine.CaffeineDataCache
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -14,7 +14,7 @@ internal class CacheQuery<KEY : Any, VALUE : Any>(
         private val keyQuery: (com.github.benmanes.caffeine.cache.Cache<KEY, VALUE>) -> Flow<VALUE>,
         private val queries: List<(VALUE) -> Boolean> = mutableListOf(),
         description: DataDescription<VALUE, KEY>,
-        holder: DataCache
+        holder: CaffeineDataCache
 ) : CascadingQuery<VALUE>(description, holder) {
 
     override suspend fun asFlow(): Flow<VALUE> = keyQuery(cache).filter { value -> queries.all { it(value) } }

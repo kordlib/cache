@@ -1,7 +1,7 @@
 package com.gitlab.kord.cache.map.query
 
-import com.gitlab.kord.cache.api.DataCache
 import com.gitlab.kord.cache.api.data.DataDescription
+import com.gitlab.kord.cache.map.MapDataCache
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.filter
 internal class MapQuery<KEY: Any, VALUE : Any>(
         private val map: MutableMap<KEY, VALUE>,
         description: DataDescription<VALUE, KEY>,
-        holder: DataCache,
+        holder: MapDataCache,
         private val keyQuery: (Map<KEY, VALUE>) -> Flow<VALUE>,
         private val queries: List<(VALUE) -> Boolean>
 ) : CascadingQuery<VALUE>(description, holder) {

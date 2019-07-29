@@ -1,6 +1,5 @@
 package com.gitlab.kord.cache.caffeine
 
-import com.gitlab.kord.cache.api.DataCache
 import com.gitlab.kord.cache.api.QueryBuilder
 import com.gitlab.kord.cache.api.data.DataDescription
 import com.gitlab.kord.cache.api.query.Query
@@ -14,7 +13,7 @@ import kotlin.reflect.KProperty1
 internal class CaffeineQueryBuilder<KEY : Any, VALUE : Any>(
         private val cache: com.github.benmanes.caffeine.cache.Cache<KEY, VALUE>,
         private val description: DataDescription<VALUE, KEY>,
-        private val holder: DataCache
+        private val holder: CaffeineDataCache
 ) : QueryBuilder<VALUE> {
 
     private var keyQuery: ((com.github.benmanes.caffeine.cache.Cache<KEY, VALUE>) -> Flow<VALUE>)? = null

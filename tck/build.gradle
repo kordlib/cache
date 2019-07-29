@@ -1,0 +1,4 @@
+dependencies {
+    api project(":api")
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
+}

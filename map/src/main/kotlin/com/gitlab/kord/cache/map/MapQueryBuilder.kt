@@ -14,7 +14,7 @@ import kotlin.reflect.KProperty1
 @ExperimentalCoroutinesApi
 internal class MapQueryBuilder<KEY: Any, VALUE : Any>(
         private val map: MutableMap<KEY, VALUE>,
-        private val holder: DataCache,
+        private val holder: MapDataCache,
         private val description: DataDescription<VALUE, KEY>
 ) : QueryBuilder<VALUE> {
 
