@@ -1,6 +1,6 @@
-package com.gitlab.kord.cache.api
+package com.gitlab.kordlib.cache.api
 
-import com.gitlab.kord.cache.api.data.DataDescription
+import com.gitlab.kordlib.cache.api.data.DataDescription
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.experimental.ExperimentalTypeInference
 import kotlin.reflect.KClass

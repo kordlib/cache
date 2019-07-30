@@ -1,11 +1,10 @@
-package com.gitlab.kord.cache.map
+package com.gitlab.kordlib.cache.map
 
-import com.gitlab.kord.cache.api.DataCache
-import com.gitlab.kord.cache.api.query.Query
-import com.gitlab.kord.cache.api.QueryBuilder
-import com.gitlab.kord.cache.api.data.DataDescription
-import com.gitlab.kord.cache.map.query.AllQuery
-import com.gitlab.kord.cache.map.query.MapQuery
+import com.gitlab.kordlib.cache.api.query.Query
+import com.gitlab.kordlib.cache.api.QueryBuilder
+import com.gitlab.kordlib.cache.api.data.DataDescription
+import com.gitlab.kordlib.cache.map.query.AllQuery
+import com.gitlab.kordlib.cache.map.query.MapQuery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlin.reflect.KProperty1
@@ -60,7 +59,8 @@ internal class MapQueryBuilder<KEY: Any, VALUE : Any>(
     @ExperimentalCoroutinesApi
     override fun build(): Query<VALUE> = when {
         keyQuery == null && queries.isEmpty() -> AllQuery(map, description, holder)
-        else -> MapQuery(map, description, holder, keyQuery ?: { it.values.asFlow() }, queries.toList())
+        else -> MapQuery(map, description, holder, keyQuery
+                ?: { it.values.asFlow() }, queries.toList())
     }
 
 }

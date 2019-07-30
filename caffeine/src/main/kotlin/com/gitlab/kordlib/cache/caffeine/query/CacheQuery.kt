@@ -1,8 +1,7 @@
-package com.gitlab.kord.cache.caffeine.query
+package com.gitlab.kordlib.cache.caffeine.query
 
-import com.gitlab.kord.cache.api.DataCache
-import com.gitlab.kord.cache.api.data.DataDescription
-import com.gitlab.kord.cache.caffeine.CaffeineDataCache
+import com.gitlab.kordlib.cache.api.data.DataDescription
+import com.gitlab.kordlib.cache.caffeine.CaffeineDataCache
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect

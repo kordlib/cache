@@ -1,9 +1,9 @@
-package com.gitlab.kord.cache.caffeine
+package com.gitlab.kordlib.cache.caffeine
 
 import com.github.benmanes.caffeine.cache.Caffeine
-import com.gitlab.kord.cache.api.DataCache
-import com.gitlab.kord.cache.api.QueryBuilder
-import com.gitlab.kord.cache.api.data.DataDescription
+import com.gitlab.kordlib.cache.api.DataCache
+import com.gitlab.kordlib.cache.api.QueryBuilder
+import com.gitlab.kordlib.cache.api.data.DataDescription
 import kotlin.reflect.KClass
 
 class CaffeineDataCache(

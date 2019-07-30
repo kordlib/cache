@@ -1,10 +1,10 @@
-package com.gitlab.kord.cache.caffeine
+package com.gitlab.kordlib.cache.caffeine
 
-import com.gitlab.kord.cache.api.QueryBuilder
-import com.gitlab.kord.cache.api.data.DataDescription
-import com.gitlab.kord.cache.api.query.Query
-import com.gitlab.kord.cache.caffeine.query.AllQuery
-import com.gitlab.kord.cache.caffeine.query.CacheQuery
+import com.gitlab.kordlib.cache.api.QueryBuilder
+import com.gitlab.kordlib.cache.api.data.DataDescription
+import com.gitlab.kordlib.cache.api.query.Query
+import com.gitlab.kordlib.cache.caffeine.query.AllQuery
+import com.gitlab.kordlib.cache.caffeine.query.CacheQuery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlin.reflect.KProperty1
@@ -49,7 +49,8 @@ internal class CaffeineQueryBuilder<KEY : Any, VALUE : Any>(
     @ExperimentalCoroutinesApi
     override fun build(): Query<VALUE> = when {
         keyQuery == null && queries.isEmpty() -> AllQuery(cache, description, holder)
-        else -> CacheQuery(cache, keyQuery ?: { it.asMap().values.asFlow() }, queries.toList(), description, holder)
+        else -> CacheQuery(cache, keyQuery
+                ?: { it.asMap().values.asFlow() }, queries.toList(), description, holder)
     }
 
 }

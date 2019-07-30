@@ -1,14 +1,14 @@
-package com.gitlab.kord.cache.caffeine.query
+package com.gitlab.kordlib.cache.map.query
 
-import com.gitlab.kord.cache.api.data.DataDescription
-import com.gitlab.kord.cache.api.query.Query
-import com.gitlab.kord.cache.caffeine.CaffeineDataCache
+import com.gitlab.kordlib.cache.api.data.DataDescription
+import com.gitlab.kordlib.cache.api.query.Query
+import com.gitlab.kordlib.cache.map.MapDataCache
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 internal abstract class CascadingQuery<T : Any>(
         val description: DataDescription<T, out Any>,
-        val holder: CaffeineDataCache
+        val holder: MapDataCache
 ) : Query<T> {
 
     protected suspend fun cascadeAll() {

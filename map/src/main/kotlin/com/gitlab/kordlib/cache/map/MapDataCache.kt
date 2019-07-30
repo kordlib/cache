@@ -1,8 +1,8 @@
-package com.gitlab.kord.cache.map
+package com.gitlab.kordlib.cache.map
 
-import com.gitlab.kord.cache.api.DataCache
-import com.gitlab.kord.cache.api.QueryBuilder
-import com.gitlab.kord.cache.api.data.DataDescription
+import com.gitlab.kordlib.cache.api.DataCache
+import com.gitlab.kordlib.cache.api.QueryBuilder
+import com.gitlab.kordlib.cache.api.data.DataDescription
 import kotlin.reflect.KClass
 
 class MapDataCache : DataCache {

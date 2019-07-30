@@ -1,4 +1,4 @@
-package com.gitlab.kord.cache.api.data
+package com.gitlab.kordlib.cache.api.data
 
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1

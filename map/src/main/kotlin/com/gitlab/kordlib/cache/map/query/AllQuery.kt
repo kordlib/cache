@@ -1,8 +1,7 @@
-package com.gitlab.kord.cache.map.query
+package com.gitlab.kordlib.cache.map.query
 
-import com.gitlab.kord.cache.api.DataCache
-import com.gitlab.kord.cache.api.data.DataDescription
-import com.gitlab.kord.cache.map.MapDataCache
+import com.gitlab.kordlib.cache.api.data.DataDescription
+import com.gitlab.kordlib.cache.map.MapDataCache
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow

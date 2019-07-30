@@ -1,6 +1,6 @@
-package com.gitlab.kord.cache.api
+package com.gitlab.kordlib.cache.api
 
-import com.gitlab.kord.cache.api.query.Query
+import com.gitlab.kordlib.cache.api.query.Query
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow

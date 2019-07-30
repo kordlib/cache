@@ -2,9 +2,9 @@
 
 package com.gitlab.cord.tck
 
-import com.gitlab.kord.cache.api.DataCache
-import com.gitlab.kord.cache.api.data.description
-import com.gitlab.kord.cache.api.find
+import com.gitlab.kordlib.cache.api.DataCache
+import com.gitlab.kordlib.cache.api.data.description
+import com.gitlab.kordlib.cache.api.find
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.RepeatedTest
