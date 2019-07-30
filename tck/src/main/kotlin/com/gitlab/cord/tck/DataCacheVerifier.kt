@@ -90,11 +90,36 @@ abstract class DataCacheVerifier {
             datacache.put(it)
         }
 
-         datacache.find<DataSource1> { DataSource1::id eq one.id }.remove()
+        datacache.find<DataSource1> { DataSource1::id eq one.id }.remove()
 
         val actualOne = datacache.find<DataSource1> { DataSource1::id eq one.id }.singleOrNull()
 
         Assertions.assertEquals(null, actualOne)
+    }
+
+    @RepeatedTest(50)
+    fun `update should modify correctly`(): Unit = runBlocking {
+        val one = DataSource1.random()
+
+        val others = generateSequence { DataSource1.random() }
+                .take(Random.nextInt(100))
+                .toList() + one
+
+        datacache.register(DataSource1.description)
+
+        others.shuffled().forEach {
+            datacache.put(it)
+        }
+
+        lateinit var updated: DataSource1
+
+        datacache.find<DataSource1> { DataSource1::id eq one.id }.update {
+            it.copy(fieldOne = "something random").also { updated = it }
+        }
+
+        val actualOne = datacache.find<DataSource1> { DataSource1::id eq one.id }.singleOrNull()
+
+        Assertions.assertEquals(updated, actualOne)
     }
 
 }

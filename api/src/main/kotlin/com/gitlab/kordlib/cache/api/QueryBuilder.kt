@@ -79,11 +79,13 @@ interface QueryBuilder<T : Any> {
 
     companion object {
 
+        @ExperimentalCoroutinesApi
         fun<T: Any> none() = object : QueryBuilder<T> {
             override fun <R> KProperty1<T, R>.predicate(predicate: (T) -> Boolean) {}
             override fun build(): Query<T> = object : Query<T> {
                 override suspend fun asFlow(): Flow<T> = emptyFlow()
                 override suspend fun remove() {}
+                override suspend fun update(mapper: suspend (T) -> T) {}
             }
         }
 

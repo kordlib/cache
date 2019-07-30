@@ -7,8 +7,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 internal abstract class CascadingQuery<T : Any>(
-        val description: DataDescription<T, out Any>,
-        val holder: CaffeineDataCache
+        private val description: DataDescription<T, out Any>,
+        private val holder: CaffeineDataCache
 ) : Query<T> {
 
     protected suspend fun cascadeAll() {
