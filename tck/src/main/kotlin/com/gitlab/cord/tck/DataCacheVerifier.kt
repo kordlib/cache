@@ -97,6 +97,21 @@ abstract class DataCacheVerifier {
         Assertions.assertEquals(null, actualOne)
     }
 
+    @RepeatedTest(1)
+    fun `cyclical remove should not hang`(): Unit = runBlocking {
+        val one = DataSource1.random()
+        val two = DataSource2(Random.nextLong(), one.id)
+
+        datacache.register(DataSource1.description, description(DataSource2::id) {
+            link(DataSource2::source1Id to DataSource1::id)
+        })
+
+        datacache.put(one)
+        datacache.put(two)
+
+        datacache.find<DataSource1> { DataSource1::id eq one.id }.remove()
+    }
+
     @RepeatedTest(50)
     fun `update should modify correctly`(): Unit = runBlocking {
         val one = DataSource1.random()

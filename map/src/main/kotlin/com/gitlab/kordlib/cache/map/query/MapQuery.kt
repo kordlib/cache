@@ -19,8 +19,8 @@ internal class MapQuery<KEY : Any, VALUE : Any>(
     override suspend fun asFlow(): Flow<VALUE> = keyQuery.invoke(map).filter { value -> queries.all { it(value) } }
 
     override suspend fun remove() = asFlow().collect { value ->
-        cascadeForValue(value)
         map.remove(description.indexField.property.get(value))
+        cascadeForValue(value)
     }
 
     override suspend fun update(mapper: suspend (VALUE) -> VALUE) {

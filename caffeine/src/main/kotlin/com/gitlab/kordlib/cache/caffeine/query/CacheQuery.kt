@@ -19,8 +19,8 @@ internal class CacheQuery<KEY : Any, VALUE : Any>(
     override suspend fun asFlow(): Flow<VALUE> = keyQuery(cache).filter { value -> queries.all { it(value) } }
 
     override suspend fun remove() = asFlow().collect {
-        cascadeForValue(it)
         cache.invalidate(description.indexField.property.get(it))
+        cascadeForValue(it)
     }
 
     override suspend fun update(mapper: suspend (VALUE) -> VALUE) = asFlow().collect {
