@@ -5,13 +5,14 @@ import com.gitlab.kordlib.cache.map.MapDataCache
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
 
 
 @ExperimentalCoroutinesApi
 internal class AllQuery<KEY: Any, VALUE : Any>(
         private val map: MutableMap<KEY, VALUE>,
-        description: DataDescription<VALUE, KEY>,
-        holder: MapDataCache
+        private val description: DataDescription<VALUE, KEY>,
+        private val holder: MapDataCache
 ) : CascadingQuery<VALUE>(description, holder) {
 
     override suspend fun asFlow(): Flow<VALUE> = map.values.asFlow()
@@ -37,6 +38,20 @@ internal class AllQuery<KEY: Any, VALUE : Any>(
     override suspend fun remove() {
         removeFromLinks()
         map.clear()
+    }
+
+    override suspend fun update(mapper: suspend (VALUE) -> VALUE) {
+        asFlow().collect {
+            val prevId = description.indexField.property.get(it)
+            val prev = it
+            val new = mapper(it)
+            val newId = description.indexField.property.get(new)
+
+            if (newId != prevId) error("identity rule violated: $prevId -> $newId")
+            if (prev != new) {
+                map[newId] = new
+            }
+        }
     }
 
     private suspend fun removeFromLinks() {

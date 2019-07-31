@@ -51,9 +51,9 @@ internal class MapQueryBuilder<KEY: Any, VALUE : Any>(
         else -> queries += { get(it) in items }
     }
 
-    override fun <R> KProperty1<VALUE, R>.predicate(predicate: (VALUE) -> Boolean) = when {
-        isPrimary -> keyQuery = { map -> map.values.asFlow().filter { predicate(it) } }
-        else -> queries += { predicate(it) }
+    override fun <R> KProperty1<VALUE, R>.predicate(predicate: (R) -> Boolean) = when {
+        isPrimary -> keyQuery = { map -> map.values.asFlow().filter { predicate(get(it)) } }
+        else -> queries += { predicate(get(it)) }
     }
 
     @ExperimentalCoroutinesApi

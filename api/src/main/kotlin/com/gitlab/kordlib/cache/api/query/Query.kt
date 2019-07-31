@@ -1,5 +1,6 @@
 package com.gitlab.kordlib.cache.api.query
 
+import com.gitlab.kordlib.cache.api.data.DataDescription
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
@@ -39,5 +40,11 @@ interface Query<T : Any> {
      * Returns the only value that matches against this query if present, null if no, or throws a [Exception].
      */
     suspend fun singleOrNull(): T? = asFlow().singleOrNull()
+
+    /**
+     * Applies the [mapper] to the values that match against this query.
+     * Returning a value with a different [DataDescription.indexField] value will result in an Exception being thrown.
+     */
+    suspend fun update(mapper: suspend (T) -> T)
 
 }
