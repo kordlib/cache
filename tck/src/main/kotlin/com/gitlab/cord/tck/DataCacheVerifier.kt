@@ -8,6 +8,9 @@ import com.gitlab.kordlib.cache.api.find
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.RepeatedTest
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import java.lang.Exception
 import kotlin.random.Random
 
 private data class DataSource1(val id: Long, val fieldOne: String, val fieldTwo: Boolean) {
@@ -110,6 +113,23 @@ abstract class DataCacheVerifier {
         datacache.put(two)
 
         datacache.find<DataSource1> { DataSource1::id eq one.id }.remove()
+    }
+
+    @Test
+    fun `update that changes identity throws`(): Unit = runBlocking {
+        val one = DataSource1.random()
+        datacache.register(DataSource1.description)
+        datacache.put(one)
+
+        assertThrows<Exception> {
+            runBlocking {
+                datacache.find<DataSource1> { DataSource1::id eq one.id }.update {
+                    it.copy(id = it.id + 1)
+                }
+            }
+        }
+
+        Unit
     }
 
     @RepeatedTest(50)

@@ -28,7 +28,7 @@ internal class MapQuery<KEY : Any, VALUE : Any>(
             val prevId = description.indexField.property.get(it)
             val prev = it
             val new = mapper(it)
-            val newId = description.indexField.property.get(it)
+            val newId = description.indexField.property.get(new)
 
             if (newId != prevId) error("identity rule violated: $prevId -> $newId")
             if (prev != new) {
