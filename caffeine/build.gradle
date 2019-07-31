@@ -1,4 +1,6 @@
 dependencies {
-    compile project(':api')
-    compile "com.github.ben-manes.caffeine:caffeine:$caffeine_version"
+    api project(':api')
+    api "com.github.ben-manes.caffeine:caffeine:$caffeine_version"
+
+    testImplementation project(":tck")
 }
