@@ -21,8 +21,8 @@ internal class AllQuery<KEY : Any, VALUE : Any>(
     override suspend fun count(): Long = cache.estimatedSize()
 
     override suspend fun remove() {
-        cascadeAll()
         cache.invalidateAll()
+        cascadeAll()
     }
 
     override suspend fun update(mapper: suspend (VALUE) -> VALUE) {

@@ -12,7 +12,16 @@ internal abstract class CascadingQuery<T : Any>(
 ) : Query<T> {
 
     protected suspend fun cascadeAll() {
-        description.links.forEach { holder.getOptionally(it.target)?.build()?.remove() }
+        description.links.forEach {
+            val builder = holder.getOptionally(it.target) ?: return@forEach
+
+            val query = with(builder) {
+                it.linkedField ne null
+                build()
+            }
+
+            query.remove()
+        }
     }
 
     protected suspend fun cascadeForValue(value: T) {
