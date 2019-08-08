@@ -21,11 +21,13 @@ internal class CaffeineQueryBuilder<KEY : Any, VALUE : Any>(
 
     private val KProperty1<VALUE, *>.isPrimary get() = description.indexField.property == this && keyQuery == null
 
+    @Suppress("UNCHECKED_CAST")
     override fun <R> KProperty1<VALUE, R>.eq(value: R) = when {
         isPrimary -> keyQuery = { cache -> cache.getIfPresent(value as KEY)?.let(::flowOf) ?: emptyFlow() }
         else -> queries += { value == get(it) }
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun <R> KProperty1<VALUE, R>.ne(value: R) = when {
         isPrimary -> keyQuery = { cache ->
             val flow = cache.asMap().values.asFlow()
@@ -33,7 +35,7 @@ internal class CaffeineQueryBuilder<KEY : Any, VALUE : Any>(
             if (cache.getIfPresent(value as KEY) == null) flow
             else flow.filter { value != get(it) }
         }
-        else -> queries += { value == get(it) }
+        else -> queries += { value != get(it) }
     }
 
     override fun <R> KProperty1<VALUE, R>.`in`(items: Iterable<R>) = when {

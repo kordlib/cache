@@ -10,7 +10,7 @@ repositories {
 }
 
 subprojects {
-    group 'bart.test'
+    group 'com.gitlab.kordlib.cache'
     version '0.0.1'
 
     apply plugin: 'kotlin'

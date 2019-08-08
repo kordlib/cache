@@ -1,3 +1,5 @@
+@file:Suppress("EXPERIMENTAL_API_USAGE")
+
 package caffeine
 
 import com.gitlab.cord.tck.DataCacheVerifier
