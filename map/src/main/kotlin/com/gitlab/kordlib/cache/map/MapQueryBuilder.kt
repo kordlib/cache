@@ -36,7 +36,7 @@ internal class MapQueryBuilder<KEY: Any, VALUE : Any>(
             if (map[value as KEY] == null) flow
             else flow.filter { value != get(it) }
         }
-        else -> queries += { value == get(it) }
+        else -> queries += { value != get(it) }
     }
 
     override fun <R> KProperty1<VALUE, R>.`in`(items: Iterable<R>) = when {

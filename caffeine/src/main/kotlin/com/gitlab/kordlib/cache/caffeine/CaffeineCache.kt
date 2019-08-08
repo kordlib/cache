@@ -5,6 +5,7 @@ import com.gitlab.kordlib.cache.api.QueryBuilder
 import com.gitlab.kordlib.cache.api.data.DataDescription
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 internal class CaffeineCache<KEY : Any, VALUE : Any> constructor(
         private val description: DataDescription<VALUE, KEY>,
         private val holder: CaffeineDataCache,
