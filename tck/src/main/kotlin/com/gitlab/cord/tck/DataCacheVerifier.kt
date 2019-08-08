@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.lang.Exception
 import kotlin.random.Random
 
 private data class DataSource1(val id: Long, val fieldOne: String, val fieldTwo: Boolean) {
@@ -25,6 +24,7 @@ private data class DataSource1(val id: Long, val fieldOne: String, val fieldTwo:
 
         val description = description(DataSource1::id) {
             link(DataSource1::id to DataSource2::source1Id)
+            link(DataSource1::id to OptionalDataSource::source1Id)
         }
     }
 }
@@ -32,6 +32,12 @@ private data class DataSource1(val id: Long, val fieldOne: String, val fieldTwo:
 private data class DataSource2(val id: Long, val source1Id: Long) {
     companion object {
         val description = description(DataSource2::id)
+    }
+}
+
+private data class OptionalDataSource(val id: Long, val source1Id: Long?) {
+    companion object {
+        val description = description(OptionalDataSource::id)
     }
 }
 
@@ -130,6 +136,29 @@ abstract class DataCacheVerifier {
         }
 
         Unit
+    }
+
+    @RepeatedTest(50)
+    fun `delete should not cascade nullable`(): Unit = runBlocking {
+        val one = DataSource1.random()
+        val optional = OptionalDataSource(Random.nextLong(), null)
+
+        datacache.register(DataSource1.description, OptionalDataSource.description)
+
+        datacache.put(one)
+        datacache.put(optional)
+
+        datacache.find<DataSource1> {
+            DataSource1::id eq one.id
+        }.remove()
+
+        datacache.find<DataSource1>().remove()
+
+        val actualOptional = datacache.find<OptionalDataSource> {
+            OptionalDataSource::id eq optional.id
+        }.singleOrNull()
+
+        Assertions.assertEquals(optional, actualOptional)
     }
 
     @RepeatedTest(50)

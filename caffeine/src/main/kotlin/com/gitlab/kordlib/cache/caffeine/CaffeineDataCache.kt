@@ -4,10 +4,12 @@ import com.github.benmanes.caffeine.cache.Caffeine
 import com.gitlab.kordlib.cache.api.DataCache
 import com.gitlab.kordlib.cache.api.QueryBuilder
 import com.gitlab.kordlib.cache.api.data.DataDescription
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.reflect.KClass
 
+@ExperimentalCoroutinesApi
 class CaffeineDataCache(
-        val generator: (Caffeine<Any, Any>) -> Caffeine<Any, Any> = { it }
+        private val generator: (Caffeine<Any, Any>) -> Caffeine<Any, Any> = { it }
 ) : DataCache {
 
     private val caches = mutableMapOf<KClass<out Any>, CaffeineCache<out Any, out Any>>()

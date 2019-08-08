@@ -36,8 +36,8 @@ internal class AllQuery<KEY: Any, VALUE : Any>(
     override suspend fun toCollection(): Collection<VALUE> = map.values
 
     override suspend fun remove() {
-        removeFromLinks()
         map.clear()
+        removeFromLinks()
     }
 
     override suspend fun update(mapper: suspend (VALUE) -> VALUE) {
