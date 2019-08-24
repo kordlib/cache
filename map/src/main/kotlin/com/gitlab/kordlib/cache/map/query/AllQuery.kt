@@ -15,7 +15,7 @@ internal class AllQuery<KEY: Any, VALUE : Any>(
         private val holder: MapDataCache
 ) : CascadingQuery<VALUE>(description, holder) {
 
-    override suspend fun asFlow(): Flow<VALUE> = map.values.asFlow()
+    override fun asFlow(): Flow<VALUE> = map.values.asFlow()
 
     override suspend fun count(): Long = map.size.toLong()
 

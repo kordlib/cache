@@ -14,7 +14,7 @@ interface Query<T : Any> {
     /**
      * Executes the query and returns the values as a [Flow].
      */
-    suspend fun asFlow(): Flow<T>
+    fun asFlow(): Flow<T>
 
     /**
      * Removes all the values that match this query.

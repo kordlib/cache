@@ -14,7 +14,7 @@ internal class AllQuery<KEY : Any, VALUE : Any>(
         private val description: DataDescription<VALUE, KEY>,
         holder: CaffeineDataCache
 ) : CascadingQuery<VALUE>(description, holder) {
-    override suspend fun asFlow(): Flow<VALUE> = cache.asMap().values.asFlow()
+    override fun asFlow(): Flow<VALUE> = cache.asMap().values.asFlow()
 
     override suspend fun toCollection(): Collection<VALUE> = cache.asMap().values
 

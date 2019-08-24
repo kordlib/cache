@@ -16,7 +16,7 @@ internal class MapQuery<KEY : Any, VALUE : Any>(
         private val queries: List<(VALUE) -> Boolean>
 ) : CascadingQuery<VALUE>(description, holder) {
 
-    override suspend fun asFlow(): Flow<VALUE> = keyQuery.invoke(map).filter { value -> queries.all { it(value) } }
+    override fun asFlow(): Flow<VALUE> = keyQuery.invoke(map).filter { value -> queries.all { it(value) } }
 
     override suspend fun remove() = asFlow().collect { value ->
         map.remove(description.indexField.property.get(value))

@@ -16,7 +16,7 @@ internal class CacheQuery<KEY : Any, VALUE : Any>(
         holder: CaffeineDataCache
 ) : CascadingQuery<VALUE>(description, holder) {
 
-    override suspend fun asFlow(): Flow<VALUE> = keyQuery(cache).filter { value -> queries.all { it(value) } }
+    override fun asFlow(): Flow<VALUE> = keyQuery(cache).filter { value -> queries.all { it(value) } }
 
     override suspend fun remove() = asFlow().collect {
         cache.invalidate(description.indexField.property.get(it))
