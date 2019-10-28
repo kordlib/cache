@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.*
  * A lazy query. Functions in this class should be handled as if they are operating on cold
  * [Flows][Flow].
  */
-@ExperimentalCoroutinesApi
 interface Query<T : Any> {
 
     /**

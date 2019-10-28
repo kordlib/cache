@@ -5,12 +5,16 @@ package com.gitlab.cord.tck
 import com.gitlab.kordlib.cache.api.DataCache
 import com.gitlab.kordlib.cache.api.data.description
 import com.gitlab.kordlib.cache.api.find
+import com.gitlab.kordlib.cache.api.getEntry
+import com.gitlab.kordlib.cache.api.put
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.random.Random
+import kotlin.reflect.typeOf
 
 private data class DataSource1(val id: Long, val fieldOne: String, val fieldTwo: Boolean) {
     companion object {

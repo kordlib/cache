@@ -2,47 +2,50 @@ package com.gitlab.kordlib.cache.caffeine
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.gitlab.kordlib.cache.api.DataCache
-import com.gitlab.kordlib.cache.api.QueryBuilder
-import com.gitlab.kordlib.cache.api.data.DataDescription
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlin.reflect.KClass
+import com.gitlab.kordlib.cache.api.delegate.DelegatingDataCache
+import com.gitlab.kordlib.cache.api.delegate.EntrySupplier
+import com.gitlab.kordlib.cache.map.MapLikeCollection
+import com.gitlab.kordlib.cache.map.internal.MapEntryCache
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flow
 
-@ExperimentalCoroutinesApi
-class CaffeineDataCache(
-        private val generator: (Caffeine<Any, Any>) -> Caffeine<Any, Any> = { it }
-) : DataCache {
+@Suppress("FunctionName")
+fun CaffeineDataCache(priority: Long = 0, generator: (Caffeine<Any, Any>) -> Caffeine<Any, Any> = { it }): DataCache {
+    return DelegatingDataCache(EntrySupplier { cache, description ->
+        MapEntryCache(cache, description, MapLikeCollection.from(generator))
+    }, priority)
+}
 
-    private val caches = mutableMapOf<KClass<out Any>, CaffeineCache<out Any, out Any>>()
+fun <KEY : Any, VALUE : Any> MapLikeCollection.Companion.from(generator: (Caffeine<Any, Any>) -> Caffeine<Any, Any>): MapLikeCollection<KEY, VALUE> {
+    return object : MapLikeCollection<KEY, VALUE> {
+        val caffeine = Caffeine.newBuilder().let(generator).build<KEY, VALUE>()
 
-    override val priority: Long
-        get() = Long.MAX_VALUE - 1
+        override suspend fun get(key: KEY): VALUE? = caffeine.getIfPresent(key)
 
-    override suspend fun register(description: DataDescription<out Any, out Any>) {
-        require(description.clazz !in caches) { "description already registered :$description" }
-        val cache =
-                CaffeineCache(description, this, Caffeine.newBuilder().let(generator).build())
+        override suspend fun put(key: KEY, value: VALUE) = caffeine.put(key, value)
 
-        caches[description.clazz] = cache
+        override fun values(): Flow<VALUE> = flow {
+            for (value in caffeine.asMap().values) {
+                emit(value)
+            }
+        }
+
+        override suspend fun clear() = caffeine.invalidateAll()
+
+        override suspend fun remove(key: KEY) {
+            caffeine.invalidate(key)
+        }
+
+        override fun getByKey(predicate: suspend (KEY) -> Boolean): Flow<VALUE> = flow {
+            for ((key, value) in caffeine.asMap()) {
+                if (predicate(key)) {
+                    emit(value)
+                }
+            }
+        }
+
+        override fun getByValue(predicate: suspend (VALUE) -> Boolean): Flow<VALUE> = values().filter { predicate(it) }
     }
-
-
-    internal fun <T : Any> getOptionally(clazz: KClass<T>): QueryBuilder<T>? = when {
-        caches.containsKey(clazz) -> query(clazz)
-        else -> null
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> query(clazz: KClass<T>): QueryBuilder<T> =
-            caches[clazz]?.query() as? QueryBuilder<T>
-                    ?: error("class not registered $clazz")
-
-    @Suppress("UNCHECKED_CAST")
-    override suspend fun <T : Any> put(item: T) {
-        val cache = caches[item::class] as? CaffeineCache<Any, Any>
-                ?: error("class not registered ${item::class}")
-
-        cache.put(item)
-    }
-
 
 }
