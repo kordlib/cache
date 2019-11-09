@@ -1,5 +1,16 @@
-dependencies {
-    api(project(":api"))
+plugins {
+    kotlin("multiplatform")
+}
 
-    testImplementation(project(":tck"))
+kotlin {
+    sourceSets.commonMain.get().dependencies {
+        api(project(":api"))
+    }
+
+    sourceSets.commonTest.get().dependencies {
+        implementation(project(":tck"))
+    }
+
+    jvm()
+    js()
 }
