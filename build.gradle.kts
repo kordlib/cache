@@ -1,17 +1,14 @@
 plugins {
-    kotlin("multiplatform") version "1.3.50" apply false
+    kotlin("multiplatform") version "1.3.50" apply true
 }
 
-repositories {
-    mavenCentral()
-    jcenter()
-}
+val config = file("config.gradle.kts")
 
-subprojects {
+allprojects {
     group = "com.gitlab.kordlib.cache"
     version = "0.0.1"
 
-    apply(from = "../config.gradle.kts")
+    apply(from = config)
 
     repositories {
         mavenCentral()
