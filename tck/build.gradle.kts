@@ -29,6 +29,7 @@ kotlin {
     js {
         val main by compilations.getting {
             dependencies {
+                api(kotlin("test-js"))
                 implementation(kotlin("stdlib-js"))
             }
         }
