@@ -35,4 +35,6 @@ class DelegatingDataCache(
         caches[description.type] = supplier.supply(this, description as DataDescription<Any, Any>)
     }
 
+    companion object
+
 }

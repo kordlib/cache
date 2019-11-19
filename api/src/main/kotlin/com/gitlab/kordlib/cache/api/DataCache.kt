@@ -39,6 +39,9 @@ suspend fun <T : Any> DataCache.put(type: KType, item: T) = getEntry<T>(type)?.p
 
 suspend inline fun <reified T : Any> DataCache.put(item: T) = put(typeOf<T>(), item)
 
+suspend inline fun <reified T : Any> DataCache.putAll(items: Iterable<T>) = items.forEach { put(typeOf<T>(), it) }
+
+
 @ExperimentalCoroutinesApi
 inline fun <reified T : Any> DataCache.find(block: QueryBuilder<T>.() -> Unit = {}) =
         getEntry<T>(typeOf<T>())!!.query().apply(block).build()
