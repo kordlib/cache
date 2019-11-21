@@ -41,6 +41,7 @@ suspend inline fun <reified T : Any> DataCache.put(item: T) = put(typeOf<T>(), i
 
 suspend inline fun <reified T : Any> DataCache.putAll(items: Iterable<T>) = items.forEach { put(typeOf<T>(), it) }
 
+suspend inline fun <reified T : Any> DataCache.putAll(vararg items: T) = items.forEach { put(typeOf<T>(), it) }
 
 @ExperimentalCoroutinesApi
 inline fun <reified T : Any> DataCache.find(block: QueryBuilder<T>.() -> Unit = {}) =

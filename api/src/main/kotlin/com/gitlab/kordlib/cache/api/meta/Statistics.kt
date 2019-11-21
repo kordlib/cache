@@ -1,5 +1,6 @@
 package com.gitlab.kordlib.cache.api.meta
 
+import kotlinx.atomicfu.AtomicLong
 import kotlinx.atomicfu.atomic
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
@@ -37,13 +38,24 @@ class CacheStatistics(val typeData: Map<KType, TypeStatistics> = mapOf()) {
 class StatisticsLogger {
 
     internal data class TypeStatistics(val type: KType) {
-        val queries = atomic(0L)
-        val hits = atomic(0L)
+        private val queries: AtomicLong = atomic(0L)
+        private val hits: AtomicLong = atomic(0L)
+
+        val queryCount: Long get() = queries.value
+        val hitCount: Long get() = hits.value
+
+        fun logQuery() {
+            queries.plusAssign(1)
+        }
+
+        fun logHit() {
+            hits.plusAssign(1)
+        }
     }
 
     private val map = mutableMapOf<KType, TypeStatistics>()
 
-    val metaData get() = CacheStatistics(map.mapValues { TypeStatistics(it.key, it.value.queries.value, it.value.hits.value) })
+    val metaData get() = CacheStatistics(map.mapValues { TypeStatistics(it.key, it.value.queryCount, it.value.hitCount) })
 
     fun getForType(type: KType): TypeStatisticsLogger = TypeStatisticsLogger(map.getOrPut(type) { TypeStatistics(type) })
 
@@ -56,11 +68,11 @@ class TypeStatisticsLogger internal constructor(private val data: StatisticsLogg
     val type get() = data.type
 
     fun logQuery() {
-        data.queries.plusAssign(1)
+        data.logQuery()
     }
 
     fun logHit() {
-        data.hits.plusAssign(1)
+        data.logHit()
     }
 
 }

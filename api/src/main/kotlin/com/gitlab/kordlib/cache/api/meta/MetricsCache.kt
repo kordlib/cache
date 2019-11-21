@@ -7,6 +7,7 @@ import com.gitlab.kordlib.cache.api.query.Query
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.reflect.KType
 
 fun DataCache.withMetrics(): MetricsCache = MetricsCache(this)
@@ -56,9 +57,9 @@ private class MetricsQuery<V : Any>(
 
     override fun asFlow(): Flow<V> {
         logger.logQuery()
-        val first = atomic(false)
+        val first = AtomicBoolean(false) //atomicfu causes compilation error here
         return delegate.asFlow().onEach {
-            if (first.compareAndSet(expect = false, update = true)) logger.logHit()
+            if (first.compareAndSet(false, true)) logger.logHit()
         }
     }
 

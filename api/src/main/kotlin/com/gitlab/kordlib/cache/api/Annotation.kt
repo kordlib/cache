@@ -1,4 +1,4 @@
-package com.gitlab.kordlib.cache.annotation
+package com.gitlab.kordlib.cache.api
 
 import com.gitlab.kordlib.cache.api.data.IndexField
 import kotlin.reflect.KClass
@@ -28,7 +28,7 @@ import kotlin.reflect.KClass
  */
 @Repeatable
 @MustBeDocumented
-@Target(AnnotationTarget.FIELD)
+@Target(AnnotationTarget.PROPERTY)
 @Retention(AnnotationRetention.SOURCE)
 annotation class Link(val to: KClass<*>, val name: String)
 
