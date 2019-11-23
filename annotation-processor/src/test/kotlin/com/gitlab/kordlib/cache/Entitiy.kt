@@ -8,8 +8,13 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import kotlin.reflect.typeOf
 
-class User(@Link(to = UserMessage::class, name = "id") @Identity val id: Long)
+class User(@Link(to = UserMessage::class, name = "id") @Identity val userId: Long)
 class UserMessage(@Identity val id: Long)
+
+@Identity
+val CompoundEntity.id get() = "$id1:$id2"
+
+class CompoundEntity(val id1: Long, val id2: Long)
 
 class EntityTest {
 
