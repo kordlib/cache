@@ -33,3 +33,16 @@ test:
     paths:
       - build
       - .gradle
+
+deploy:
+  stage: deploy
+  script: gradle --stacktrace --info bintrayUpload
+  only:
+    refs:
+      - tags
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
