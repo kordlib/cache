@@ -3,3 +3,14 @@ dependencies {
 
     testImplementation project(":tck")
 }
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = [
+                "-XXLanguage:+InlineClasses",
+                "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-Xuse-experimental=kotlin.ExperimentalStdlibApi",
+                "-Xuse-experimental=kotlin.experimental.ExperimentalTypeInference"
+        ]
+    }
+}

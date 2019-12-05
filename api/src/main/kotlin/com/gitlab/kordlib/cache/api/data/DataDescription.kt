@@ -13,6 +13,10 @@ class DataDescription<T : Any, I>(
         val links: List<DataLink<T, Any, Any?>> = listOf()
 )
 
+/**
+ * An instance that links a Property [I] of class [S] to class [T]. When [S] is removed from the cache all [T] with an [I] pof the same
+ * value will also be removed.
+ */
 class DataLink<S : Any, T : Any, I>(val source: KProperty1<S, I>, val target: KType, val linkedField: KProperty1<T, I>)
 
 inline fun <reified T : Any, I> description(
@@ -30,6 +34,9 @@ class LinkBuilder<S : Any>(
         internal val links: MutableList<DataLink<S, Any, Any?>> = mutableListOf()
 ) {
 
+    /**
+     * Links the properties of two classes, creating a [DataLink].
+     */
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T : Any, I : Any?> link(pair: Pair<KProperty1<S, I>, KProperty1<T, I>>) {
         links.add(DataLink(pair.first, typeOf<T>(), pair.second as KProperty1<Any, I>))

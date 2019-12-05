@@ -1,27 +1,33 @@
 package com.gitlab.kordlib.cache.api.delegate
 
+
 import com.gitlab.kordlib.cache.api.DataCache
 import com.gitlab.kordlib.cache.api.DataEntryCache
 import com.gitlab.kordlib.cache.api.data.DataDescription
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KType
+import kotlin.reflect.typeOf
+
+typealias Supplier<T> = (cache: DataCache, description: DataDescription<T, *>) -> DataEntryCache<T>
 
 interface EntrySupplier {
 
     suspend fun <T : Any> supply(cache: DataCache, description: DataDescription<T, out Any>): DataEntryCache<T>
 
     companion object {
-        operator fun invoke(provide: (cache: DataCache, description: DataDescription<Any, Any>) -> DataEntryCache<*>) = object : EntrySupplier {
+        @Suppress("UNCHECKED_CAST")
+        operator fun invoke(supply: (cache: DataCache, description: DataDescription<Any, Any>) -> DataEntryCache<*>) = object : EntrySupplier {
             override suspend fun <T : Any> supply(cache: DataCache, description: DataDescription<T, out Any>): DataEntryCache<T> =
-                    provide(cache, description as DataDescription<Any, Any>) as DataEntryCache<T>
+                    supply(cache, description as DataDescription<Any, Any>) as DataEntryCache<T>
         }
     }
+
 }
 
-class DelegatingDataCache(
-        private val supplier: EntrySupplier,
-        override val priority: Long = 0
-) : DataCache {
+/**
+ * A cache that delegates all operations to [DataEntryCaches][DataEntryCache], who are lazily loaded on [register].
+ */
+class DelegatingDataCache(private val supplier: EntrySupplier) : DataCache {
 
     private val caches = ConcurrentHashMap<KType, DataEntryCache<Any>>()
 
@@ -35,6 +41,39 @@ class DelegatingDataCache(
         caches[description.type] = supplier.supply(this, description as DataDescription<Any, Any>)
     }
 
-    companion object
+    companion object {
+
+        private class DelegateSupplier(private val default: Supplier<Any>, private val suppliers: MutableMap<KType, Supplier<*>>) : EntrySupplier {
+
+            @Suppress("UNCHECKED_CAST")
+            override suspend fun <T : Any> supply(cache: DataCache, description: DataDescription<T, out Any>): DataEntryCache<T> {
+                val supplier = (suppliers[description.type] ?: default) as Supplier<T>
+                return supplier(cache, description)
+            }
+        }
+
+        class Builder {
+
+            val suppliers: MutableMap<KType, Supplier<*>> = mutableMapOf()
+            private var default: Supplier<Any> = { _, _ -> DataEntryCache.none() }
+
+            @Suppress("UNCHECKED_CAST")
+            inline fun <reified T : Any> forType(noinline supplier: Supplier<T>) {
+                suppliers[typeOf<T>()] = supplier as Supplier<*>
+            }
+
+            fun default(supplier: Supplier<Any>) {
+                default = supplier
+            }
+
+            fun build(): DataCache = DelegatingDataCache(DelegateSupplier(default, suppliers))
+        }
+
+        /**
+         * Creates a new [DataCache] configured by [builder].
+         * [Builder.default] will use a [DataEntryCache.none] to store entries.
+         */
+        inline operator fun invoke(builder: Builder.() -> Unit = {}) = Builder().apply(builder).build()
+    }
 
 }

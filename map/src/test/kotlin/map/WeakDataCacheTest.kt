@@ -1,16 +1,12 @@
 package map
 
 import com.gitlab.kordlib.cache.api.data.description
-import com.gitlab.kordlib.cache.api.delegate.DelegatingDataCache
 import com.gitlab.kordlib.cache.api.find
-import com.gitlab.kordlib.cache.api.getEntry
-import com.gitlab.kordlib.cache.map.MapLikeCollection
-import com.gitlab.kordlib.cache.map.fromMapLike
+import com.gitlab.kordlib.cache.api.put
+import com.gitlab.kordlib.cache.map.MapDataCache
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import java.util.*
-import kotlin.reflect.KProperty1
 
 private data class WeakEntity(val id: Int)
 
@@ -21,11 +17,13 @@ class WeakDataCacheTest {
     @Test
     @ExperimentalStdlibApi
     fun `map drops items for which there are no references to their keys`() = runBlocking {
-        val dataCache = DelegatingDataCache.fromMapLike { MapLikeCollection.from(WeakHashMap<Any, Any>()) }
+        val dataCache = MapDataCache {
+            forType<WeakEntity> { weakHashMap() }
+        }
 
         dataCache.register(description)
 
-        dataCache.getEntry<WeakEntity>()?.put(WeakEntity((500)))
+        dataCache.put(WeakEntity(500))
         System.gc()
 
         val actual = dataCache.find<WeakEntity>().count()

@@ -3,12 +3,11 @@ package map
 import com.gitlab.cord.tck.DataCacheVerifier
 import com.gitlab.kordlib.cache.api.DataCache
 import com.gitlab.kordlib.cache.api.data.description
-import com.gitlab.kordlib.cache.api.delegate.DelegatingDataCache
 import com.gitlab.kordlib.cache.api.find
-import com.gitlab.kordlib.cache.api.putAll
 import com.gitlab.kordlib.cache.api.put
+import com.gitlab.kordlib.cache.api.putAll
+import com.gitlab.kordlib.cache.map.MapDataCache
 import com.gitlab.kordlib.cache.map.MapLikeCollection
-import com.gitlab.kordlib.cache.map.fromMapLike
 import com.gitlab.kordlib.cache.map.lruLinkedHashMap
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
@@ -24,8 +23,9 @@ class LruDataCacheTest : DataCacheVerifier() {
 
     @BeforeEach
     fun setUp() {
-        datacache = DelegatingDataCache.fromMapLike {
-            MapLikeCollection.lruLinkedHashMap<Any, Any>(1000)
+        datacache = MapDataCache {
+            forType<LRUEntry> { lruLinkedHashMap(4) }
+            default { concurrentHashMap() }
         }
     }
 
@@ -34,15 +34,11 @@ class LruDataCacheTest : DataCacheVerifier() {
         val first = LRUEntry(0)
         val entries = IntRange(1, 4).map { LRUEntry(it) }
 
-        val cache = DelegatingDataCache.fromMapLike {
-            MapLikeCollection.lruLinkedHashMap<Any, Any>(4)
-        }
+        datacache.register(description)
+        datacache.put(first)
+        datacache.putAll(entries)
 
-        cache.register(description)
-        cache.put(first)
-        cache.putAll(entries)
-
-        val actual = cache.find<LRUEntry> { LRUEntry::id eq 0 }.singleOrNull()
+        val actual = datacache.find<LRUEntry> { LRUEntry::id eq 0 }.singleOrNull()
 
         Assertions.assertEquals(null, actual)
     }

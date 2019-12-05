@@ -1,13 +1,9 @@
 package com.gitlab.kordlib.cache.api
 
-import com.gitlab.kordlib.cache.api.query.Query
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlin.reflect.KProperty1
 
 /**
- * A builder with predicates to filter for data with.
+ * A builder containing predicates to filter data with.
  */
 interface QueryBuilder<T : Any> {
 
@@ -74,20 +70,20 @@ interface QueryBuilder<T : Any> {
     /**
      * Builds a new [Query] based on the called functions.
      */
-    @ExperimentalCoroutinesApi
     fun build(): Query<T>
 
     companion object {
 
-        @ExperimentalCoroutinesApi
-        fun <T : Any> none() = object : QueryBuilder<T> {
-            override fun <R> KProperty1<T, R>.predicate(predicate: (R) -> Boolean) {}
-            override fun build(): Query<T> = object : Query<T> {
-                override fun asFlow(): Flow<T> = emptyFlow()
-                override suspend fun remove() {}
-                override suspend fun update(mapper: suspend (T) -> T) {}
-            }
+        private val none = object : QueryBuilder<Any> {
+            override fun <R> KProperty1<Any, R>.predicate(predicate: (R) -> Boolean) {}
+            override fun build(): Query<Any> = Query.none()
         }
+
+        /**
+         * Returns a builder with no results.
+         */
+        @Suppress("UNCHECKED_CAST")
+        fun <T : Any> none(): QueryBuilder<T> = none as QueryBuilder<T>
 
     }
 }

@@ -176,10 +176,6 @@ abstract class DataCacheVerifier {
         datacache.put(one)
         datacache.put(optional)
 
-        datacache.find<DataSource1> {
-            DataSource1::id eq one.id
-        }.remove()
-
         datacache.find<DataSource1>().remove()
 
         val actualOptional = datacache.find<OptionalDataSource> {

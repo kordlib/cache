@@ -6,10 +6,7 @@ import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.asTypeName
 import java.nio.file.Files
 import java.nio.file.Paths
-import javax.annotation.processing.AbstractProcessor
-import javax.annotation.processing.ProcessingEnvironment
-import javax.annotation.processing.Processor
-import javax.annotation.processing.RoundEnvironment
+import javax.annotation.processing.*
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 import javax.lang.model.type.MirroredTypeException
@@ -24,6 +21,7 @@ val ProcessingEnvironment.outputPackage get() = options[KORDLIB_CACHE_PACKAGE] ?
 val ProcessingEnvironment.outputDirectory get() = options[KAPT_KOTLIN_GENERATED_OPTION_NAME].orEmpty()
 
 @AutoService(Processor::class)
+@SupportedOptions("kordlib.cache.package")
 class CacheProcessor : AbstractProcessor() {
 
     override fun getSupportedAnnotationTypes(): MutableSet<String> = mutableSetOf(nameOf<Identity>(), nameOf<Link>())
@@ -72,6 +70,7 @@ class CacheProcessor : AbstractProcessor() {
 
     private inline fun <reified T : Any> nameOf(): String = T::class.java.name
 
+    @Suppress("UNCHECKED_CAST")
     private inline fun <reified T : Annotation> RoundEnvironment.getAnnotations(): Set<ExecutableElement> {
         return getElementsAnnotatedWith(T::class.java) as Set<ExecutableElement>
     }
@@ -120,10 +119,10 @@ class CacheProcessor : AbstractProcessor() {
 
     private fun Map<TypeMirror, List<ExecutableElement>>.generateIdentities() = mapValues { (element, properties) ->
         val map = properties.map {
-            val element = it.propertyType ?: element
+            val actualElement = it.propertyType ?: element
 
-            if (it.isExtensionProperty) Property.ExtensionProperty(element, it)
-            else Property.ClassProperty(element, it)
+            if (it.isExtensionProperty) Property.ExtensionProperty(actualElement, it)
+            else Property.ClassProperty(actualElement, it)
         }
         runCatching { map.single() }.getOrElse {
             val message = "${element.asTypeName()} contains more than one @Identity, but only 1 is allowed"

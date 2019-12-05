@@ -1,29 +1,60 @@
 package com.gitlab.kordlib.cache.map
 
 import com.gitlab.kordlib.cache.api.DataCache
+import com.gitlab.kordlib.cache.api.DataEntryCache
 import com.gitlab.kordlib.cache.api.data.DataDescription
 import com.gitlab.kordlib.cache.api.delegate.DelegatingDataCache
+import com.gitlab.kordlib.cache.api.delegate.DelegatingDataCache.Companion.Builder
 import com.gitlab.kordlib.cache.api.delegate.EntrySupplier
 import com.gitlab.kordlib.cache.map.internal.MapEntryCache
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.reflect.KType
+import kotlin.reflect.typeOf
 
-@Suppress("UNCHECKED_CAST")
-fun DelegatingDataCache.Companion.fromMapLike(
-        priority: Long = 0,
-        supplier: (description: DataDescription<out Any, out Any>) -> MapLikeCollection<*, out Any>
-) = DelegatingDataCache(EntrySupplier { cache, description ->
-    MapEntryCache(cache, description, supplier(description) as MapLikeCollection<Any, Any>)
-}, priority)
+typealias Supplier<T> = MapLikeCollection.Companion.(description: DataDescription<T, *>) -> MapLikeCollection<out Any, T>
 
-@Suppress("UNCHECKED_CAST")
-fun DelegatingDataCache.Companion.fromMap(
-        priority: Long = 0,
-        supplier: (description: DataDescription<out Any, out Any>) -> MutableMap<*, out Any>
-) = DelegatingDataCache(EntrySupplier { cache, description ->
-    MapEntryCache(cache, description, MapLikeCollection.from(supplier(description) as MutableMap<Any, Any>))
-}, priority)
+object MapDataCache {
 
-@Suppress("FunctionName")
-fun MapDataCache(priority: Long = 0): DataCache = DelegatingDataCache(EntrySupplier.invoke { cache, description ->
-    MapEntryCache(cache, description, MapLikeCollection.fromThreadSafe(ConcurrentHashMap()))
-}, priority)
+    private class MapSupplier(private val default: Supplier<Any>, private val suppliers: MutableMap<KType, Supplier<*>>) : EntrySupplier {
+
+        @Suppress("UNCHECKED_CAST")
+        override suspend fun <T : Any> supply(cache: DataCache, description: DataDescription<T, out Any>): DataEntryCache<T> {
+            val supplier = (suppliers[description.type] ?: default) as Supplier<T>
+            val map = supplier(MapLikeCollection.Companion, description)
+
+            return MapEntryCache(cache, description as DataDescription<T, Any>, map as MapLikeCollection<Any, T>)
+        }
+    }
+
+    class Builder {
+
+        val suppliers: MutableMap<KType, Supplier<*>> = mutableMapOf()
+        private var default: Supplier<Any> = { MapLikeCollection.concurrentHashMap() }
+
+        /**
+         * Assigns the [supplier] to the specific type.
+         */
+        @Suppress("UNCHECKED_CAST")
+        inline fun <reified T : Any> forType(noinline supplier: Supplier<T>?) {
+            if (supplier == null) suppliers.remove(typeOf<T>())
+            suppliers[typeOf<T>()] = supplier as Supplier<*>
+        }
+
+        /**
+         * Sets the [supplier] for types that weren't defined by [forType].
+         */
+        fun default(supplier: Supplier<Any>) {
+            default = supplier
+        }
+
+        fun build(): DataCache = DelegatingDataCache(MapSupplier(default, suppliers))
+
+    }
+
+    /**
+     * Creates a new [DataCache] configured by [builder].
+     * [Builder.default] will use a [ConcurrentHashMap] to store entries.
+     */
+    inline operator fun invoke(builder: Builder.() -> Unit = {}) = Builder().apply(builder).build()
+
+}

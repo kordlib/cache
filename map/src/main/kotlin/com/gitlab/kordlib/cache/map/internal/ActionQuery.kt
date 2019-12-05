@@ -1,16 +1,15 @@
 package com.gitlab.kordlib.cache.map.internal
 
 import com.gitlab.kordlib.cache.api.DataCache
+import com.gitlab.kordlib.cache.api.Query
 import com.gitlab.kordlib.cache.api.data.DataDescription
 import com.gitlab.kordlib.cache.api.find
-import com.gitlab.kordlib.cache.api.query.Query
 import com.gitlab.kordlib.cache.map.MapLikeCollection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
-import kotlin.reflect.typeOf
 
 @ExperimentalCoroutinesApi
 internal class ActionQuery<KEY, VALUE : Any>(
@@ -21,7 +20,7 @@ internal class ActionQuery<KEY, VALUE : Any>(
 ) : Query<VALUE> {
     override fun asFlow(): Flow<VALUE> = when {
         actions.isEmpty() -> collection.values()
-        else -> actions.drop(1).fold(actions.first().onMap(collection)) { acc, action ->
+        else -> actions.drop(1).fold(actions.first().onMap(description, collection)) { acc, action ->
             acc.filter { action.filter(description, it) }
         }
     }
@@ -39,9 +38,9 @@ internal class ActionQuery<KEY, VALUE : Any>(
             asFlow().collect {
                 collection.remove(description.indexField.property.get(it))
                 description.links.forEach { link ->
-                    cache.getEntry<Any>(link.target)?.query()?.apply {
+                    cache.getEntry<Any>(link.target)?.find {
                         link.linkedField eq link.source.get(it)
-                    }?.build()?.remove()
+                    }?.remove()
                 }
             }
         }

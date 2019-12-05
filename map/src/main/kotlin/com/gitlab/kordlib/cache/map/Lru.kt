@@ -1,7 +1,10 @@
 package com.gitlab.kordlib.cache.map
 
+/**
+ * Creates a least recently used map using a [LinkedHashMap]. The map will start evicting entries once [maxSize] has been reached.
+ */
 fun <KEY, VALUE : Any> MapLikeCollection.Companion.lruLinkedHashMap(maxSize: Int): MapLikeCollection<KEY, VALUE> =
-        from(LRULinkedHashMap(maxSize))
+        caffeine(LRULinkedHashMap(maxSize))
 
 internal class LRULinkedHashMap<K, V>(
         private val maxSize: Int

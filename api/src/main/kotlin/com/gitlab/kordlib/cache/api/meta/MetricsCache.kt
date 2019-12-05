@@ -3,15 +3,20 @@ package com.gitlab.kordlib.cache.api.meta
 import com.gitlab.kordlib.cache.api.DataCache
 import com.gitlab.kordlib.cache.api.DataEntryCache
 import com.gitlab.kordlib.cache.api.QueryBuilder
-import com.gitlab.kordlib.cache.api.query.Query
-import kotlinx.atomicfu.atomic
+import com.gitlab.kordlib.cache.api.Query
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.reflect.KType
 
+/**
+ * Wraps this cache in a [MetricsCache], enabling logging of metrics.
+ */
 fun DataCache.withMetrics(): MetricsCache = MetricsCache(this)
 
+/**
+ * A [DataCache] that logs usage [statistics] via its [logger].
+ */
 class MetricsCache(
         private val delegate: DataCache,
         private val logger: StatisticsLogger = StatisticsLogger()
