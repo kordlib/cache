@@ -5,6 +5,12 @@ package com.gitlab.cord.tck
 import com.gitlab.kordlib.cache.api.DataCache
 import com.gitlab.kordlib.cache.api.data.description
 import com.gitlab.kordlib.cache.api.find
+import com.gitlab.kordlib.cache.api.put
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.RepeatedTest
@@ -41,9 +47,31 @@ private data class OptionalDataSource(val id: Long, val source1Id: Long?) {
     }
 }
 
+private val thread1 = newSingleThreadContext("com.gitlab.cord.tck.test thread1")
+
 abstract class DataCacheVerifier {
 
     abstract var datacache: DataCache
+
+    @Test
+    fun `concurrent reading and writing should be allowed`() = runBlocking {
+        datacache.register(DataSource1.description, DataSource2.description)
+
+        generateSequence { DataSource1.random() }.take(10).forEach { datacache.put(it) }
+
+        val deferred = async(thread1) {
+            datacache.find<DataSource1>().asFlow().onEach {
+                delay(10)
+            }.launchIn(this)
+        }
+
+        delay(50)
+        datacache.find<DataSource1>().remove()
+
+        deferred.await()
+
+        Unit
+    }
 
     @RepeatedTest(50)
     fun `delete should cascade`(): Unit = runBlocking {
@@ -147,10 +175,6 @@ abstract class DataCacheVerifier {
 
         datacache.put(one)
         datacache.put(optional)
-
-        datacache.find<DataSource1> {
-            DataSource1::id eq one.id
-        }.remove()
 
         datacache.find<DataSource1>().remove()
 

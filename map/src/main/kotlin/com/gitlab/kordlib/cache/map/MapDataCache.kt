@@ -1,38 +1,60 @@
 package com.gitlab.kordlib.cache.map
 
 import com.gitlab.kordlib.cache.api.DataCache
-import com.gitlab.kordlib.cache.api.QueryBuilder
+import com.gitlab.kordlib.cache.api.DataEntryCache
 import com.gitlab.kordlib.cache.api.data.DataDescription
-import kotlin.reflect.KClass
+import com.gitlab.kordlib.cache.api.delegate.DelegatingDataCache
+import com.gitlab.kordlib.cache.api.delegate.DelegatingDataCache.Companion.Builder
+import com.gitlab.kordlib.cache.api.delegate.EntrySupplier
+import com.gitlab.kordlib.cache.map.internal.MapEntryCache
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.reflect.KType
+import kotlin.reflect.typeOf
 
-class MapDataCache : DataCache {
+typealias Supplier<T> = MapLikeCollection.Companion.(description: DataDescription<T, *>) -> MapLikeCollection<out Any, T>
 
-    private val caches: MutableMap<KClass<out Any>, MapCache<out Any, out Any>> = mutableMapOf()
+object MapDataCache {
 
-    override val priority: Long
-        get() = 0L
+    private class MapSupplier(private val default: Supplier<Any>, private val suppliers: MutableMap<KType, Supplier<*>>) : EntrySupplier {
 
-    override suspend fun register(description: DataDescription<out Any, out Any>) {
-        require(description.clazz !in caches) { "description already registered :$description" }
-        caches[description.clazz] = MapCache(description, this)
+        @Suppress("UNCHECKED_CAST")
+        override suspend fun <T : Any> supply(cache: DataCache, description: DataDescription<T, out Any>): DataEntryCache<T> {
+            val supplier = (suppliers[description.type] ?: default) as Supplier<T>
+            val map = supplier(MapLikeCollection.Companion, description)
+
+            return MapEntryCache(cache, description as DataDescription<T, Any>, map as MapLikeCollection<Any, T>)
+        }
     }
 
-    internal fun <T : Any> getOptionally(clazz: KClass<T>): QueryBuilder<T>? = when {
-        caches.containsKey(clazz) -> query(clazz)
-        else -> null
+    class Builder {
+
+        val suppliers: MutableMap<KType, Supplier<*>> = mutableMapOf()
+        private var default: Supplier<Any> = { MapLikeCollection.concurrentHashMap() }
+
+        /**
+         * Assigns the [supplier] to the specific type.
+         */
+        @Suppress("UNCHECKED_CAST")
+        inline fun <reified T : Any> forType(noinline supplier: Supplier<T>?) {
+            if (supplier == null) suppliers.remove(typeOf<T>())
+            suppliers[typeOf<T>()] = supplier as Supplier<*>
+        }
+
+        /**
+         * Sets the [supplier] for types that weren't defined by [forType].
+         */
+        fun default(supplier: Supplier<Any>) {
+            default = supplier
+        }
+
+        fun build(): DataCache = DelegatingDataCache(MapSupplier(default, suppliers))
+
     }
 
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> query(clazz: KClass<T>): QueryBuilder<T> =
-            caches[clazz]?.query() as? QueryBuilder<T>
-                    ?: error("class not registered ${clazz.java}")
-
-    @Suppress("UNCHECKED_CAST")
-    override suspend fun <T : Any> put(item: T) {
-        val cache = caches[item::class] as? MapCache<Any, Any>
-                ?: error("class not registered ${item::class}")
-
-        cache.put(item)
-    }
+    /**
+     * Creates a new [DataCache] configured by [builder].
+     * [Builder.default] will use a [ConcurrentHashMap] to store entries.
+     */
+    inline operator fun invoke(builder: Builder.() -> Unit = {}) = Builder().apply(builder).build()
 
 }

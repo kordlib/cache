@@ -1,14 +1,12 @@
-package com.gitlab.kordlib.cache.api.query
+package com.gitlab.kordlib.cache.api
 
 import com.gitlab.kordlib.cache.api.data.DataDescription
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
 /**
  * A lazy query. Functions in this class should be handled as if they are operating on cold
  * [Flows][Flow].
  */
-@ExperimentalCoroutinesApi
 interface Query<T : Any> {
 
     /**
@@ -46,5 +44,20 @@ interface Query<T : Any> {
      * Returning a value with a different [DataDescription.indexField] value will result in an Exception being thrown.
      */
     suspend fun update(mapper: suspend (T) -> T)
+
+    companion object {
+        private val empty = object: Query<Any> {
+            override fun asFlow(): Flow<Any> = emptyFlow()
+            override suspend fun remove() {}
+            override suspend fun update(mapper: suspend (Any) -> Any) {}
+        }
+
+        /**
+         * Returns a query with no items.
+         */
+        @Suppress("UNCHECKED_CAST")
+        fun<T: Any> none(): Query<T> = empty as Query<T>
+
+    }
 
 }
