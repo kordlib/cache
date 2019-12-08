@@ -45,12 +45,12 @@ interface MapLikeCollection<KEY, VALUE> {
         /**
          * Wraps a [WeakHashMap] into a [MapLikeCollection].
          */
-        fun <KEY, VALUE : Any> weakHashMap(): MapLikeCollection<KEY, VALUE> = caffeine(WeakHashMap())
+        fun <KEY, VALUE : Any> weakHashMap(): MapLikeCollection<KEY, VALUE> = from(WeakHashMap())
 
         /**
          * Wraps the [map] in a [MapLikeCollection].
          */
-        fun <K, V : Any> concurrentHashMap(map: ConcurrentHashMap<K, V> = ConcurrentHashMap()) = caffeine(map)
+        fun <K, V : Any> concurrentHashMap(map: ConcurrentHashMap<K, V> = ConcurrentHashMap()) = from(map)
 
         /**
          * Wraps the [map] in a [MapLikeCollection] that ignores inserted values.
@@ -76,7 +76,7 @@ interface MapLikeCollection<KEY, VALUE> {
         /**
          * Wraps the [map] in a [MapLikeCollection], data will be copied on read to prevent modification exceptions.
          */
-        fun <KEY, VALUE : Any> caffeine(map: MutableMap<KEY, VALUE>) = object : MapLikeCollection<KEY, VALUE> {
+        fun <KEY, VALUE : Any> from(map: MutableMap<KEY, VALUE>) = object : MapLikeCollection<KEY, VALUE> {
             override suspend fun get(key: KEY): VALUE? = map[key]
 
             override suspend fun contains(key: KEY): Boolean = map.contains(key)
@@ -159,5 +159,5 @@ interface MapLikeCollection<KEY, VALUE> {
  */
 fun <KEY, VALUE : Any> MutableMap<KEY, VALUE>.toMapLike(concurrent: Boolean) = when (concurrent) {
     true -> MapLikeCollection.fromThreadSafe(this)
-    false -> MapLikeCollection.caffeine(this)
+    false -> MapLikeCollection.from(this)
 }
