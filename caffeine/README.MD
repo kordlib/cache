@@ -1,6 +1,6 @@
 # Map
 
-A `DataCache` implementation backed by [Caffeine(https://github.com/ben-manes/caffeine)
+A `DataCache` implementation backed by [Caffeine](https://github.com/ben-manes/caffeine).
 
 ```kotlin
 val cache: DataCache = CaffeineDataCache {
