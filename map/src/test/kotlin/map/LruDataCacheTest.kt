@@ -1,11 +1,8 @@
 package map
 
 import com.gitlab.cord.tck.DataCacheVerifier
-import com.gitlab.kordlib.cache.api.DataCache
+import com.gitlab.kordlib.cache.api.*
 import com.gitlab.kordlib.cache.api.data.description
-import com.gitlab.kordlib.cache.api.find
-import com.gitlab.kordlib.cache.api.put
-import com.gitlab.kordlib.cache.api.putAll
 import com.gitlab.kordlib.cache.map.MapDataCache
 import com.gitlab.kordlib.cache.map.MapLikeCollection
 import com.gitlab.kordlib.cache.map.lruLinkedHashMap
@@ -38,7 +35,7 @@ class LruDataCacheTest : DataCacheVerifier() {
         datacache.put(first)
         datacache.putAll(entries)
 
-        val actual = datacache.find<LRUEntry> { LRUEntry::id eq 0 }.singleOrNull()
+        val actual = datacache.query<LRUEntry> { LRUEntry::id eq 0 }.singleOrNull()
 
         Assertions.assertEquals(null, actual)
     }

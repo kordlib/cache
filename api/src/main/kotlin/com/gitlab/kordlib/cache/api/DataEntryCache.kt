@@ -2,6 +2,7 @@ package com.gitlab.kordlib.cache.api
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlin.reflect.typeOf
 
 /**
  * A cache for a single type [VALUE].
@@ -52,7 +53,32 @@ interface DataEntryCache<VALUE : Any> {
 }
 
 /**
- * Queries the cache with statements from the [block].
+ * Creates a new [Query] configured with the [block].
  */
+@Deprecated("use query instead", ReplaceWith("query<T>(block)"), DeprecationLevel.WARNING)
 inline fun <reified T : Any> DataEntryCache<T>.find(block: QueryBuilder<T>.() -> Unit = {}) =
         query().apply(block).build()
+
+/**
+ * Creates a new [Query] configured with the [block].
+ */
+inline fun <reified T : Any> DataEntryCache<T>.query(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+        query().apply(block).build()
+
+/**
+ * Removes all the values that match the [block].
+ */
+suspend inline fun <reified T : Any> DataEntryCache<T>.remove(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+        query(block).remove()
+
+/**
+ * Returns the amount of values that match the [block].
+ */
+suspend inline fun <reified T : Any> DataEntryCache<T>.count(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+        query(block).count()
+
+/**
+ * Executes a query with the [block] and returns the values as a [Flow].
+ */
+inline fun <reified T : Any> DataEntryCache<T>.flow(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+        query(block).asFlow()

@@ -3,6 +3,7 @@ package com.gitlab.kordlib.cache.api
 import com.gitlab.kordlib.cache.api.data.DataDescription
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
@@ -84,5 +85,31 @@ suspend inline fun <reified T : Any> DataCache.putAll(items: Flow<T>) = getEntry
 /**
  * Creates a new [Query] configured with the [block].
  */
+@Deprecated("use query instead", ReplaceWith("query<T>(block)"), DeprecationLevel.WARNING)
 inline fun <reified T : Any> DataCache.find(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
         getEntry<T>(typeOf<T>())!!.query().apply(block).build()
+
+/**
+ * Creates a new [Query] configured with the [block].
+ */
+inline fun <reified T : Any> DataCache.query(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+        getEntry<T>(typeOf<T>())!!.query().apply(block).build()
+
+/**
+ * Removes all the values that match the [block].
+ */
+suspend inline fun <reified T : Any> DataCache.remove(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+        query(block).remove()
+
+/**
+ * Returns the amount of values that match the [block].
+ */
+suspend inline fun <reified T : Any> DataCache.count(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+        query(block).count()
+
+
+/**
+ * Executes a query with the [block] and returns the values as a [Flow].
+ */
+inline fun <reified T : Any> DataCache.flow(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+        query(block).asFlow()
