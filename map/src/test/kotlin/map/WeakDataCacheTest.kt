@@ -3,6 +3,7 @@ package map
 import com.gitlab.kordlib.cache.api.data.description
 import com.gitlab.kordlib.cache.api.find
 import com.gitlab.kordlib.cache.api.put
+import com.gitlab.kordlib.cache.api.query
 import com.gitlab.kordlib.cache.map.MapDataCache
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
@@ -26,7 +27,7 @@ class WeakDataCacheTest {
         dataCache.put(WeakEntity(500))
         System.gc()
 
-        val actual = dataCache.find<WeakEntity>().count()
+        val actual = dataCache.query<WeakEntity>().count()
         Assertions.assertEquals(0L, actual)
         Unit
     }
