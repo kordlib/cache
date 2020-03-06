@@ -115,7 +115,7 @@ subprojects {
         publications = ['Cache']
         publish = true
         pkg {
-            repo = 'Cache'
+            repo = 'Kord'
             name = 'Cache'
             userOrg = 'kordlib'
             licenses = ['MIT']
