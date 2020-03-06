@@ -77,6 +77,7 @@ interface QueryBuilder<T : Any> {
         private val none = object : QueryBuilder<Any> {
             override fun <R> KProperty1<Any, R>.predicate(predicate: (R) -> Boolean) {}
             override fun build(): Query<Any> = Query.none()
+
         }
 
         /**
