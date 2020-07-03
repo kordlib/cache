@@ -31,6 +31,39 @@ repositories {
     jcenter()
 }
 
+sourceSets {
+
+    jmh {
+        apply plugin: 'kotlin'
+
+        java.srcDirs = ['src/jmh/java']
+        kotlin.srcDirs = ['src/jmh/kotlin']
+        resources.srcDirs = ['src/jmh/resources']
+        compileClasspath += sourceSets.main.runtimeClasspath
+    }
+
+}
+
+dependencies {
+    jmhImplementation project(":map")
+    jmhImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    jmhImplementation 'org.openjdk.jmh:jmh-core:1.21'
+    kaptJmh 'org.openjdk.jmh:jmh-generator-annprocess:1.21'
+
+}
+
+task jmh(type: JavaExec, dependsOn: jmhClasses) {
+    main = 'org.openjdk.jmh.Main'
+    classpath = sourceSets.jmh.compileClasspath + sourceSets.jmh.runtimeClasspath
+
+}
+
+compileJmhKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+classes.finalizedBy(jmhClasses)
+
 ext {
     lib_version = System.getenv("CI_COMMIT_TAG") ?: System.getenv("CI_COMMIT_SHA") ?: "undefined"
     lib_group = 'com.gitlab.kordlib.cache'
