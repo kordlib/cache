@@ -1,0 +1,14 @@
+apply plugin: 'kotlinx-serialization'
+
+dependencies {
+    api project(':api')
+    api project(":map")
+    api("io.lettuce:lettuce-core:5.3.1.RELEASE")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:0.20.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$coroutines_version")
+
+    testImplementation project(":tck")
+    testImplementation ("it.ozimov:embedded-redis:0.7.2")
+
+}

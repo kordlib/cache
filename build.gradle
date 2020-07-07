@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlin_version = '1.3.61'
+        kotlin_version = '1.3.70'
         atomicfu_version = '0.14.1'
         bintray_version = '1.8.1'
     }
@@ -22,8 +22,8 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.61'
-    id 'org.jetbrains.kotlin.kapt' version '1.3.61'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.70'
+    id 'org.jetbrains.kotlin.kapt' version '1.3.70'
 }
 
 repositories {
@@ -71,7 +71,7 @@ ext {
     coroutines_version = '1.3.2'
     caffeine_version = '2.7.0'
     lettuce_version = '5.2.1.RELEASE'
-    serialization_version = '0.14.0'
+    serialization_version = '0.20.0'
 }
 
 group lib_group
@@ -106,6 +106,11 @@ subprojects {
 
     test {
         useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed", "standardOut", "standardError")
+            showStackTraces = true
+            exceptionFormat = "full"
+        }
     }
 
     compileKotlin {

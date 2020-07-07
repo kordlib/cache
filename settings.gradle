@@ -1,6 +1,6 @@
 rootProject.name = 'cache'
 
-include(":api", ":map", ":caffeine")
-include ':tck'
-include ':annotation-processor'
+include(":api", ":map", ":caffeine", ":redis")
+include (":tck")
+include (":annotation-processor")
 

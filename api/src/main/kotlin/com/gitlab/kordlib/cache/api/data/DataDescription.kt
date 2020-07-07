@@ -1,5 +1,6 @@
 package com.gitlab.kordlib.cache.api.data
 
+import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
@@ -9,6 +10,7 @@ import kotlin.reflect.typeOf
  */
 class DataDescription<T : Any, I>(
         val type: KType,
+        val klass: KClass<T>,
         val indexField: IndexField<T, I>,
         val links: List<DataLink<T, Any, Any?>> = listOf()
 )
@@ -26,7 +28,7 @@ inline fun <reified T : Any, I> description(
     val type = typeOf<T>()
     val field = IndexField(index)
     val links = LinkBuilder<T>().apply(builder).links
-    return DataDescription(type, field, links)
+    return DataDescription(type, T::class, field, links)
 }
 
 class LinkBuilder<S : Any>(

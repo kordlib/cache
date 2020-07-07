@@ -3,21 +3,27 @@
 package com.gitlab.cord.tck
 
 import com.gitlab.kordlib.cache.api.DataCache
+import com.gitlab.kordlib.cache.api.data.DataDescription
 import com.gitlab.kordlib.cache.api.data.description
 import com.gitlab.kordlib.cache.api.find
 import com.gitlab.kordlib.cache.api.put
+import com.gitlab.kordlib.cache.api.query
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.random.Random
+import kotlin.reflect.typeOf
 
+@Serializable
 private data class DataSource1(val id: Long, val fieldOne: String, val fieldTwo: Boolean) {
     companion object {
         fun random(): DataSource1 {
@@ -35,12 +41,14 @@ private data class DataSource1(val id: Long, val fieldOne: String, val fieldTwo:
     }
 }
 
+@Serializable
 private data class DataSource2(val id: Long, val source1Id: Long) {
     companion object {
         val description = description(DataSource2::id)
     }
 }
 
+@Serializable
 private data class OptionalDataSource(val id: Long, val source1Id: Long?) {
     companion object {
         val description = description(OptionalDataSource::id)
@@ -51,6 +59,12 @@ private val thread1 = newSingleThreadContext("com.gitlab.cord.tck.test thread1")
 
 abstract class DataCacheVerifier {
 
+    val serializers: Map<DataDescription<*,*>, KSerializer<*>> = mapOf(
+            DataSource1.description to DataSource1.serializer(),
+            DataSource2.description to DataSource2.serializer(),
+            OptionalDataSource.description to OptionalDataSource.serializer()
+    )
+
     abstract var datacache: DataCache
 
     @Test
@@ -60,13 +74,13 @@ abstract class DataCacheVerifier {
         generateSequence { DataSource1.random() }.take(10).forEach { datacache.put(it) }
 
         val deferred = async(thread1) {
-            datacache.find<DataSource1>().asFlow().onEach {
+            datacache.query<DataSource1>().asFlow().onEach {
                 delay(10)
             }.launchIn(this)
         }
 
         delay(50)
-        datacache.find<DataSource1>().remove()
+        datacache.query<DataSource1>().remove()
 
         deferred.await()
 
@@ -83,11 +97,11 @@ abstract class DataCacheVerifier {
         datacache.put(one)
         datacache.put(two)
 
-        datacache.find<DataSource1> {
+        datacache.query<DataSource1> {
             DataSource1::id eq one.id
         }.remove()
 
-        val actualTwo = datacache.find<DataSource2> {
+        val actualTwo = datacache.query<DataSource2> {
             DataSource2::id eq two.id
         }.singleOrNull()
 
@@ -108,7 +122,7 @@ abstract class DataCacheVerifier {
             datacache.put(it)
         }
 
-        val actualOne = datacache.find<DataSource1> { DataSource1::id eq one.id }.single()
+        val actualOne = datacache.query<DataSource1> { DataSource1::id eq one.id }.single()
 
         Assertions.assertEquals(one, actualOne)
     }
@@ -127,9 +141,9 @@ abstract class DataCacheVerifier {
             datacache.put(it)
         }
 
-        datacache.find<DataSource1> { DataSource1::id eq one.id }.remove()
+        datacache.query<DataSource1> { DataSource1::id eq one.id }.remove()
 
-        val actualOne = datacache.find<DataSource1> { DataSource1::id eq one.id }.singleOrNull()
+        val actualOne = datacache.query<DataSource1> { DataSource1::id eq one.id }.singleOrNull()
 
         Assertions.assertEquals(null, actualOne)
     }
@@ -146,7 +160,7 @@ abstract class DataCacheVerifier {
         datacache.put(one)
         datacache.put(two)
 
-        datacache.find<DataSource1> { DataSource1::id eq one.id }.remove()
+        datacache.query<DataSource1> { DataSource1::id eq one.id }.remove()
     }
 
     @Test
@@ -157,7 +171,7 @@ abstract class DataCacheVerifier {
 
         assertThrows<Exception> {
             runBlocking {
-                datacache.find<DataSource1> { DataSource1::id eq one.id }.update {
+                datacache.query<DataSource1> { DataSource1::id eq one.id }.update {
                     it.copy(id = it.id + 1)
                 }
             }
@@ -176,9 +190,9 @@ abstract class DataCacheVerifier {
         datacache.put(one)
         datacache.put(optional)
 
-        datacache.find<DataSource1>().remove()
+        datacache.query<DataSource1>().remove()
 
-        val actualOptional = datacache.find<OptionalDataSource> {
+        val actualOptional = datacache.query<OptionalDataSource> {
             OptionalDataSource::id eq optional.id
         }.singleOrNull()
 
@@ -201,11 +215,11 @@ abstract class DataCacheVerifier {
 
         lateinit var updated: DataSource1
 
-        datacache.find<DataSource1> { DataSource1::id eq one.id }.update {
+        datacache.query<DataSource1> { DataSource1::id eq one.id }.update {
             it.copy(fieldOne = "something random").also { updated = it }
         }
 
-        val actualOne = datacache.find<DataSource1> { DataSource1::id eq one.id }.singleOrNull()
+        val actualOne = datacache.query<DataSource1> { DataSource1::id eq one.id }.singleOrNull()
 
         Assertions.assertEquals(updated, actualOne)
     }

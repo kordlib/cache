@@ -1,4 +1,5 @@
 dependencies {
     api project(":api")
-    implementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
+    implementation("org.junit.jupiter:junit-jupiter-api:5.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0")
 }
