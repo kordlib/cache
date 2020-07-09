@@ -1,8 +1,8 @@
 package dev.kord.cache.redis
 
-import com.gitlab.kordlib.cache.api.DataCache
-import com.gitlab.kordlib.cache.api.DataEntryCache
-import com.gitlab.kordlib.cache.api.data.DataDescription
+import dev.kord.cache.api.DataCache
+import dev.kord.cache.api.DataEntryCache
+import dev.kord.cache.api.data.DataDescription
 import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
@@ -12,7 +12,7 @@ import kotlin.reflect.KType
 
 class RedisCache(
         private val configuration: RedisConfiguration,
-        private val serializers: Map<DataDescription<*,*>, KSerializer<*>>
+        private val serializers: Map<DataDescription<*, *>, KSerializer<*>>
 ) : DataCache {
     private val registered = mutableMapOf<KType, RedisEntryCache<*,*>>()
 

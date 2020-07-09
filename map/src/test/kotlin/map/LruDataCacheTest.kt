@@ -1,11 +1,15 @@
 package map
 
-import com.gitlab.cord.tck.DataCacheVerifier
-import com.gitlab.kordlib.cache.api.*
-import com.gitlab.kordlib.cache.api.data.description
-import com.gitlab.kordlib.cache.map.MapDataCache
-import com.gitlab.kordlib.cache.map.MapLikeCollection
-import com.gitlab.kordlib.cache.map.lruLinkedHashMap
+import dev.kord.cache.tck.DataCacheVerifier
+import dev.kord.cache.api.*
+import dev.kord.cache.api.DataCache
+import dev.kord.cache.api.data.description
+import dev.kord.cache.api.put
+import dev.kord.cache.api.putAll
+import dev.kord.cache.api.query
+import dev.kord.cache.map.MapDataCache
+import dev.kord.cache.map.MapLikeCollection
+import dev.kord.cache.map.lruLinkedHashMap
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach

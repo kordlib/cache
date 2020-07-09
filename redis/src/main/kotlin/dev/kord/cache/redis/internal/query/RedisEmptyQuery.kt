@@ -1,7 +1,7 @@
 package dev.kord.cache.redis.internal.query
 
-import com.gitlab.kordlib.cache.api.Query
-import com.gitlab.kordlib.cache.api.query
+import dev.kord.cache.api.Query
+import dev.kord.cache.api.query
 import dev.kord.cache.redis.internal.builder.QueryInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -38,7 +38,11 @@ internal class RedisEmptyQuery<T : Any, I>(val info: QueryInfo<T, I>) : Query<T>
 
             if (newId != prevId) error("identity rule violated: $prevId -> $newId")
             if (prev != new) {
-                info.commands.hset(info.entryName, info.keySerializer(info.description.indexField.property.get(new)), info.binarySerializer.dump(info.valueSerializer, new))
+                info.commands.hset(
+                        info.entryName,
+                        info.keySerializer(info.description.indexField.property.get(new)),
+                        info.binarySerializer.dump(info.valueSerializer, new)
+                ).awaitLast()
             }
         }
     }

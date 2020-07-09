@@ -1,9 +1,9 @@
 package dev.kord.cache.redis.internal.builder
 
-import com.gitlab.kordlib.cache.api.DataCache
-import com.gitlab.kordlib.cache.api.Query
-import com.gitlab.kordlib.cache.api.QueryBuilder
-import com.gitlab.kordlib.cache.api.data.DataDescription
+import dev.kord.cache.api.DataCache
+import dev.kord.cache.api.Query
+import dev.kord.cache.api.QueryBuilder
+import dev.kord.cache.api.data.DataDescription
 import io.lettuce.core.api.reactive.RedisReactiveCommands
 import io.lettuce.core.cluster.api.reactive.RedisClusterReactiveCommands
 import dev.kord.cache.redis.internal.query.RedisEmptyQuery
