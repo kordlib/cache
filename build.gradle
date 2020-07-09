@@ -65,7 +65,7 @@ compileJmhKotlin {
 classes.finalizedBy(jmhClasses)
 
 ext {
-    lib_version = System.getenv("CI_COMMIT_TAG") ?: System.getenv("CI_COMMIT_SHA") ?: "undefined"
+    lib_version =  System.getenv("RELEASE_TAG") ?: System.getenv("GITHUB_SHA") ?: System.getenv("VERSION") ?: "undefined"
     lib_group = 'dev.kord.cache'
     kotlin_logging_version = '1.7.8'
     coroutines_version = '1.3.2'
