@@ -30,7 +30,7 @@ class RedisConfiguration(
 
 
     object Defaults {
-        const val DEFAULT_KEY_PREFIX = "dev:kord:"
+        const val DEFAULT_KEY_PREFIX = "dev:kord:cache:"
         const val DEFAULT_URL = "redis://localhost"
 
         const val KORD_REDIS_URL = "KORD_REDIS_URL"
@@ -54,8 +54,6 @@ class RedisConfiguration(
         private fun url() = url ?: System.getenv(Defaults.KORD_REDIS_URL) ?: Defaults.DEFAULT_URL
 
         fun client(): RedisClient = RedisClient.create(url())
-
-        fun clusteredClient(): RedisClusterClient = RedisClusterClient.create(url())
 
         fun build(): RedisConfiguration = RedisConfiguration(
                 binaryFormat = binaryFormat,

@@ -10,6 +10,9 @@ import kotlin.reflect.typeOf
 
 typealias Supplier<T> = (cache: DataCache, description: DataDescription<T, *>) -> DataEntryCache<T>
 
+typealias FullSupplier<T, I> = (cache: DataCache, description: DataDescription<T, I>) -> DataEntryCache<T>
+
+
 interface EntrySupplier {
 
     suspend fun <T : Any> supply(cache: DataCache, description: DataDescription<T, out Any>): DataEntryCache<T>
@@ -60,6 +63,14 @@ class DelegatingDataCache(private val supplier: EntrySupplier) : DataCache {
             @Suppress("UNCHECKED_CAST")
             inline fun <reified T : Any> forType(noinline supplier: Supplier<T>) {
                 suppliers[typeOf<T>()] = supplier as Supplier<*>
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            fun <T : Any, I> forDescription(
+                    description: DataDescription<T, I>,
+                    supplier: FullSupplier<T, I>
+            ) {
+                suppliers[description.type] = supplier as Supplier<*>
             }
 
             fun default(supplier: Supplier<Any>) {

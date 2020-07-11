@@ -7,14 +7,17 @@ import dev.kord.cache.api.data.DataDescription
 import dev.kord.cache.redis.internal.builder.QueryInfo
 import dev.kord.cache.redis.internal.builder.RedisQueryBuilder
 import kotlinx.coroutines.reactive.awaitSingle
+import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.serializer
 import kotlinx.serialization.toUtf8Bytes
 
+@ImplicitReflectionSerializer
 class RedisEntryCache<T : Any, I>(
         cache: DataCache,
         description: DataDescription<T, I>,
         configuration: RedisConfiguration,
-        val serializer: KSerializer<T>,
+        serializer: KSerializer<T> = description.klass.serializer(),
         keySerializer: (I) -> ByteArray = { "${configuration.prefix}$it".toUtf8Bytes() },
         entryName: String = description.type.toString()
 ) : DataEntryCache<T> {
