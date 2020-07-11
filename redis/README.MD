@@ -1,4 +1,4 @@
-# Map
+# Redis
 
 A `DataCache` implementation using [Redis Lettuce](https://lettuce.io/). 
 Data entries are serialized with [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization).
