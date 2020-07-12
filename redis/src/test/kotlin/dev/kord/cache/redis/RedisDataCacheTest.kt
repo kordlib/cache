@@ -29,7 +29,7 @@ class RedisDataCacheTest : DataCacheVerifier() {
             println("starting server...")
             server = RedisServerBuilder()
                     .port(6379)
-                    .setting("maxheap 128M")
+                    .setting("maxmemory 128M")
                     .build()
 
             server.start()
