@@ -1,3 +1,15 @@
+# 0.1.4
+
+## Changes
+
+* `DataCache#find` and `DataCache#query` no longer throw a KNPE when an entry was not previously registered.
+Instead, an empty query (`Query.none`) will be returned.
+
+# Version
+
+Kotlin 1.3.61 -> 1.4.10
+Gradle 5.5.1 -> 6.6.1
+
 # 0.1.3
 
 version bump to move to new repository, from now on cache will be hosted on the same repository as our other Kord projects.
@@ -12,7 +24,7 @@ repositories {
 ## Additions
 
 Added `DataCache#flow`, `DataCache#remove`, `DataCache#count` and their respective `DataEntryCache` variants 
-as utility functions.
+as utility functions.__
 
 ## Deprecations
 
