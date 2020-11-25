@@ -3,9 +3,13 @@ package dev.kord.cache.api
 import dev.kord.cache.api.data.DataDescription
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
+import mu.KLogger
+import mu.KotlinLogging
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
+
+@PublishedApi
+internal val logger = KotlinLogging.logger("DataCache")
 
 interface DataCache {
 
@@ -29,10 +33,10 @@ interface DataCache {
     /**
      * Returns a [DataEntryCache] of the given [type] if its [description][DataDescription] was registered beforehand, null otherwise.
      */
-    fun<T: Any> getEntry(type: KType) : DataEntryCache<T>?
+    fun <T : Any> getEntry(type: KType): DataEntryCache<T>?
 
     companion object {
-        private val empty = object: DataCache {
+        private val empty = object : DataCache {
             override fun <T : Any> getEntry(type: KType): DataEntryCache<T>? = DataEntryCache.none()
             override suspend fun register(description: DataDescription<out Any, out Any>) {}
         }
@@ -49,7 +53,7 @@ interface DataCache {
 /**
  * Returns a [DataEntryCache] of the given [T] if its [description][DataDescription] was registered beforehand, null otherwise.
  */
-inline fun <reified T: Any> DataCache.getEntry() : DataEntryCache<T>? = getEntry(typeOf<T>())
+inline fun <reified T : Any> DataCache.getEntry(): DataEntryCache<T>? = getEntry(typeOf<T>())
 
 /**
  * Inserts a new [item] into the cache. Inserting an entry with an id that
@@ -86,14 +90,30 @@ suspend inline fun <reified T : Any> DataCache.putAll(items: Flow<T>) = getEntry
  * Creates a new [Query] configured with the [block].
  */
 @Deprecated("use query instead", ReplaceWith("query<T>(block)"), DeprecationLevel.WARNING)
-inline fun <reified T : Any> DataCache.find(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
-        getEntry<T>(typeOf<T>())!!.query().apply(block).build()
+inline fun <reified T : Any> DataCache.find(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}): Query<T> {
+    val entry = getEntry<T>()
+
+    if(entry == null) {
+        logger.debug { "entry cache for ${typeOf<T>()} was not registered. Consider registering the type via DataCache#register." }
+        return Query.none()
+    }
+
+    return entry.query().apply(block).build()
+}
 
 /**
  * Creates a new [Query] configured with the [block].
  */
-inline fun <reified T : Any> DataCache.query(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
-        getEntry<T>(typeOf<T>())!!.query().apply(block).build()
+inline fun <reified T : Any> DataCache.query(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}): Query<T> {
+    val entry = getEntry<T>()
+
+    if(entry == null) {
+        logger.debug { "entry cache for ${typeOf<T>()} was not registered. Consider registering the type via DataCache#register" }
+        return Query.none()
+    }
+
+    return entry.query().apply(block).build()
+}
 
 /**
  * Removes all the values that match the [block].
