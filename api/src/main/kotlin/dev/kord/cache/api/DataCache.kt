@@ -90,7 +90,7 @@ suspend inline fun <reified T : Any> DataCache.putAll(items: Flow<T>) = getEntry
  * Creates a new [Query] configured with the [block].
  */
 @Deprecated("use query instead", ReplaceWith("query<T>(block)"), DeprecationLevel.WARNING)
-inline fun <reified T : Any> DataCache.find(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}): Query<T> {
+inline fun <reified T : Any> DataCache.find(block: QueryBuilder<T>.() -> Unit = {}): Query<T> {
     val entry = getEntry<T>()
 
     if(entry == null) {
@@ -104,7 +104,7 @@ inline fun <reified T : Any> DataCache.find(@BuilderInference block: QueryBuilde
 /**
  * Creates a new [Query] configured with the [block].
  */
-inline fun <reified T : Any> DataCache.query(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}): Query<T> {
+inline fun <reified T : Any> DataCache.query(block: QueryBuilder<T>.() -> Unit = {}): Query<T> {
     val entry = getEntry<T>()
 
     if(entry == null) {
@@ -118,18 +118,18 @@ inline fun <reified T : Any> DataCache.query(@BuilderInference block: QueryBuild
 /**
  * Removes all the values that match the [block].
  */
-suspend inline fun <reified T : Any> DataCache.remove(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+suspend inline fun <reified T : Any> DataCache.remove(block: QueryBuilder<T>.() -> Unit = {}) =
         query(block).remove()
 
 /**
  * Returns the amount of values that match the [block].
  */
-suspend inline fun <reified T : Any> DataCache.count(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+suspend inline fun <reified T : Any> DataCache.count(block: QueryBuilder<T>.() -> Unit = {}) =
         query(block).count()
 
 
 /**
  * Executes a query with the [block] and returns the values as a [Flow].
  */
-inline fun <reified T : Any> DataCache.flow(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+inline fun <reified T : Any> DataCache.flow(block: QueryBuilder<T>.() -> Unit = {}) =
         query(block).asFlow()
