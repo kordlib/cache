@@ -18,7 +18,7 @@ internal class RedisEmptyQuery<T : Any, I>(val info: QueryInfo<T, I>) : Query<T>
     override suspend fun count(): Long = info.commands.hlen(info.entryName).awaitSingle()
 
     override fun asFlow(): Flow<T> =
-            info.commands.hvals(info.entryName).map { info.binarySerializer.load(info.valueSerializer, it) }.asFlow()
+            info.commands.hvals(info.entryName).map { info.binarySerializer.decodeFromByteArray(info.valueSerializer, it) }.asFlow()
 
     override suspend fun remove() {
         info.commands.del(info.entryName).awaitLast()
@@ -41,7 +41,7 @@ internal class RedisEmptyQuery<T : Any, I>(val info: QueryInfo<T, I>) : Query<T>
                 info.commands.hset(
                         info.entryName,
                         info.keySerializer(info.description.indexField.property.get(new)),
-                        info.binarySerializer.dump(info.valueSerializer, new)
+                        info.binarySerializer.encodeToByteArray(info.valueSerializer, new)
                 ).awaitLast()
             }
         }

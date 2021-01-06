@@ -7,22 +7,21 @@ import dev.kord.cache.api.data.DataDescription
 import dev.kord.cache.redis.internal.builder.QueryInfo
 import dev.kord.cache.redis.internal.builder.RedisQueryBuilder
 import kotlinx.coroutines.reactive.awaitSingle
-import kotlinx.serialization.ImplicitReflectionSerializer
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
-import kotlinx.serialization.toUtf8Bytes
 
-@ImplicitReflectionSerializer
-class RedisEntryCache<T : Any, I>(
+@OptIn(InternalSerializationApi::class)
+class RedisEntryCache<T : Any, I> constructor(
         cache: DataCache,
         description: DataDescription<T, I>,
         configuration: RedisConfiguration,
         serializer: KSerializer<T> = description.klass.serializer(),
-        keySerializer: (I) -> ByteArray = { "${configuration.prefix}$it".toUtf8Bytes() },
+        keySerializer: (I) -> ByteArray = { "${configuration.prefix}$it".toByteArray(Charsets.UTF_8) },
         entryName: String = description.type.toString()
 ) : DataEntryCache<T> {
     private val info: QueryInfo<T, I> = QueryInfo(
-            entryName = entryName.toUtf8Bytes(),
+            entryName = entryName.toByteArray(Charsets.UTF_8),
             description = description,
             binarySerializer = configuration.binaryFormat,
             cache = cache,
@@ -36,7 +35,7 @@ class RedisEntryCache<T : Any, I>(
 
     override suspend fun put(item: T) {
         val key = info.keySerializer(info.description.indexField.property.get(item))
-        val value = info.binarySerializer.dump(info.valueSerializer, item)
+        val value = info.binarySerializer.encodeToByteArray(info.valueSerializer, item)
         info.commands.hset(info.entryName, key, value).awaitSingle()
     }
 

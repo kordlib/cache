@@ -1,8 +1,8 @@
-import com.gitlab.kordlib.cache.api.DataCache
-import com.gitlab.kordlib.cache.api.DataEntryCache
-import com.gitlab.kordlib.cache.api.data.DataDescription
-import com.gitlab.kordlib.cache.api.find
-import com.gitlab.kordlib.cache.api.query
+import dev.kord.cache.api.DataCache
+import dev.kord.cache.api.DataEntryCache
+import dev.kord.cache.api.data.DataDescription
+import dev.kord.cache.api.find
+import dev.kord.cache.api.query
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import kotlin.reflect.KType

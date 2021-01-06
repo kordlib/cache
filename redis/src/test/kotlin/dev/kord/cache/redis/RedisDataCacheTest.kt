@@ -3,8 +3,7 @@ package dev.kord.cache.redis
 import dev.kord.cache.api.DataCache
 import dev.kord.cache.api.delegate.DelegatingDataCache
 import dev.kord.cache.tck.DataCacheVerifier
-import io.lettuce.core.RedisClient
-import kotlinx.serialization.ImplicitReflectionSerializer
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
 import org.junit.jupiter.api.AfterEach
@@ -40,14 +39,20 @@ class RedisDataCacheTest : DataCacheVerifier() {
 
     }
 
-    @OptIn(ImplicitReflectionSerializer::class)
+    @OptIn(InternalSerializationApi::class)
     @ExperimentalStdlibApi
     @BeforeEach
     fun setUp() {
         configuration = RedisConfiguration()
         datacache = DelegatingDataCache {
             default { cache, description ->
-                RedisEntryCache(cache, description, configuration, serializers.get<Any,Any>(description.type) as? KSerializer<Any> ?: description.klass.serializer())
+                @Suppress("UNCHECKED_CAST")
+                RedisEntryCache(
+                        cache,
+                        description,
+                        configuration,
+                        serializers.get<Any,Any>(description.type) as? KSerializer<Any> ?: description.klass.serializer()
+                )
             }
         }
     }
