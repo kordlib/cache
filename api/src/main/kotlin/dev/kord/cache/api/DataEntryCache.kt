@@ -62,23 +62,23 @@ inline fun <reified T : Any> DataEntryCache<T>.find(block: QueryBuilder<T>.() ->
 /**
  * Creates a new [Query] configured with the [block].
  */
-inline fun <reified T : Any> DataEntryCache<T>.query(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+inline fun <reified T : Any> DataEntryCache<T>.query(block: QueryBuilder<T>.() -> Unit = {}) =
         query().apply(block).build()
 
 /**
  * Removes all the values that match the [block].
  */
-suspend inline fun <reified T : Any> DataEntryCache<T>.remove(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+suspend inline fun <reified T : Any> DataEntryCache<T>.remove(block: QueryBuilder<T>.() -> Unit = {}) =
         query(block).remove()
 
 /**
  * Returns the amount of values that match the [block].
  */
-suspend inline fun <reified T : Any> DataEntryCache<T>.count(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+suspend inline fun <reified T : Any> DataEntryCache<T>.count(block: QueryBuilder<T>.() -> Unit = {}) =
         query(block).count()
 
 /**
  * Executes a query with the [block] and returns the values as a [Flow].
  */
-inline fun <reified T : Any> DataEntryCache<T>.flow(@BuilderInference block: QueryBuilder<T>.() -> Unit = {}) =
+inline fun <reified T : Any> DataEntryCache<T>.flow(block: QueryBuilder<T>.() -> Unit = {}) =
         query(block).asFlow()

@@ -21,7 +21,7 @@ internal sealed class IdentityFilter<T : Any, I> : RedisFilter<T, I>() {
         override fun startFlux(): Flux<T> {
             return info.commands.hget(info.entryName, info.keySerializer(identity))
                     .flux()
-                    .map { info.binarySerializer.load(info.valueSerializer, it) }
+                    .map { info.binarySerializer.decodeFromByteArray(info.valueSerializer, it) }
         }
 
         override fun filterFlux(incoming: Flux<T>): Flux<T> = incoming
@@ -40,7 +40,7 @@ internal sealed class IdentityFilter<T : Any, I> : RedisFilter<T, I>() {
 
             return info.commands.hmget(info.entryName, *keys)
                     .map { it.value }
-                    .map { info.binarySerializer.load(info.valueSerializer, it) }
+                    .map { info.binarySerializer.decodeFromByteArray(info.valueSerializer, it) }
         }
 
         override fun filterFlux(incoming: Flux<T>): Flux<T> =
@@ -59,7 +59,7 @@ internal sealed class ValueFilter<T : Any, I> : RedisFilter<T, I>() {
         override fun filterFlux(incoming: Flux<T>): Flux<T> = incoming.filter(predicate)
 
         override fun startFlux(): Flux<T> = info.commands.hvals(info.entryName)
-                .map { info.binarySerializer.load(info.valueSerializer, it) }
+                .map { info.binarySerializer.decodeFromByteArray(info.valueSerializer, it) }
                 .filter(predicate)
     }
 

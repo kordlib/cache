@@ -35,7 +35,9 @@ class RedisConfiguration(
 
         const val KORD_REDIS_URL = "KORD_REDIS_URL"
 
-        val binaryFormat: BinaryFormat = ProtoBuf(encodeDefaults = false)
+        val binaryFormat: BinaryFormat = ProtoBuf {
+            encodeDefaults = false
+        }
         val codec: RedisCodec<ByteArray, ByteArray> = ByteArrayCodec.INSTANCE
     }
 

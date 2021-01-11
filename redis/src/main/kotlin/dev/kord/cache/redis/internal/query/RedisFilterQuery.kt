@@ -51,7 +51,7 @@ internal class RedisFilterQuery<T : Any, I>(
                 info.commands.hset(
                                 info.entryName,
                                 info.keySerializer(info.description.indexField.property.get(new)),
-                                info.binarySerializer.dump(info.valueSerializer, new)
+                                info.binarySerializer.encodeToByteArray(info.valueSerializer, new)
                         ).awaitLast()
             }
         }
