@@ -182,7 +182,7 @@ subprojects {
             create<MavenPublication>(Library.name) {
                 from(components["kotlin"])
                 groupId = Library.group
-                artifactId = "kord-${project.name}"
+                artifactId = "cache-${project.name}"
                 version = Library.version
 
                 artifact(sourcesJar.get())

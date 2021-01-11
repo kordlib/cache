@@ -16,7 +16,7 @@ object Library {
     val isRelease: Boolean get() = !isSnapshot
 
     const val name = "cache"
-    const val group = "dev.kord"
+    const val group = "dev.kord.cache"
     val version: String = if (isJitPack) System.getenv("RELEASE_TAG")
     else releaseVersion
 
