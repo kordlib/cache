@@ -28,7 +28,6 @@ object Dependencies {
     const val `kotlinx-serialization-protobuf` = "org.jetbrains.kotlinx:kotlinx-serialization-protobuf:${Versions.kotlinxSerialization}"
     const val `kotlinx-coroutines` = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}"
     const val  `kotlinx-coroutines-reactive` = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive:${Versions.kotlinxCoroutines}"
-    const val `kotlinx-atomicfu` = ""
     const val caffeine = "com.github.ben-manes.caffeine:caffeine:${Versions.caffeine}"
     const val lettuce = "io.lettuce:lettuce-core:${Versions.lettuce}"
 
