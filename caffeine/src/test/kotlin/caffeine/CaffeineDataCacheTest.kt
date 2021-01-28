@@ -2,9 +2,9 @@
 
 package caffeine
 
-import com.gitlab.cord.tck.DataCacheVerifier
-import com.gitlab.kordlib.cache.api.DataCache
-import com.gitlab.kordlib.cache.caffeine.CaffeineDataCache
+import dev.kord.cache.tck.DataCacheVerifier
+import dev.kord.cache.api.DataCache
+import dev.kord.cache.caffeine.CaffeineDataCache
 import org.junit.jupiter.api.BeforeEach
 
 class CaffeineDataCacheTest : DataCacheVerifier() {
