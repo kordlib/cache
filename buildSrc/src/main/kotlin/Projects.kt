@@ -11,7 +11,7 @@ val DependencyHandlerScope.tck get() = project(":tck")
 val isJitPack get() = "true" == System.getenv("JITPACK")
 
 object Library {
-    private const val releaseVersion = "0.3.0-SNAPSHOT"
+    private const val releaseVersion = "0.3.0"
     val isSnapshot: Boolean get() = releaseVersion.endsWith("-SNAPSHOT")
     val isRelease: Boolean get() = !isSnapshot
 
