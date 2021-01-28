@@ -1,0 +1,212 @@
+public abstract interface class dev/kord/cache/api/DataCache {
+	public static final field Companion Ldev/kord/cache/api/DataCache$Companion;
+	public abstract fun getEntry (Lkotlin/reflect/KType;)Ldev/kord/cache/api/DataEntryCache;
+	public abstract fun register (Ldev/kord/cache/api/data/DataDescription;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun register (Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun register ([Ldev/kord/cache/api/data/DataDescription;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/kord/cache/api/DataCache$Companion {
+	public final fun none ()Ldev/kord/cache/api/DataCache;
+}
+
+public final class dev/kord/cache/api/DataCache$DefaultImpls {
+	public static fun register (Ldev/kord/cache/api/DataCache;Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun register (Ldev/kord/cache/api/DataCache;[Ldev/kord/cache/api/data/DataDescription;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/kord/cache/api/DataCacheKt {
+	public static final fun put (Ldev/kord/cache/api/DataCache;Lkotlin/reflect/KType;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/kord/cache/api/DataEntryCache {
+	public static final field Companion Ldev/kord/cache/api/DataEntryCache$Companion;
+	public abstract fun put (Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun put (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun put (Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun put ([Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun query ()Ldev/kord/cache/api/QueryBuilder;
+}
+
+public final class dev/kord/cache/api/DataEntryCache$Companion {
+	public final fun none ()Ldev/kord/cache/api/DataEntryCache;
+}
+
+public final class dev/kord/cache/api/DataEntryCache$DefaultImpls {
+	public static fun put (Ldev/kord/cache/api/DataEntryCache;Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun put (Ldev/kord/cache/api/DataEntryCache;Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun put (Ldev/kord/cache/api/DataEntryCache;[Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface annotation class dev/kord/cache/api/Identity : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class dev/kord/cache/api/Link : java/lang/annotation/Annotation {
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun to ()Ljava/lang/Class;
+}
+
+public abstract interface class dev/kord/cache/api/Query {
+	public static final field Companion Ldev/kord/cache/api/Query$Companion;
+	public abstract fun asFlow ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun count (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun remove (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun single (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun singleOrNull (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun toCollection (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun update (Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/kord/cache/api/Query$Companion {
+	public final fun none ()Ldev/kord/cache/api/Query;
+}
+
+public final class dev/kord/cache/api/Query$DefaultImpls {
+	public static fun count (Ldev/kord/cache/api/Query;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun single (Ldev/kord/cache/api/Query;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun singleOrNull (Ldev/kord/cache/api/Query;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun toCollection (Ldev/kord/cache/api/Query;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/kord/cache/api/QueryBuilder {
+	public static final field Companion Ldev/kord/cache/api/QueryBuilder$Companion;
+	public abstract fun build ()Ldev/kord/cache/api/Query;
+	public abstract fun contains (Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;Z)V
+	public abstract fun endsWith (Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;Z)V
+	public abstract fun eq (Lkotlin/reflect/KProperty1;Ljava/lang/Object;)V
+	public abstract fun gt (Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
+	public abstract fun gte (Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
+	public abstract fun in (Lkotlin/reflect/KProperty1;Ljava/lang/Iterable;)V
+	public abstract fun lt (Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
+	public abstract fun lte (Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
+	public abstract fun ne (Lkotlin/reflect/KProperty1;Ljava/lang/Object;)V
+	public abstract fun notIn (Lkotlin/reflect/KProperty1;Ljava/lang/Iterable;)V
+	public abstract fun predicate (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)V
+	public abstract fun startsWith (Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;Z)V
+}
+
+public final class dev/kord/cache/api/QueryBuilder$Companion {
+	public final fun none ()Ldev/kord/cache/api/QueryBuilder;
+}
+
+public final class dev/kord/cache/api/QueryBuilder$DefaultImpls {
+	public static fun contains (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;Z)V
+	public static synthetic fun contains$default (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;ZILjava/lang/Object;)V
+	public static fun endsWith (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;Z)V
+	public static synthetic fun endsWith$default (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;ZILjava/lang/Object;)V
+	public static fun eq (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/Object;)V
+	public static fun gt (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
+	public static fun gte (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
+	public static fun in (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/Iterable;)V
+	public static fun lt (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
+	public static fun lte (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
+	public static fun ne (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/Object;)V
+	public static fun notIn (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/Iterable;)V
+	public static fun startsWith (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;Z)V
+	public static synthetic fun startsWith$default (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;ZILjava/lang/Object;)V
+}
+
+public final class dev/kord/cache/api/data/DataDescription {
+	public fun <init> (Lkotlin/reflect/KType;Lkotlin/reflect/KClass;Ldev/kord/cache/api/data/IndexField;Ljava/util/List;)V
+	public synthetic fun <init> (Lkotlin/reflect/KType;Lkotlin/reflect/KClass;Ldev/kord/cache/api/data/IndexField;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getIndexField ()Ldev/kord/cache/api/data/IndexField;
+	public final fun getKlass ()Lkotlin/reflect/KClass;
+	public final fun getLinks ()Ljava/util/List;
+	public final fun getType ()Lkotlin/reflect/KType;
+}
+
+public final class dev/kord/cache/api/data/DataLink {
+	public fun <init> (Lkotlin/reflect/KProperty1;Lkotlin/reflect/KType;Lkotlin/reflect/KProperty1;)V
+	public final fun getLinkedField ()Lkotlin/reflect/KProperty1;
+	public final fun getSource ()Lkotlin/reflect/KProperty1;
+	public final fun getTarget ()Lkotlin/reflect/KType;
+}
+
+public final class dev/kord/cache/api/data/IndexField {
+	public fun <init> (Lkotlin/reflect/KProperty1;)V
+	public final fun getProperty ()Lkotlin/reflect/KProperty1;
+}
+
+public final class dev/kord/cache/api/data/LinkBuilder {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class dev/kord/cache/api/delegate/DelegatingDataCache : dev/kord/cache/api/DataCache {
+	public static final field Companion Ldev/kord/cache/api/delegate/DelegatingDataCache$Companion;
+	public fun <init> (Ldev/kord/cache/api/delegate/EntrySupplier;)V
+	public fun getEntry (Lkotlin/reflect/KType;)Ldev/kord/cache/api/DataEntryCache;
+	public fun register (Ldev/kord/cache/api/data/DataDescription;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun register (Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun register ([Ldev/kord/cache/api/data/DataDescription;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/kord/cache/api/delegate/DelegatingDataCache$Companion {
+	public final fun invoke (Lkotlin/jvm/functions/Function1;)Ldev/kord/cache/api/DataCache;
+	public static synthetic fun invoke$default (Ldev/kord/cache/api/delegate/DelegatingDataCache$Companion;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/kord/cache/api/DataCache;
+}
+
+public final class dev/kord/cache/api/delegate/DelegatingDataCache$Companion$Builder {
+	public fun <init> ()V
+	public final fun build ()Ldev/kord/cache/api/DataCache;
+	public final fun default (Lkotlin/jvm/functions/Function2;)V
+	public final fun forDescription (Ldev/kord/cache/api/data/DataDescription;Lkotlin/jvm/functions/Function2;)V
+	public final fun getSuppliers ()Ljava/util/Map;
+}
+
+public abstract interface class dev/kord/cache/api/delegate/EntrySupplier {
+	public static final field Companion Ldev/kord/cache/api/delegate/EntrySupplier$Companion;
+	public abstract fun supply (Ldev/kord/cache/api/DataCache;Ldev/kord/cache/api/data/DataDescription;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/kord/cache/api/delegate/EntrySupplier$Companion {
+	public final fun invoke (Lkotlin/jvm/functions/Function2;)Ldev/kord/cache/api/delegate/EntrySupplier;
+}
+
+public final class dev/kord/cache/api/meta/CacheStatistics {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getHitRatio ()D
+	public final fun getHits ()J
+	public final fun getMisses ()J
+	public final fun getQueries ()J
+	public final fun getTypeData ()Ljava/util/Map;
+}
+
+public final class dev/kord/cache/api/meta/MetricsCache : dev/kord/cache/api/DataCache {
+	public fun <init> (Ldev/kord/cache/api/DataCache;Ldev/kord/cache/api/meta/StatisticsLogger;)V
+	public synthetic fun <init> (Ldev/kord/cache/api/DataCache;Ldev/kord/cache/api/meta/StatisticsLogger;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getEntry (Lkotlin/reflect/KType;)Ldev/kord/cache/api/DataEntryCache;
+	public final fun getStatistics ()Ldev/kord/cache/api/meta/CacheStatistics;
+	public fun register (Ldev/kord/cache/api/data/DataDescription;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun register (Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun register ([Ldev/kord/cache/api/data/DataDescription;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/kord/cache/api/meta/MetricsCacheKt {
+	public static final fun withMetrics (Ldev/kord/cache/api/DataCache;)Ldev/kord/cache/api/meta/MetricsCache;
+}
+
+public final class dev/kord/cache/api/meta/StatisticsLogger {
+	public fun <init> ()V
+	public final fun getForType (Lkotlin/reflect/KType;)Ldev/kord/cache/api/meta/TypeStatisticsLogger;
+	public final fun getMetaData ()Ldev/kord/cache/api/meta/CacheStatistics;
+}
+
+public final class dev/kord/cache/api/meta/TypeStatistics {
+	public fun <init> (Lkotlin/reflect/KType;JJ)V
+	public final fun getHitRatio ()D
+	public final fun getHits ()J
+	public final fun getMisses ()J
+	public final fun getQueries ()J
+	public final fun getType ()Lkotlin/reflect/KType;
+}
+
+public final class dev/kord/cache/api/meta/TypeStatisticsLogger {
+	public final fun getType ()Lkotlin/reflect/KType;
+	public final fun logHit ()V
+	public final fun logQuery ()V
+}
+

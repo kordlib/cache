@@ -1,0 +1,20 @@
+public abstract class dev/kord/cache/tck/DataCacheVerifier {
+	public fun <init> ()V
+	public final fun concurrent reading and writing should be allowed ()V
+	public final fun cyclical remove should not hang ()V
+	public final fun delete should cascade ()V
+	public final fun delete should not cascade nullable ()V
+	public abstract fun getDatacache ()Ldev/kord/cache/api/DataCache;
+	public final fun getSerializers ()Ljava/util/Map;
+	public final fun insert should be queryable ()V
+	public final fun removed entry should not be found ()V
+	public abstract fun setDatacache (Ldev/kord/cache/api/DataCache;)V
+	public final fun update should modify correctly ()V
+	public final fun update that changes identity throws ()V
+}
+
+public final class dev/kord/cache/tck/DataCacheVerifier$update that changes identity throws$1$inlined$sam$i$org_junit_jupiter_api_function_Executable$0 : org/junit/jupiter/api/function/Executable {
+	public fun <init> (Lkotlin/jvm/functions/Function0;)V
+	public final synthetic fun execute ()V
+}
+

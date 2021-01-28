@@ -1,0 +1,11 @@
+public final class dev/kord/cache/caffeine/CaffeineDataCache {
+	public static final field INSTANCE Ldev/kord/cache/caffeine/CaffeineDataCache;
+	public final fun invoke (Lkotlin/jvm/functions/Function1;)Ldev/kord/cache/api/DataCache;
+	public static synthetic fun invoke$default (Ldev/kord/cache/caffeine/CaffeineDataCache;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/kord/cache/api/DataCache;
+}
+
+public final class dev/kord/cache/caffeine/CaffeineDataCacheKt {
+	public static final fun caffeine (Ldev/kord/cache/map/MapLikeCollection$Companion;Lkotlin/jvm/functions/Function1;)Ldev/kord/cache/map/MapLikeCollection;
+	public static synthetic fun caffeine$default (Ldev/kord/cache/map/MapLikeCollection$Companion;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/kord/cache/map/MapLikeCollection;
+}
+

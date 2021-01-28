@@ -1,0 +1,56 @@
+public final class dev/kord/cache/map/LruKt {
+	public static final fun lruLinkedHashMap (Ldev/kord/cache/map/MapLikeCollection$Companion;I)Ldev/kord/cache/map/MapLikeCollection;
+}
+
+public final class dev/kord/cache/map/MapDataCache {
+	public static final field INSTANCE Ldev/kord/cache/map/MapDataCache;
+	public final fun invoke (Lkotlin/jvm/functions/Function1;)Ldev/kord/cache/api/DataCache;
+	public static synthetic fun invoke$default (Ldev/kord/cache/map/MapDataCache;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/kord/cache/api/DataCache;
+}
+
+public final class dev/kord/cache/map/MapDataCache$Builder {
+	public fun <init> ()V
+	public final fun build ()Ldev/kord/cache/api/DataCache;
+	public final fun default (Lkotlin/jvm/functions/Function2;)V
+	public final fun getSuppliers ()Ljava/util/Map;
+}
+
+public abstract interface class dev/kord/cache/map/MapLikeCollection {
+	public static final field Companion Ldev/kord/cache/map/MapLikeCollection$Companion;
+	public abstract fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun contains (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun get (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getByKey (Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getByValue (Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun put (Ljava/lang/Object;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun remove (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun values ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class dev/kord/cache/map/MapLikeCollection$Companion {
+	public final fun concurrentHashMap (Ljava/util/concurrent/ConcurrentHashMap;)Ldev/kord/cache/map/MapLikeCollection;
+	public static synthetic fun concurrentHashMap$default (Ldev/kord/cache/map/MapLikeCollection$Companion;Ljava/util/concurrent/ConcurrentHashMap;ILjava/lang/Object;)Ldev/kord/cache/map/MapLikeCollection;
+	public final fun from (Ljava/util/Map;)Ldev/kord/cache/map/MapLikeCollection;
+	public final fun fromThreadSafe (Ljava/util/Map;)Ldev/kord/cache/map/MapLikeCollection;
+	public final fun none ()Ldev/kord/cache/map/MapLikeCollection;
+	public final fun readOnly (Ljava/util/Map;)Ldev/kord/cache/map/MapLikeCollection;
+	public final fun weakHashMap ()Ldev/kord/cache/map/MapLikeCollection;
+}
+
+public final class dev/kord/cache/map/MapLikeCollection$DefaultImpls {
+	public static fun contains (Ldev/kord/cache/map/MapLikeCollection;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/kord/cache/map/MapLikeCollectionKt {
+	public static final fun toMapLike (Ljava/util/Map;Z)Ldev/kord/cache/map/MapLikeCollection;
+}
+
+public final class dev/kord/cache/map/internal/MapEntryCache : dev/kord/cache/api/DataEntryCache {
+	public fun <init> (Ldev/kord/cache/api/DataCache;Ldev/kord/cache/api/data/DataDescription;Ldev/kord/cache/map/MapLikeCollection;)V
+	public fun put (Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put (Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put ([Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun query ()Ldev/kord/cache/api/QueryBuilder;
+}
+

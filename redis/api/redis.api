@@ -1,0 +1,53 @@
+public final class dev/kord/cache/redis/RedisConfiguration {
+	public static final field Companion Ldev/kord/cache/redis/RedisConfiguration$Companion;
+	public fun <init> (Lkotlinx/serialization/BinaryFormat;Lio/lettuce/core/RedisClient;Ljava/lang/String;ZLio/lettuce/core/codec/RedisCodec;)V
+	public final fun getBinaryFormat ()Lkotlinx/serialization/BinaryFormat;
+	public final fun getClient ()Lio/lettuce/core/RedisClient;
+	public final fun getCodec ()Lio/lettuce/core/codec/RedisCodec;
+	public final fun getConnection ()Lio/lettuce/core/api/StatefulRedisConnection;
+	public final fun getPrefix ()Ljava/lang/String;
+	public final fun getReuseConnection ()Z
+}
+
+public final class dev/kord/cache/redis/RedisConfiguration$Builder {
+	public fun <init> ()V
+	public final fun build ()Ldev/kord/cache/redis/RedisConfiguration;
+	public final fun client ()Lio/lettuce/core/RedisClient;
+	public final fun getBinaryFormat ()Lkotlinx/serialization/BinaryFormat;
+	public final fun getClient ()Lio/lettuce/core/RedisClient;
+	public final fun getCodec ()Lio/lettuce/core/codec/RedisCodec;
+	public final fun getKeyPrefix ()Ljava/lang/String;
+	public final fun getReuseConnection ()Z
+	public final fun getUrl ()Ljava/lang/String;
+	public final fun setBinaryFormat (Lkotlinx/serialization/BinaryFormat;)V
+	public final fun setClient (Lio/lettuce/core/RedisClient;)V
+	public final fun setCodec (Lio/lettuce/core/codec/RedisCodec;)V
+	public final fun setKeyPrefix (Ljava/lang/String;)V
+	public final fun setReuseConnection (Z)V
+	public final fun setUrl (Ljava/lang/String;)V
+}
+
+public final class dev/kord/cache/redis/RedisConfiguration$Companion {
+	public final fun invoke (Lkotlin/jvm/functions/Function1;)Ldev/kord/cache/redis/RedisConfiguration;
+	public static synthetic fun invoke$default (Ldev/kord/cache/redis/RedisConfiguration$Companion;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/kord/cache/redis/RedisConfiguration;
+}
+
+public final class dev/kord/cache/redis/RedisConfiguration$Defaults {
+	public static final field DEFAULT_KEY_PREFIX Ljava/lang/String;
+	public static final field DEFAULT_URL Ljava/lang/String;
+	public static final field INSTANCE Ldev/kord/cache/redis/RedisConfiguration$Defaults;
+	public static final field KORD_REDIS_URL Ljava/lang/String;
+	public final fun getBinaryFormat ()Lkotlinx/serialization/BinaryFormat;
+	public final fun getCodec ()Lio/lettuce/core/codec/RedisCodec;
+}
+
+public final class dev/kord/cache/redis/RedisEntryCache : dev/kord/cache/api/DataEntryCache {
+	public fun <init> (Ldev/kord/cache/api/DataCache;Ldev/kord/cache/api/data/DataDescription;Ldev/kord/cache/redis/RedisConfiguration;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Ljava/lang/String;)V
+	public synthetic fun <init> (Ldev/kord/cache/api/DataCache;Ldev/kord/cache/api/data/DataDescription;Ldev/kord/cache/redis/RedisConfiguration;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun put (Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put (Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put ([Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun query ()Ldev/kord/cache/api/QueryBuilder;
+}
+
