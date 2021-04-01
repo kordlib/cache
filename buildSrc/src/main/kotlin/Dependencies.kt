@@ -1,24 +1,24 @@
 object Versions {
-    const val kotlin = "1.4.10"
-    const val kotlinxSerialization = "1.0.0"
-    const val ktor = "1.4.1"
-    const val kotlinxCoroutines = "1.4.0"
-    const val kotlinLogging = "2.0.3"
-    const val atomicFu = "0.14.4"
-    const val binaryCompatibilityValidator = "0.2.3"
-    const val caffeine = "2.8.8"
-    const val lettuce = "5.3.1.RELEASE"
+    const val kotlin = "1.4.32"
+    const val kotlinxSerialization = "1.1.0"
+    const val ktor = "1.5.2"
+    const val kotlinxCoroutines = "1.4.3"
+    const val kotlinLogging = "2.0.4"
+    const val atomicFu = "0.15.2"
+    const val binaryCompatibilityValidator = "0.4.0"
+    const val caffeine = "3.0.1"
+    const val lettuce = "6.1.0.RELEASE"
 
     //test deps
     const val kotlinTest = kotlin
-    const val junit5 = "5.6.0"
+    const val junit5 = "5.7.1"
     const val kotlinxCoroutinesTest = kotlinxCoroutines
     const val kotlinReflect = kotlin
     const val junitJupiterApi = junit5
     const val junitJupiterEngine = junit5
     const val sl4j = "1.7.30"
     const val bintray = "1.8.5"
-    const val mockk = "1.10.2"
+    const val mockk = "1.10.6"
 }
 
 @Suppress("ObjectPropertyName")
