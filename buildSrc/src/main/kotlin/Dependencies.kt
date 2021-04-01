@@ -6,7 +6,7 @@ object Versions {
     const val kotlinLogging = "2.0.4"
     const val atomicFu = "0.15.2"
     const val binaryCompatibilityValidator = "0.4.0"
-    const val caffeine = "3.0.1"
+    const val caffeine = "2.8.8"
     const val lettuce = "6.1.0.RELEASE"
 
     //test deps
