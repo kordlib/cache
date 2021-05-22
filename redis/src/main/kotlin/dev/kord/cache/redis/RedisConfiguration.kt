@@ -1,20 +1,21 @@
 package dev.kord.cache.redis
 
 import io.lettuce.core.RedisClient
-import io.lettuce.core.api.StatefulConnection
 import io.lettuce.core.api.StatefulRedisConnection
-import io.lettuce.core.cluster.RedisClusterClient
 import io.lettuce.core.codec.ByteArrayCodec
 import io.lettuce.core.codec.RedisCodec
 import kotlinx.serialization.BinaryFormat
 import kotlinx.serialization.protobuf.ProtoBuf
+import kotlin.time.Duration
 
 class RedisConfiguration(
         val binaryFormat: BinaryFormat,
         val client: RedisClient,
         val prefix: String,
         val reuseConnection: Boolean,
-        val codec: RedisCodec<ByteArray, ByteArray>
+        val codec: RedisCodec<ByteArray, ByteArray>,
+        val defaultTtl: Duration?,
+        val command: RedisCommand
 ) {
     private val reusedConnection: StatefulRedisConnection<ByteArray, ByteArray> by lazy {
         client.connect(codec)
@@ -35,6 +36,7 @@ class RedisConfiguration(
 
         const val KORD_REDIS_URL = "KORD_REDIS_URL"
 
+        val redisCommand = RedisCommand.HashSet
         val binaryFormat: BinaryFormat = ProtoBuf {
             encodeDefaults = false
         }
@@ -47,9 +49,11 @@ class RedisConfiguration(
         var url: String? = null
 
         var client: RedisClient? = null
+        var defaultTtl: Duration? = null
 
         var binaryFormat: BinaryFormat = Defaults.binaryFormat
         var codec: RedisCodec<ByteArray, ByteArray> = Defaults.codec
+        var redisCommand: RedisCommand = Defaults.redisCommand
 
         var reuseConnection: Boolean = true
 
@@ -62,7 +66,9 @@ class RedisConfiguration(
                 client = client ?: client(),
                 prefix = keyPrefix,
                 reuseConnection = reuseConnection,
-                codec = codec
+                codec = codec,
+                defaultTtl = defaultTtl,
+                command = redisCommand
         )
 
     }
