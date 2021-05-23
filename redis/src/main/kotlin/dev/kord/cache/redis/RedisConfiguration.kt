@@ -6,7 +6,6 @@ import io.lettuce.core.codec.ByteArrayCodec
 import io.lettuce.core.codec.RedisCodec
 import kotlinx.serialization.BinaryFormat
 import kotlinx.serialization.protobuf.ProtoBuf
-import kotlin.time.Duration
 
 class RedisConfiguration(
         val binaryFormat: BinaryFormat,
@@ -14,7 +13,7 @@ class RedisConfiguration(
         val prefix: String,
         val reuseConnection: Boolean,
         val codec: RedisCodec<ByteArray, ByteArray>,
-        val defaultTtl: Duration?,
+        val defaultTtl: Long?,
         val command: RedisCommand
 ) {
     private val reusedConnection: StatefulRedisConnection<ByteArray, ByteArray> by lazy {
@@ -49,7 +48,7 @@ class RedisConfiguration(
         var url: String? = null
 
         var client: RedisClient? = null
-        var defaultTtl: Duration? = null
+        var defaultTtl: Long? = null
 
         var binaryFormat: BinaryFormat = Defaults.binaryFormat
         var codec: RedisCodec<ByteArray, ByteArray> = Defaults.codec

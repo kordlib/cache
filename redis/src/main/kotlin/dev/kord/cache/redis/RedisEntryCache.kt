@@ -11,9 +11,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
-import reactor.core.publisher.Mono
 import kotlin.time.Duration
-import kotlin.time.toJavaDuration
 
 enum class RedisCommand { HashSet, Set }
 
@@ -25,7 +23,7 @@ class RedisEntryCache<T : Any, I> constructor(
         serializer: KSerializer<T> = description.klass.serializer(),
         keySerializer: (I) -> ByteArray = { "${configuration.prefix}$it".toByteArray(Charsets.UTF_8) },
         entryName: String = description.type.toString(),
-        private val ttl: Duration? = configuration.defaultTtl,
+        private val ttl: Long? = configuration.defaultTtl,
         private val command: RedisCommand = configuration.command
 ) : DataEntryCache<T> {
     private val info: QueryInfo<T, I> = QueryInfo(
@@ -45,16 +43,15 @@ class RedisEntryCache<T : Any, I> constructor(
         val key = info.keySerializer(info.description.indexField.property.get(item))
         val value = info.binarySerializer.encodeToByteArray(info.valueSerializer, item)
 
-        val mono = when (command) {
+        when (command) {
             RedisCommand.HashSet -> info.commands.hset(info.entryName, key, value)
+                .awaitSingle()
             RedisCommand.Set -> info.commands.set(key, value)
+                .awaitSingle()
         }
 
-        mono.cache(ttl).awaitSingle()
+        if (ttl != null) {
+            info.commands.pexpire(key, ttl).awaitSingle()
+        }
     }
-
-}
-
-fun <T> Mono<T>.cache(ttl: Duration?): Mono<T> {
-    return if (ttl != null) cache(ttl.toJavaDuration()) else this
 }
