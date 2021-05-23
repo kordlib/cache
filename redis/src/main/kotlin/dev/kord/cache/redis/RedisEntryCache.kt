@@ -11,9 +11,11 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
-import kotlin.time.Duration
 
-enum class RedisCommand { HashSet, Set }
+sealed class RedisCommand {
+    object HashSet : RedisCommand()
+    data class Set(val ttl: Long? = null) : RedisCommand()
+}
 
 @OptIn(InternalSerializationApi::class)
 class RedisEntryCache<T : Any, I> constructor(
@@ -23,7 +25,6 @@ class RedisEntryCache<T : Any, I> constructor(
         serializer: KSerializer<T> = description.klass.serializer(),
         keySerializer: (I) -> ByteArray = { "${configuration.prefix}$it".toByteArray(Charsets.UTF_8) },
         entryName: String = description.type.toString(),
-        private val ttl: Long? = configuration.defaultTtl,
         private val command: RedisCommand = configuration.command
 ) : DataEntryCache<T> {
     private val info: QueryInfo<T, I> = QueryInfo(
@@ -44,14 +45,15 @@ class RedisEntryCache<T : Any, I> constructor(
         val value = info.binarySerializer.encodeToByteArray(info.valueSerializer, item)
 
         when (command) {
-            RedisCommand.HashSet -> info.commands.hset(info.entryName, key, value)
-                .awaitSingle()
-            RedisCommand.Set -> info.commands.set(key, value)
-                .awaitSingle()
-        }
+            is RedisCommand.HashSet ->
+                info.commands.hset(info.entryName, key, value).awaitSingle()
 
-        if (ttl != null) {
-            info.commands.pexpire(key, ttl).awaitSingle()
+            is RedisCommand.Set -> {
+                info.commands.set(key, value).awaitSingle()
+                if (command.ttl != null) {
+                    info.commands.pexpire(key, command.ttl).awaitSingle()
+                }
+            }
         }
     }
 }

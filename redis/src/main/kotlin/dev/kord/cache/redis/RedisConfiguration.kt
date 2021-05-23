@@ -13,7 +13,6 @@ class RedisConfiguration(
         val prefix: String,
         val reuseConnection: Boolean,
         val codec: RedisCodec<ByteArray, ByteArray>,
-        val defaultTtl: Long?,
         val command: RedisCommand
 ) {
     private val reusedConnection: StatefulRedisConnection<ByteArray, ByteArray> by lazy {
@@ -48,7 +47,6 @@ class RedisConfiguration(
         var url: String? = null
 
         var client: RedisClient? = null
-        var defaultTtl: Long? = null
 
         var binaryFormat: BinaryFormat = Defaults.binaryFormat
         var codec: RedisCodec<ByteArray, ByteArray> = Defaults.codec
@@ -66,7 +64,6 @@ class RedisConfiguration(
                 prefix = keyPrefix,
                 reuseConnection = reuseConnection,
                 codec = codec,
-                defaultTtl = defaultTtl,
                 command = redisCommand
         )
 
