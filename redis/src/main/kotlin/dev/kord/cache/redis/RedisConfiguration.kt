@@ -1,9 +1,7 @@
 package dev.kord.cache.redis
 
 import io.lettuce.core.RedisClient
-import io.lettuce.core.api.StatefulConnection
 import io.lettuce.core.api.StatefulRedisConnection
-import io.lettuce.core.cluster.RedisClusterClient
 import io.lettuce.core.codec.ByteArrayCodec
 import io.lettuce.core.codec.RedisCodec
 import kotlinx.serialization.BinaryFormat

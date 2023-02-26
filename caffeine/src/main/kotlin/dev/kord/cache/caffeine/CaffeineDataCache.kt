@@ -7,7 +7,6 @@ import dev.kord.cache.map.MapLikeCollection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
-import java.time.Duration
 
 object CaffeineDataCache {
 

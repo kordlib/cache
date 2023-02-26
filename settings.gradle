@@ -1,5 +1,0 @@
-rootProject.name = 'cache'
-
-include(":api", ":map", ":caffeine", ":redis")
-include (":tck")
-

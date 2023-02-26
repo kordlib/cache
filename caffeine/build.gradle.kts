@@ -1,8 +1,13 @@
-dependencies {
-    api(api)
-    api(map)
-    api(Dependencies.caffeine)
-    api(Dependencies.`kotlinx-coroutines`)
+plugins {
+    `jvm-module`
+    `kord-publishing`
+}
 
-    testImplementation(tck)
+dependencies {
+    api(projects.api)
+    api(projects.map)
+    api(libs.caffeine)
+    api(libs.kotlinx.coroutines)
+
+    testImplementation(projects.tck)
 }

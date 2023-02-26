@@ -1,9 +1,4 @@
 import org.gradle.kotlin.dsl.DependencyHandlerScope
-import org.gradle.kotlin.dsl.project
-
-val DependencyHandlerScope.api get() = project(":api")
-val DependencyHandlerScope.map get() = project(":map")
-val DependencyHandlerScope.tck get() = project(":tck")
 
 /**
  * whether the process has been invoked by JitPack
@@ -11,7 +6,7 @@ val DependencyHandlerScope.tck get() = project(":tck")
 val isJitPack get() = "true" == System.getenv("JITPACK")
 
 object Library {
-    private const val releaseVersion = "0.3.0"
+    private const val releaseVersion = "0.4.0"
     val isSnapshot: Boolean get() = releaseVersion.endsWith("-SNAPSHOT")
     val isRelease: Boolean get() = !isSnapshot
 

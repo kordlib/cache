@@ -1,0 +1,53 @@
+[versions]
+coroutines = "1.6.4"
+stately = "2.0.0-rc1"
+kotlinx-atomicfu = "0.20.0"
+kotlin = "1.8.10"
+kotlin-serialization = "1.5.0"
+
+[libraries]
+kotlin-logging = { group = "io.github.microutils", name = "kotlin-logging", version = "3.0.5" }
+
+# implementations
+stately-collections = { module = "co.touchlab:stately-concurrent-collections", version.ref = "stately" }
+stately-concurrency = { module = "co.touchlab:stately-concurrency", version.ref = "stately" }
+caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version = "3.1.4" }
+lettuce = { module = "io.lettuce:lettuce-core", version = "6.2.3.RELEASE" }
+
+
+# tests
+kotlin-test-annotations = { group = "org.jetbrains.kotlin", name = "kotlin-test-annotations-common", version.ref = "kotlin" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test-common", version.ref = "kotlin" }
+kotlin-test-js = { group = "org.jetbrains.kotlin", name = "kotlin-test-js", version.ref = "kotlin" }
+kotlin-test-junit5 = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit5", version.ref = "kotlin" }
+embedded-redis = { module = "it.ozimov:embedded-redis", version = "0.7.2" }
+
+# Kotlinx
+kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
+kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-reactive = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-reactive", version.ref = "coroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+kotlinx-serialization-protobuf = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-protobuf", version.ref = "kotlin-serialization" }
+
+# plgins
+atomicfu-plugin = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "kotlinx-atomicfu" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+binary-compatibility-validator-plugin = { module = "org.jetbrains.kotlinx:binary-compatibility-validator", version = "0.12.1" }
+dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version = "1.8.0-dev-194" }
+
+
+
+[bundles]
+stately = ["stately-collections", "stately-concurrency"]
+test-common = ["kotlin-test-annotations", "kotlin-test", "kotlinx-coroutines-test"]
+
+gradlePlugins = [
+    "atomicfu-plugin",
+    "kotlin-gradle-plugin",
+    "binary-compatibility-validator-plugin",
+    "dokka-plugin"
+]
+
+[plugins]
+koltin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
