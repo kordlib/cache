@@ -1,24 +1,20 @@
 package dev.kord.benchmarks
 
+import co.touchlab.stately.collections.ConcurrentMutableMap
 import dev.kord.cache.api.DataCache
-import dev.kord.cache.api.Query
 import dev.kord.cache.api.data.description
 import dev.kord.cache.api.put
 import dev.kord.cache.api.query
 import dev.kord.cache.map.MapDataCache
-import kotlinx.coroutines.runBlocking
-import org.openjdk.jmh.annotations.*
-import org.openjdk.jmh.infra.Blackhole
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.TimeUnit
+import kotlinx.benchmark.*
+import kotlinx.coroutines.test.runTest
 import kotlin.random.Random
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.Throughput)
-@Fork(value = 3, warmups = 3)
-@Warmup(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@Warmup(iterations = 5)
+@Measurement(iterations = 5)
+@OutputTimeUnit(BenchmarkTimeUnit.MILLISECONDS)
 open class Queries {
 
     private lateinit var cache: DataCache
@@ -26,10 +22,10 @@ open class Queries {
     private val seed = 1337
     private val random = Random(seed)
 
-    @Setup(Level.Iteration)
-    fun setup() = runBlocking {
+    @Setup
+    fun setup() = runTest {
         cache = MapDataCache()
-        map = ConcurrentHashMap()
+        map = ConcurrentMutableMap()
 
         cache.register(Data.description)
         val random = Random(seed)
@@ -44,13 +40,13 @@ open class Queries {
     }
 
     @Benchmark
-    fun mapCacheQuery(blackhole: Blackhole) = runBlocking {
-        val item = cache.query<Data> { Data::id eq random.nextLong() }.singleOrNull()
+    fun mapCacheQuery(blackhole: Blackhole) = runTest {
+        val item = cache.query { Data::id eq random.nextLong() }.singleOrNull()
         blackhole.consume(item)
     }
 
     @Benchmark
-    fun mapDirectQuery(blackhole: Blackhole) = runBlocking {
+    fun mapDirectQuery(blackhole: Blackhole) = runTest {
         val item = map[random.nextLong()]
         blackhole.consume(item)
     }
@@ -60,5 +56,4 @@ open class Queries {
             val description = description(Data::id)
         }
     }
-
 }
