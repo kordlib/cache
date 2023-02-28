@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     org.jetbrains.kotlin.multiplatform
@@ -7,7 +8,12 @@ plugins {
 }
 
 kotlin {
-    jvm()
+    jvm {
+        compilations.all {
+            compilerOptions.options.jvmTarget.set(Jvm.target)
+        }
+    }
+
     js(IR) {
         nodejs()
         browser()

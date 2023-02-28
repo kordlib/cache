@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     org.jetbrains.kotlin.jvm
     org.jetbrains.kotlinx.`binary-compatibility-validator`
@@ -12,6 +15,14 @@ tasks {
 
     dokkaHtml {
         configure()
+    }
+}
+
+tasks {
+    withType<KotlinCompile> {
+        compilerOptions {
+            jvmTarget.set(Jvm.target)
+        }
     }
 }
 
