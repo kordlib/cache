@@ -4,10 +4,6 @@ name: Kotlin CI
 
 on:
   push:
-    paths:
-      - '**.gradle'
-      - '**.properties'
-      - '**/src/**'
     branches:
       - 'master'
       - '0.3.x'
@@ -15,10 +11,6 @@ on:
     tags-ignore:
       - '*.*'
     pull_request:
-      paths:
-        - '**.gradle'
-        - '**.properties'
-        - '**/src/**'
       types: [ opened, synchronize, reopened ]
 
 jobs:
