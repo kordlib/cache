@@ -10,7 +10,8 @@ fun MavenPublication.addDokkaIfNeeded() {
         val platform = name.substringAfterLast('-')
         val dokkaJar = tasks.register("${platform}DokkaJar", Jar::class) {
             dependsOn("dokkaHtml")
-            archiveClassifier.set("$platform-javadoc")
+            archiveClassifier.set("javadoc")
+            destinationDirectory.set(buildDir.resolve(platform))
             from(tasks.getByName("dokkaHtml"))
         }
         artifact(dokkaJar)
