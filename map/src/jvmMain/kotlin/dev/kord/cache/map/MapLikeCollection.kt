@@ -1,4 +1,4 @@
-@file:JvmName("MapLikeCollectionJvmx")
+@file:JvmName("MapLikeCollectionJvm")
 package dev.kord.cache.map
 
 import java.util.*
