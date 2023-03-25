@@ -17,8 +17,6 @@ jobs:
   build:
     name: Build Cache
     runs-on: ubuntu-latest
-    env:
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 1
@@ -45,7 +43,6 @@ jobs:
       NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.signingKey }}
       ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.signingPassword }}
-      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
     steps:
       - uses: actions/checkout@v3
