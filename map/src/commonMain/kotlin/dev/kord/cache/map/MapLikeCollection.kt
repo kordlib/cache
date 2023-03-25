@@ -80,7 +80,9 @@ interface MapLikeCollection<KEY, VALUE> {
             }
 
             override fun values(): Flow<VALUE> = flow {
-                map.values.toList().forEach { emit(it) }
+                if (map.isNotEmpty()) {
+                    map.values.toList().forEach { emit(it) }
+                }
             }
 
             override suspend fun clear() = map.clear()
@@ -113,7 +115,7 @@ interface MapLikeCollection<KEY, VALUE> {
             override suspend fun get(key: KEY): VALUE? = map[key]
 
             override suspend fun contains(key: KEY): Boolean =
-                    map.contains(key)
+                map.contains(key)
 
             override suspend fun put(key: KEY, value: VALUE) {
                 map[key] = value
