@@ -15,8 +15,6 @@ import kotlin.concurrent.thread
 
 class RedisDataCacheTest : DataCacheVerifier() {
 
-    override lateinit var datacache: DataCache
-
     lateinit var configuration: RedisConfiguration
 
     companion object {
@@ -40,11 +38,9 @@ class RedisDataCacheTest : DataCacheVerifier() {
     }
 
     @OptIn(InternalSerializationApi::class)
-    @ExperimentalStdlibApi
-    @BeforeEach
-    fun setUp() {
+    override fun newCache(): DataCache {
         configuration = RedisConfiguration()
-        datacache = DelegatingDataCache {
+        return DelegatingDataCache {
             default { cache, description ->
                 @Suppress("UNCHECKED_CAST")
                 RedisEntryCache(

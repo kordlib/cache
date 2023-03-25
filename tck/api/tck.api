@@ -4,17 +4,23 @@ public abstract class dev/kord/cache/tck/DataCacheVerifier {
 	public final fun cyclical remove should not hang ()V
 	public final fun delete should cascade ()V
 	public final fun delete should not cascade nullable ()V
-	public abstract fun getDatacache ()Ldev/kord/cache/api/DataCache;
 	public final fun getSerializers ()Ljava/util/Map;
 	public final fun insert should be queryable ()V
+	public abstract fun newCache ()Ldev/kord/cache/api/DataCache;
 	public final fun removed entry should not be found ()V
-	public abstract fun setDatacache (Ldev/kord/cache/api/DataCache;)V
+	protected final fun runTestWithDataCache (Lkotlin/jvm/functions/Function2;)V
 	public final fun update should modify correctly ()V
 	public final fun update that changes identity throws ()V
 }
 
-public final class dev/kord/cache/tck/DataCacheVerifier$update that changes identity throws$1$inlined$sam$i$org_junit_jupiter_api_function_Executable$0 : org/junit/jupiter/api/function/Executable {
-	public fun <init> (Lkotlin/jvm/functions/Function0;)V
-	public final synthetic fun execute ()V
+protected final class dev/kord/cache/tck/DataCacheVerifier$Context : kotlinx/coroutines/CoroutineScope {
+	public fun <init> (Ldev/kord/cache/api/DataCache;Lkotlinx/coroutines/CoroutineScope;)V
+	public fun getCoroutineContext ()Lkotlin/coroutines/CoroutineContext;
+	public final fun getDatacache ()Ldev/kord/cache/api/DataCache;
+	public final fun getScope ()Lkotlinx/coroutines/CoroutineScope;
+}
+
+public final class dev/kord/cache/tck/DataCacheVerifierKt {
+	public static final field SHORT_DISPLAY_NAME Ljava/lang/String;
 }
 

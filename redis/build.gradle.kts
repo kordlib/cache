@@ -1,14 +1,31 @@
-apply(plugin = "kotlinx-serialization")
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+@Suppress("DSL_SCOPE_VIOLATION") // false positive for `libs` in IntelliJ
+plugins {
+    `jvm-module`
+    `kord-publishing`
+    alias(libs.plugins.koltin.serialization)
+}
 
 dependencies {
-    api(api)
-    api(map)
-    api(Dependencies.lettuce)
-    api(Dependencies.`kotlinx-serialization`)
-    api(Dependencies.`kotlinx-serialization-protobuf`)
-    api(Dependencies.`kotlinx-coroutines-reactive`)
+    api(projects.api)
+    api(projects.map)
+    api(libs.lettuce)
+    api(libs.kotlinx.serialization.protobuf)
+    api(libs.kotlinx.coroutines.reactive)
 
-    testImplementation(tck)
-    testImplementation("it.ozimov:embedded-redis:0.7.2")
+    testImplementation(projects.tck)
+    testImplementation(libs.embedded.redis)
+}
 
+tasks {
+    withType<KotlinCompile> {
+        compilerOptions {
+            freeCompilerArgs.add("-opt-in=${OptIns.serialization}")
+        }
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
 }

@@ -1,20 +1,30 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-dependencies {
-    api(api)
-
-    testImplementation(tck)
+plugins {
+    `multiplatform-module`
+    `kord-publishing`
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = Jvm.target
-        freeCompilerArgs = listOf(
-                CompilerArguments.inlineClasses,
-                CompilerArguments.coroutines,
-                CompilerArguments.time,
-                CompilerArguments.stdLib,
-                CompilerArguments.optIn
-        )
+kotlin {
+    sourceSets {
+        all {
+            languageSettings.optIn(OptIns.coroutines)
+        }
+
+        commonMain {
+            dependencies {
+                api(projects.api)
+            }
+        }
+
+        commonTest {
+            dependencies {
+                implementation(projects.tck)
+            }
+        }
+
+        jvmTest {
+            dependencies {
+                implementation(libs.kotlin.test.junit5)
+            }
+        }
     }
 }

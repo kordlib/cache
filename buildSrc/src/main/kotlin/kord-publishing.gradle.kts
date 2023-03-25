@@ -1,0 +1,88 @@
+import java.util.Base64
+plugins {
+    `maven-publish`
+    signing
+}
+
+if(tasks.findByName("dokkaHtml") != null) {
+    val dokkaJar by tasks.registering(Jar::class) {
+        group = JavaBasePlugin.DOCUMENTATION_GROUP
+        description = "Assembles Kotlin docs with Dokka"
+        archiveClassifier.set("javadoc")
+        from(tasks.getByName("dokkaHtml"))
+    }
+    publishing.publications.withType<MavenPublication> {
+        artifact(dokkaJar)
+    }
+}
+
+publishing {
+    publications {
+        withType<MavenPublication> {
+            groupId = Library.group
+            artifactId = "cache-${artifactId}"
+            version = Library.version
+
+            pom {
+                name.set(Library.name)
+                description.set(Library.description)
+                url.set(Library.projectUrl)
+
+                organization {
+                    name.set("Kord")
+                    url.set("https://github.com/kordlib")
+                }
+
+                developers {
+                    developer {
+                        name.set("The Kord Team")
+                    }
+                }
+
+                issueManagement {
+                    system.set("GitHub")
+                    url.set("https://github.com/kordlib/kord/issues")
+                }
+
+                licenses {
+                    license {
+                        name.set("MIT")
+                        url.set("http://opensource.org/licenses/MIT")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:ssh://github.com/kordlib/kord.git")
+                    developerConnection.set("scm:git:ssh://git@github.com:kordlib/kord.git")
+                    url.set(Library.projectUrl)
+                }
+            }
+
+            if (!isJitPack) {
+                repositories {
+                    maven {
+                        url = uri(if (Library.isSnapshot) Repo.snapshotsUrl else Repo.releasesUrl)
+
+                        credentials {
+                            username = System.getenv("NEXUS_USER")
+                            password = System.getenv("NEXUS_PASSWORD")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+if (!isJitPack && Library.isRelease) {
+    signing {
+        val signingKey = findProperty("signingKey")?.toString()
+        val signingPassword = findProperty("signingPassword")?.toString()
+        if (signingKey != null && signingPassword != null) {
+            useInMemoryPgpKeys(String(Base64.getDecoder().decode(signingKey)), signingPassword)
+            publishing.publications.withType<MavenPublication> {
+                sign(this)
+            }
+        }
+    }
+}

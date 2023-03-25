@@ -16,6 +16,7 @@ public final class dev/kord/cache/api/DataCache$DefaultImpls {
 }
 
 public final class dev/kord/cache/api/DataCacheKt {
+	public static final fun getLogger ()Lmu/KLogger;
 	public static final fun put (Ldev/kord/cache/api/DataCache;Lkotlin/reflect/KType;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
@@ -44,6 +45,10 @@ public abstract interface annotation class dev/kord/cache/api/Identity : java/la
 public abstract interface annotation class dev/kord/cache/api/Link : java/lang/annotation/Annotation {
 	public abstract fun name ()Ljava/lang/String;
 	public abstract fun to ()Ljava/lang/Class;
+}
+
+public abstract interface annotation class dev/kord/cache/api/Link$Container : java/lang/annotation/Annotation {
+	public abstract fun value ()[Ldev/kord/cache/api/Link;
 }
 
 public abstract interface class dev/kord/cache/api/Query {
@@ -131,6 +136,7 @@ public final class dev/kord/cache/api/data/LinkBuilder {
 	public fun <init> ()V
 	public fun <init> (Ljava/util/List;)V
 	public synthetic fun <init> (Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getLinks ()Ljava/util/List;
 }
 
 public final class dev/kord/cache/api/delegate/DelegatingDataCache : dev/kord/cache/api/DataCache {

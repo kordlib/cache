@@ -1,11 +1,10 @@
-object CompilerArguments {
-    const val inlineClasses = "-XXLanguage:+InlineClasses"
-    const val coroutines = "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-    const val time = "-Xopt-in=kotlin.time.ExperimentalTime"
-    const val stdLib = "-Xopt-in=kotlin.ExperimentalStdlibApi"
-    const val optIn = "-Xopt-in=kotlin.RequiresOptIn"
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+object OptIns {
+    const val coroutines = "kotlinx.coroutines.ExperimentalCoroutinesApi"
+    const val serialization = "kotlinx.serialization.ExperimentalSerializationApi"
 }
 
 object Jvm {
-    const val target = "1.8"
+    val target = JvmTarget.JVM_1_8
 }
