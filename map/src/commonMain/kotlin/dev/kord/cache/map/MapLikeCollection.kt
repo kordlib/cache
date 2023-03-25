@@ -80,9 +80,7 @@ interface MapLikeCollection<KEY, VALUE> {
             }
 
             override fun values(): Flow<VALUE> = flow {
-                if (map.isNotEmpty()) {
-                    map.values.toList().forEach { emit(it) }
-                }
+                ArrayList(map.values).forEach { emit(it) }
             }
 
             override suspend fun clear() = map.clear()
