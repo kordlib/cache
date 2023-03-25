@@ -10,7 +10,8 @@ fun MavenPublication.addDokkaIfNeeded() {
         val platform = name.substringAfterLast('-')
         val dokkaJar = tasks.register("${platform}DokkaJar", Jar::class) {
             dependsOn("dokkaHtml")
-            archiveClassifier.set("$platform-javadoc")
+            archiveClassifier.set("javadoc")
+            destinationDirectory.set(buildDir.resolve(platform))
             from(tasks.getByName("dokkaHtml"))
         }
         artifact(dokkaJar)
@@ -60,15 +61,16 @@ publishing {
                 }
             }
 
-            if (!isJitPack) {
-                repositories {
-                    maven {
-                        url = uri(if (Library.isSnapshot) Repo.snapshotsUrl else Repo.releasesUrl)
+        }
 
-                        credentials {
-                            username = System.getenv("NEXUS_USER")
-                            password = System.getenv("NEXUS_PASSWORD")
-                        }
+        if (!isJitPack) {
+            repositories {
+                maven {
+                    url = uri(if (Library.isSnapshot) Repo.snapshotsUrl else Repo.releasesUrl)
+
+                    credentials {
+                        username = System.getenv("NEXUS_USER")
+                        password = System.getenv("NEXUS_PASSWORD")
                     }
                 }
             }
