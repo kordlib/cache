@@ -60,15 +60,16 @@ publishing {
                 }
             }
 
-            if (!isJitPack) {
-                repositories {
-                    maven {
-                        url = uri(if (Library.isSnapshot) Repo.snapshotsUrl else Repo.releasesUrl)
+        }
 
-                        credentials {
-                            username = System.getenv("NEXUS_USER")
-                            password = System.getenv("NEXUS_PASSWORD")
-                        }
+        if (!isJitPack) {
+            repositories {
+                maven {
+                    url = uri(if (Library.isSnapshot) Repo.snapshotsUrl else Repo.releasesUrl)
+
+                    credentials {
+                        username = System.getenv("NEXUS_USER")
+                        password = System.getenv("NEXUS_PASSWORD")
                     }
                 }
             }
