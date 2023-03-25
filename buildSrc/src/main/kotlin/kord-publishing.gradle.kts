@@ -1,17 +1,18 @@
-import java.util.Base64
+import java.util.*
+
 plugins {
     `maven-publish`
     signing
 }
 
-if(tasks.findByName("dokkaHtml") != null) {
-    val dokkaJar by tasks.registering(Jar::class) {
-        group = JavaBasePlugin.DOCUMENTATION_GROUP
-        description = "Assembles Kotlin docs with Dokka"
-        archiveClassifier.set("javadoc")
-        from(tasks.getByName("dokkaHtml"))
-    }
-    publishing.publications.withType<MavenPublication> {
+fun MavenPublication.addDokkaIfNeeded() {
+    if (tasks.findByName("dokkaHtml") != null) {
+        val platform = name.substringAfterLast('-')
+        val dokkaJar = tasks.register("${platform}DokkaJar", Jar::class) {
+            dependsOn("dokkaHtml")
+            archiveClassifier.set("$platform-javadoc")
+            from(tasks.getByName("dokkaHtml"))
+        }
         artifact(dokkaJar)
     }
 }
@@ -19,6 +20,7 @@ if(tasks.findByName("dokkaHtml") != null) {
 publishing {
     publications {
         withType<MavenPublication> {
+            addDokkaIfNeeded()
             groupId = Library.group
             artifactId = "cache-${artifactId}"
             version = Library.version
