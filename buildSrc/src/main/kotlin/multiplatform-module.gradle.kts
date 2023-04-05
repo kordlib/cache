@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     org.jetbrains.kotlin.multiplatform
@@ -18,6 +17,7 @@ kotlin {
         nodejs()
         browser()
     }
+    mingwX64()
 }
 
 tasks {
