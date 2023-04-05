@@ -4,9 +4,9 @@ import dev.kord.cache.api.DataCache
 import dev.kord.cache.api.DataEntryCache
 import dev.kord.cache.api.data.DataDescription
 import dev.kord.cache.api.delegate.DelegatingDataCache
-import dev.kord.cache.api.delegate.DelegatingDataCache.Companion.Builder
 import dev.kord.cache.api.delegate.EntrySupplier
 import dev.kord.cache.map.internal.MapEntryCache
+import dev.kord.cache.api.ConcurrentHashMap
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 

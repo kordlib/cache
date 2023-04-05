@@ -1,92 +1,50 @@
-import java.util.*
-
 plugins {
-    `maven-publish`
-    signing
+    id("com.vanniktech.maven.publish.base")
+    dev.kord.`gradle-tools`
 }
 
-fun MavenPublication.addDokkaIfNeeded() {
-    if (tasks.findByName("dokkaHtml") != null) {
-        val platform = name.substringAfterLast('-')
-        val dokkaJar = tasks.register("${platform}DokkaJar", Jar::class) {
-            dependsOn("dokkaHtml")
-            archiveClassifier.set("javadoc")
-            destinationDirectory.set(buildDir.resolve(platform))
-            from(tasks.getByName("dokkaHtml"))
-        }
-        artifact(dokkaJar)
-    }
+kord {
+    publicationName = "mavenCentral"
 }
 
-publishing {
-    publications {
-        withType<MavenPublication> {
-            addDokkaIfNeeded()
-            groupId = Library.group
-            artifactId = "cache-${artifactId}"
-            version = Library.version
+mavenPublishing {
+    coordinates(Library.group, "cache-${project.name}", project.version.toString())
+    publishToMavenCentral(automaticRelease = true)
+    signAllPublications()
 
-            pom {
-                name.set(Library.name)
-                description.set(Library.description)
-                url.set(Library.projectUrl)
+    pom {
+        name = Library.name
+        description = Library.description
+        url = "https://github.com/kordlib/cache"
 
-                organization {
-                    name.set("Kord")
-                    url.set("https://github.com/kordlib")
-                }
-
-                developers {
-                    developer {
-                        name.set("The Kord Team")
-                    }
-                }
-
-                issueManagement {
-                    system.set("GitHub")
-                    url.set("https://github.com/kordlib/kord/issues")
-                }
-
-                licenses {
-                    license {
-                        name.set("MIT")
-                        url.set("http://opensource.org/licenses/MIT")
-                    }
-                }
-
-                scm {
-                    connection.set("scm:git:ssh://github.com/kordlib/kord.git")
-                    developerConnection.set("scm:git:ssh://git@github.com:kordlib/kord.git")
-                    url.set(Library.projectUrl)
-                }
-            }
-
+        organization {
+            name = "Kord"
+            url = "https://github.com/kordlib"
         }
 
-        if (!isJitPack) {
-            repositories {
-                maven {
-                    url = uri(if (Library.isSnapshot) Repo.snapshotsUrl else Repo.releasesUrl)
-
-                    credentials {
-                        username = System.getenv("NEXUS_USER")
-                        password = System.getenv("NEXUS_PASSWORD")
-                    }
-                }
+        developers {
+            developer {
+                name = "The Kord Team"
             }
         }
-    }
-}
 
-if (!isJitPack && Library.isRelease) {
-    signing {
-        val signingKey = findProperty("signingKey")?.toString()
-        val signingPassword = findProperty("signingPassword")?.toString()
-        if (signingKey != null && signingPassword != null) {
-            useInMemoryPgpKeys(String(Base64.getDecoder().decode(signingKey)), signingPassword)
-            publishing.publications.withType<MavenPublication> {
-                sign(this)
+        issueManagement {
+            system = "GitHub"
+            url = "https://github.com/kordlib/cache/issues"
+        }
+
+        licenses {
+            license {
+                name = "MIT"
+                url = "https://opensource.org/licenses/MIT"
+                distribution = "https://github.com/kordlib/cache/blob/LICENSE"
             }
+        }
+
+        scm {
+            connection = "scm:git:ssh://github.com/kordlib/cache.git"
+            developerConnection = "scm:git:ssh://git@github.com:kordlib/cache.git"
+            url = "https://github.com/kordlib/cache"
         }
     }
 }

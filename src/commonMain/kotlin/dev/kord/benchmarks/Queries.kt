@@ -1,6 +1,6 @@
 package dev.kord.benchmarks
 
-import co.touchlab.stately.collections.ConcurrentMutableMap
+import dev.kord.cache.api.ConcurrentHashMap
 import dev.kord.cache.api.DataCache
 import dev.kord.cache.api.data.description
 import dev.kord.cache.api.put
@@ -25,7 +25,7 @@ open class Queries {
     @Setup
     fun setup() = runTest {
         cache = MapDataCache()
-        map = ConcurrentMutableMap()
+        map = ConcurrentHashMap()
 
         cache.register(Data.description)
         val random = Random(seed)

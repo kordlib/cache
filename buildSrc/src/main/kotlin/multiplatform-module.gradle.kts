@@ -1,53 +1,71 @@
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinMultiplatform
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     org.jetbrains.kotlin.multiplatform
     org.jetbrains.kotlinx.`binary-compatibility-validator`
     org.jetbrains.dokka
+    id("com.vanniktech.maven.publish.base")
 }
 
+@OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
+    applyDefaultHierarchyTemplate {
+        common {
+            group("nonJvm") {
+                withJs()
+                withNative()
+            }
+        }
+    }
+
     jvm {
         compilations.all {
-            compilerOptions.options.jvmTarget.set(Jvm.target)
+            compilerOptions.configure {
+                jvmTarget = JvmTarget.JVM_1_8
+            }
         }
     }
 
     js(IR) {
-        nodejs()
         browser()
+        nodejs()
     }
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
+    linuxX64()
+    linuxArm64()
+
+    mingwX64()
+
+    macosX64()
+    macosArm64()
+
+    iosArm64()
+    iosX64()
+    iosSimulatorArm64()
+
+    watchosX64()
+    watchosArm64()
+    watchosSimulatorArm64()
+
+    tvosX64()
+    tvosArm64()
+    tvosSimulatorArm64()
 }
 
 tasks {
     getByName<KotlinJvmTest>("jvmTest") {
         useJUnitPlatform()
     }
+}
 
-    dokkaHtml {
-        configure {
-            dokkaSourceSets {
-                val map = asMap
-
-                if (map.containsKey("jsMain")) {
-                    named("jsMain") {
-                        displayName.set("JS")
-                    }
-                }
-
-                if (map.containsKey("jvmMain")) {
-                    named("jvmMain") {
-                        displayName.set("JVM")
-                    }
-                }
-
-                if (map.containsKey("commonMain")) {
-                    named("jvmMain") {
-                        displayName.set("Common")
-                    }
-                }
-            }
-        }
-    }
+mavenPublishing {
+    configure(KotlinMultiplatform(JavadocJar.Dokka("dokkaHtml")))
 }

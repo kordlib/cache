@@ -1,10 +1,16 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-@Suppress("DSL_SCOPE_VIOLATION") // false positive for `libs` in IntelliJ
 plugins {
     `jvm-module`
-    `kord-publishing`
     alias(libs.plugins.koltin.serialization)
+    `kord-publishing`
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_1_8
+    }
 }
 
 dependencies {
@@ -21,7 +27,7 @@ dependencies {
 tasks {
     withType<KotlinCompile> {
         compilerOptions {
-            freeCompilerArgs.add("-opt-in=${OptIns.serialization}")
+            optIn.add(OptIns.serialization)
         }
     }
 }
