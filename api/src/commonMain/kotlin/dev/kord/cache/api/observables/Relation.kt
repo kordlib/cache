@@ -1,4 +1,4 @@
-package dev.kord.core.cache.api
+package dev.kord.cache.api.observables
 
 /**
  * A typealias for a function that determines the relationship between two entities of type `T` and `R`
@@ -22,14 +22,8 @@ public interface Relation<T: Any> {
      *
      * @param value the entity to remove from the relation.
      */
-    public fun discard(value: T)
+    public suspend fun discard(value: T)
 
-    /**
-     * Returns the typed cache associated with this relation.
-     *
-     * @return the typed cache associated with this relation.
-     */
-    public fun getCaches(): TypedCache
 
     /**
      * Associates an [EntryCache] of type `T` with this relation.
@@ -37,5 +31,5 @@ public interface Relation<T: Any> {
      * @param cache the cache to associate with this relation.
      * @param handler the `RelationHandler` that defines the relationship between entities of type `T` and `R`.
      */
-    public fun <R: Any> to(cache: EntryCache<R>, handler: RelationHandler<T, R>)
+    public suspend fun <R: Any> to(cache: EntryCache<R>, handler: RelationHandler<T, R>)
 }
