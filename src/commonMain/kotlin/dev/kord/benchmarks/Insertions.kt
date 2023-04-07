@@ -1,6 +1,6 @@
 package dev.kord.benchmarks
 
-import co.touchlab.stately.collections.ConcurrentMutableMap
+import dev.kord.cache.api.ConcurrentHashMap
 import dev.kord.cache.api.DataCache
 import dev.kord.cache.api.data.description
 import dev.kord.cache.api.put
@@ -17,7 +17,7 @@ import kotlin.random.Random
 open class Insertions {
 
     lateinit var cache: DataCache
-    lateinit var map: ConcurrentMutableMap<Long, Data>
+    lateinit var map: ConcurrentHashMap<Long, Data>
     lateinit var random: Random
 
     @Setup
@@ -25,7 +25,7 @@ open class Insertions {
         cache = MapDataCache()
         cache.register(Data.description)
         random = Random(1337)
-        map = ConcurrentMutableMap()
+        map = ConcurrentHashMap()
     }
 
     @Benchmark
