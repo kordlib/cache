@@ -1,6 +1,5 @@
 plugins {
     `multiplatform-module`
-    `kord-publishing`
 }
 
 kotlin {

@@ -1,53 +1,37 @@
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
+import dev.kord.gradle.model.*
+import dev.kord.gradle.model.targets.*
+import dev.kord.gradle.model.targets.native.*
 
 plugins {
     org.jetbrains.kotlin.multiplatform
     org.jetbrains.kotlinx.`binary-compatibility-validator`
     org.jetbrains.dokka
+    dev.kord.`kotlin-multiplatform-plugin`
 }
 
 kotlin {
-    jvm {
-        compilations.all {
-            compilerOptions.options.jvmTarget.set(Jvm.target)
+    configureTargets {
+        jvm {
+            kotlinCompile {
+                jvmTarget.set(Jvm.target)
+            }
+        }
+        group("nonJvm") {
+            fullJs()
+            mingwX64()
+            linuxX64()
+            darwin()
         }
     }
+}
 
-    js(IR) {
-        nodejs()
-        browser()
-    }
-    mingwX64()
+kotlinMultiplatformProject {
+    configure()
 }
 
 tasks {
     getByName<KotlinJvmTest>("jvmTest") {
         useJUnitPlatform()
-    }
-
-    dokkaHtml {
-        configure {
-            dokkaSourceSets {
-                val map = asMap
-
-                if (map.containsKey("jsMain")) {
-                    named("jsMain") {
-                        displayName.set("JS")
-                    }
-                }
-
-                if (map.containsKey("jvmMain")) {
-                    named("jvmMain") {
-                        displayName.set("JVM")
-                    }
-                }
-
-                if (map.containsKey("commonMain")) {
-                    named("jvmMain") {
-                        displayName.set("Common")
-                    }
-                }
-            }
-        }
     }
 }

@@ -23,6 +23,8 @@ import kotlin.test.assertFailsWith
 
 const val SHORT_DISPLAY_NAME: String = "repetition {currentRepetition} of {totalRepetitions}"
 
+@OptIn(ExperimentalMultiplatform::class)
+@OptionalExpectation
 expect annotation class RepeatedTest(val value: Int, val name: String)
 
 @Serializable

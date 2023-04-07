@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 @Suppress("DSL_SCOPE_VIOLATION") // false positive for `libs` in IntelliJ
 plugins {
     `jvm-module`
-    `kord-publishing`
     alias(libs.plugins.koltin.serialization)
 }
 

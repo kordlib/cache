@@ -1,8 +1,8 @@
-plugins {
+ plugins {
     `multiplatform-module`
     `kotlinx-atomicfu`
-    `kord-publishing`
 }
+
 kotlin {
     sourceSets {
         all {
@@ -13,7 +13,6 @@ kotlin {
             dependencies {
                 api(libs.kotlin.logging)
                 api(libs.kotlinx.coroutines)
-                api(libs.bundles.stately)
 
                 compileOnly(libs.kotlinx.atomicfu)
             }
@@ -22,6 +21,12 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(libs.bundles.test.common)
+            }
+        }
+
+        nonJvmMain {
+            dependencies {
+                implementation(libs.bundles.stately)
             }
         }
 

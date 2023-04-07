@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import gradle.kotlin.dsl.accessors._2b10aabb5184152b7fe73b0cdbb3f895.kotlinMultiplatformProject
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -6,6 +6,7 @@ plugins {
     org.jetbrains.kotlinx.`binary-compatibility-validator`
     org.jetbrains.dokka
     `maven-publish`
+    dev.kord.`kotlin-multiplatform-plugin`
 }
 
 tasks {
@@ -24,6 +25,10 @@ tasks {
             jvmTarget.set(Jvm.target)
         }
     }
+}
+
+kotlinMultiplatformProject {
+    configure()
 }
 
 publishing {
