@@ -19,5 +19,5 @@ public interface TypedCache {
     /**
      * Returns a [Set] of all the [EntryCache]s stored in this [TypedCache].
      */
-    public suspend fun <T: Any> toSet(): Set<EntryCache<T>>
+    public suspend fun toSet(): Set<EntryCache<*>>
 }
