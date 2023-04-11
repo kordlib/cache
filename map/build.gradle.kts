@@ -1,5 +1,6 @@
 plugins {
     `multiplatform-module`
+    `maven-publish`
 }
 
 kotlin {

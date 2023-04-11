@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     `jvm-module`
     alias(libs.plugins.koltin.serialization)
+    `maven-publish`
 }
 
 dependencies {
