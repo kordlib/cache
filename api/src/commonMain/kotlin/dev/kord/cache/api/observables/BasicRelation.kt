@@ -9,6 +9,9 @@ class BasicRelation<T: Any> : Relation<T> {
                relations.any { relateTo -> relateTo(value, friend) }
             }
         }
+        relations.onEach { relatesTo ->
+            caches.onEach { other -> other.discardIf { friend -> relatesTo(value, friend) } }
+        }
     }
 
     override suspend fun <R : Any> to(cache: EntryCache<R>, handler: RelationHandler<T, R>) {

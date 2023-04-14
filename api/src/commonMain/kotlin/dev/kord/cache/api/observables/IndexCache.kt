@@ -41,6 +41,7 @@ public class IndexCache<Value : Any>(
      */
     override suspend fun discardIf(transform: (Value) -> Boolean) {
         val value = get(transform) ?: return
+        relation.discard(value)
         val index = indexFactory.createIndexFor(value)
         source.remove(index)
     }
