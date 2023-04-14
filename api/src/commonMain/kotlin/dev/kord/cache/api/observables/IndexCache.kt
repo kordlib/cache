@@ -1,5 +1,7 @@
 package dev.kord.cache.api.observables
 
+import co.touchlab.stately.collections.ConcurrentMutableMap
+
 /**
  * An implementation of the [EntryCache] interface that uses an index system based on the [IndexFactory] provided.
  * This implementation is thread-safe.
@@ -12,7 +14,7 @@ public class IndexCache<Value : Any>(
     public val indexFactory: IndexFactory<Value>
 ) : EntryCache<Value> {
 
-    private val source: HashMap<Index, Value> = hashMapOf()
+    private val source: ConcurrentMutableMap<Index, Value> = ConcurrentMutableMap()
 
     /**
      * Gets the value associated with the given [key].
@@ -76,15 +78,15 @@ public class IndexCache<Value : Any>(
         return relation
     }
 
-    override suspend fun <R : Any> relatesTo(cache: EntryCache<R>, handler: RelationHandler<Value, R>) {
-        relation.to(cache, handler)
+    override suspend fun <R : Any> relatesTo(other: EntryCache<R>, handler: RelationHandler<Value, R>) {
+        relation.to(other, handler)
     }
 
 
     /**
-     * Returns a defensive copy of the underlying [ConcurrentMap].
+     * Returns a defensive copy of the underlying [ConcurrentMutableMap].
      *
-     * @return A defensive copy of the underlying [ConcurrentMap].
+     * @return A defensive copy of the underlying [ConcurrentMutableMap].
      */
     override suspend fun asMap(): Map<Index, Value> {
         return source.toMap()
