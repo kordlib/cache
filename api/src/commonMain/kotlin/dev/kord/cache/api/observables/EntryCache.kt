@@ -24,24 +24,24 @@ public interface EntryCache<Value : Any> {
     public suspend fun put(value: Value): Index
 
     /**
-     * Discards any cached [Value] that satisfies the given [transform] function.
+     * removes any cached [Value] that satisfies the given [transform] function.
      */
-    public suspend fun discardIf(transform: (Value) -> Boolean)
+    public suspend fun removeIf(transform: (Value) -> Boolean)
 
     /**
-     * Discards the cached [Value] associated with the given [Index], if it exists.
-     * Returns the discarded [Value], or null if it was not found.
+     * removes the cached [Value] associated with the given [Index], if it exists.
+     * Returns the removeed [Value], or null if it was not found.
      */
-    public suspend fun discard(index: Index): Value?
+    public suspend fun remove(index: Index): Value?
 
     /**
-     * Discards all entries in the cache.
+     * removes all entries in the cache.
      */
-    public suspend fun discardAll()
+    public suspend fun removeAll()
 
     /**
-     * Adds an observer cache to this cache. Whenever a value is discarded from this cache, the
-     * observer cache will also discard any values that are related to it.
+     * Adds an observer cache to this cache. Whenever a value is removeed from this cache, the
+     * observer cache will also remove any values that are related to it.
      */
     public suspend fun <R: Any> relatesTo(other: EntryCache<R>, handler: RelationHandler<Value, R>)
 

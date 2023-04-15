@@ -22,7 +22,7 @@ public interface Relation<T: Any> {
      *
      * @param value the entity to remove from the relation.
      */
-    public suspend fun discard(value: T)
+    public suspend fun remove(value: T)
 
 
     /**

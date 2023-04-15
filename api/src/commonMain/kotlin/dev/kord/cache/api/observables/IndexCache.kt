@@ -7,7 +7,7 @@ import co.touchlab.stately.collections.ConcurrentMutableMap
  * This implementation is thread-safe.
  *
  * @param indexFactory The factory that generates indices for values stored in this cache.
- * @param relation The relation between this cache and other caches, used to discard related entries.
+ * @param relation The relation between this cache and other caches, used to remove related entries.
  */
 public class IndexCache<Value : Any>(
     public val relation: Relation<Value>,
@@ -35,24 +35,24 @@ public class IndexCache<Value : Any>(
     }
 
     /**
-     * Discards all values that match the [transform] function.
+     * removes all values that match the [transform] function.
      *
-     * @param transform The function used to determine which values to discard.
+     * @param transform The function used to determine which values to remove.
      */
-    override suspend fun discardIf(transform: (Value) -> Boolean) {
+    override suspend fun removeIf(transform: (Value) -> Boolean) {
         val value = get(transform) ?: return
-        relation.discard(value)
-        val index = indexFactory.createIndexFor(value)
+        relation.remove(value)
+        val index = indexFactory(value)
         source.remove(index)
     }
 
 
     /**
-     * Discards the value associated with the given [index].
+     * removes the value associated with the given [index].
      *
      * @return The value associated with the given [index], or `null` if not found.
      */
-    override suspend fun discard(index: Index): Value? {
+    override suspend fun remove(index: Index): Value? {
         return source.remove(index)
     }
 
@@ -62,16 +62,16 @@ public class IndexCache<Value : Any>(
      * @return The [Index] associated with the added [value].
      */
     override suspend fun put(value: Value): Index {
-        val index = indexFactory.createIndexFor(value)
+        val index = indexFactory(value)
         source[index] = value
         return index
     }
 
     /**
-     * Discards all entries from this cache.
+     * removes all entries from this cache.
      */
-    override suspend fun discardAll() {
-        source.onEach { relation.discard(it.value) }
+    override suspend fun removeAll() {
+        source.onEach { relation.remove(it.value) }
         source.clear()
     }
 

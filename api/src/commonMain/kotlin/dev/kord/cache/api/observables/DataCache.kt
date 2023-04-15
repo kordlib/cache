@@ -8,13 +8,13 @@ public class DataCache : TypedCache {
     /**
      * The set of [EntryCache]s stored in this [TypedSetCache].
      */
-    private val types: MutableSet<EntryCache<Any>> = mutableSetOf()
+    private val types: MutableSet<EntryCache<*>> = mutableSetOf()
 
     /**
      * Returns the [EntryCache] for the specified type, or `null` if it is not found.
      */
     private suspend fun <T : Any> getTypeOrNull(): EntryCache<T>? {
-        return toSet().filterIsInstance<EntryCache<T>>().singleOrNull()
+        return toSet().firstNotNullOfOrNull { it as? EntryCache<T> }
     }
 
     /**
@@ -33,12 +33,11 @@ public class DataCache : TypedCache {
      */
     override suspend fun <T : Any> putCache(cache: EntryCache<T>) {
         require(getTypeOrNull<T>() == null) { "There must be only one cache of the same type" }
-        @Suppress("UNCHECKED_CAST")
-        types.add(cache as EntryCache<Any>)
+        types.add(cache)
     }
 
     /**
      * Returns a set of all [EntryCache]s stored in this [TypedSetCache].
      */
-    public override suspend fun toSet(): Set<EntryCache<Any>> = types.toSet()
+    public override suspend fun toSet(): Set<EntryCache<*>> = types.toSet()
 }

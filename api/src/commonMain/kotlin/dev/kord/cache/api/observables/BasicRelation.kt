@@ -4,9 +4,9 @@ class BasicRelation<T: Any> : Relation<T> {
     private val relations = mutableSetOf<RelationHandler<T, Any>>()
     private val caches = mutableSetOf<EntryCache<*>>()
 
-    override suspend fun discard(value: T) {
+    override suspend fun remove(value: T) {
         relations.onEach { relatesTo ->
-            caches.onEach { other -> other.discardIf { friend -> relatesTo(value, friend) } }
+            caches.onEach { other -> other.removeIf { friend -> relatesTo(value, friend) } }
         }
     }
 
