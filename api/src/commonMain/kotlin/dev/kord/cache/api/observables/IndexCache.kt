@@ -30,7 +30,7 @@ public class IndexCache<Value : Any>(
      *
      * @return The first value that matches the [transform] function, or `null` if not found.
      */
-    override suspend fun get(transform: (Value) -> Boolean): Value? {
+    override suspend fun firstOrNull(transform: (Value) -> Boolean): Value? {
         return source.values.singleOrNull(transform)
     }
 
@@ -40,7 +40,7 @@ public class IndexCache<Value : Any>(
      * @param transform The function used to determine which values to remove.
      */
     override suspend fun removeIf(transform: (Value) -> Boolean) {
-        val value = get(transform) ?: return
+        val value = firstOrNull(transform) ?: return
         relation.remove(value)
         val index = indexFactory(value)
         source.remove(index)
@@ -75,10 +75,6 @@ public class IndexCache<Value : Any>(
         source.clear()
     }
 
-    override suspend fun getRelations(): Relation<Value> {
-        return relation
-    }
-
     override suspend fun <R : Any> relatesTo(other: EntryCache<R>, handler: RelationHandler<Value, R>) {
         relation.to(other, handler)
     }
@@ -90,6 +86,6 @@ public class IndexCache<Value : Any>(
      * @return A defensive copy of the underlying [ConcurrentMutableMap].
      */
     override suspend fun asMap(): Map<Index, Value> {
-        return source.toMap()
+        return source
     }
 }

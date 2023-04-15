@@ -14,7 +14,7 @@ public interface EntryCache<Value : Any> {
     /**
      * Returns the first [Value] that satisfies the given [transform] function, or null if none is found.
      */
-    public suspend fun get(transform: (Value) -> Boolean): Value?
+    public suspend fun firstOrNull(transform: (Value) -> Boolean): Value?
 
     /**
      * Associates the given [value] with a new [Index] in this cache. If the cache previously contained a
@@ -30,7 +30,7 @@ public interface EntryCache<Value : Any> {
 
     /**
      * removes the cached [Value] associated with the given [Index], if it exists.
-     * Returns the removeed [Value], or null if it was not found.
+     * Returns the removed [Value], or null if it was not found.
      */
     public suspend fun remove(index: Index): Value?
 
@@ -40,16 +40,10 @@ public interface EntryCache<Value : Any> {
     public suspend fun removeAll()
 
     /**
-     * Adds an observer cache to this cache. Whenever a value is removeed from this cache, the
+     * Adds an observer cache to this cache. Whenever a value is removed from this cache, the
      * observer cache will also remove any values that are related to it.
      */
     public suspend fun <R: Any> relatesTo(other: EntryCache<R>, handler: RelationHandler<Value, R>)
-
-    /**
-     * Returns the [Relation] object for this cache, which contains information about any other
-     * caches that are observing this one.
-     */
-    public suspend fun getRelations(): Relation<Value>
 
     /**
      * Returns a defensive copy of the cache entries as a [Map] of [Index] to [Value].
