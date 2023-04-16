@@ -1,52 +1,18 @@
 package dev.kord.cache.api.observables
 
 /**
- * A cache that associates a [Value] with an [Index].
+ * A cache for a single value of type [T].
  */
-public interface EntryCache<Value : Any> {
+public interface EntryCache<T : Any> {
+    /**
+     * Puts the [value] into the cache.
+     * @param value The value to be cached.
+     */
+    public suspend fun put(value: T)
 
     /**
-     * Returns the [Value] associated with the specified [Index] key in this cache, or null if there is no
-     * cached value for the given [Index].
+     * Returns a defensive copy of the cache entries [T].
+     * @return A collection of the cached values.
      */
-    public suspend fun get(key: Index): Value?
-
-    /**
-     * Returns the first [Value] that satisfies the given [transform] function, or null if none is found.
-     */
-    public suspend fun firstOrNull(transform: (Value) -> Boolean): Value?
-
-    /**
-     * Associates the given [value] with a new [Index] in this cache. If the cache previously contained a
-     * value associated with the same [Index], the old value is replaced by [value].
-     * Returns the newly generated [Index] for [value].
-     */
-    public suspend fun put(value: Value): Index
-
-    /**
-     * removes any cached [Value] that satisfies the given [transform] function.
-     */
-    public suspend fun removeIf(transform: (Value) -> Boolean)
-
-    /**
-     * removes the cached [Value] associated with the given [Index], if it exists.
-     * Returns the removed [Value], or null if it was not found.
-     */
-    public suspend fun remove(index: Index): Value?
-
-    /**
-     * removes all entries in the cache.
-     */
-    public suspend fun removeAll()
-
-    /**
-     * Adds an observer cache to this cache. Whenever a value is removed from this cache, the
-     * observer cache will also remove any values that are related to it.
-     */
-    public suspend fun <R: Any> relatesTo(other: EntryCache<R>, handler: RelationHandler<Value, R>)
-
-    /**
-     * Returns a defensive copy of the cache entries as a [Map] of [Index] to [Value].
-     */
-    public suspend fun asMap(): Map<Index, Value>
+    public suspend fun getAll(): Collection<T>
 }

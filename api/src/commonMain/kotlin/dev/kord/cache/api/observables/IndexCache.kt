@@ -6,22 +6,20 @@ import co.touchlab.stately.collections.ConcurrentMutableMap
  * An implementation of the [EntryCache] interface that uses an index system based on the [IndexFactory] provided.
  * This implementation is thread-safe.
  *
- * @param indexFactory The factory that generates indices for values stored in this cache.
  * @param relation The relation between this cache and other caches, used to remove related entries.
  */
-public class IndexCache<Value : Any>(
+public class IndexCache<Key: Any, Value : Any>(
     public val relation: Relation<Value>,
-    public val indexFactory: IndexFactory<Value>
-) : EntryCache<Value> {
+) : MapEntryCache<Key, Value> {
 
-    private val source: ConcurrentMutableMap<Index, Value> = ConcurrentMutableMap()
+    private val source: ConcurrentMutableMap<Key, Value> = ConcurrentMutableMap()
 
     /**
      * Gets the value associated with the given [key].
      *
      * @return The value associated with the given [key], or `null` if not found.
      */
-    override suspend fun get(key: Index): Value? {
+    override suspend fun get(key: Key): Value? {
         return source[key]
     }
 
@@ -31,7 +29,7 @@ public class IndexCache<Value : Any>(
      * @return The first value that matches the [transform] function, or `null` if not found.
      */
     override suspend fun firstOrNull(transform: (Value) -> Boolean): Value? {
-        return source.values.singleOrNull(transform)
+        return source.values.find(transform)
     }
 
     /**
@@ -40,32 +38,25 @@ public class IndexCache<Value : Any>(
      * @param transform The function used to determine which values to remove.
      */
     override suspend fun removeIf(transform: (Value) -> Boolean) {
-        val value = firstOrNull(transform) ?: return
-        relation.remove(value)
-        val index = indexFactory(value)
-        source.remove(index)
+        val entry = source.entries.find { (_, value) ->  transform(value) } ?: return
+        relation.remove(entry.value)
+        source.remove(entry.key)
     }
 
 
     /**
-     * removes the value associated with the given [index].
+     * removes the value associated with the given [key].
      *
-     * @return The value associated with the given [index], or `null` if not found.
+     * @return The value associated with the given [key], or `null` if not found.
      */
-    override suspend fun remove(index: Index): Value? {
-        return source.remove(index)
+    override suspend fun remove(key: Key) {
+        source.remove(key)
     }
 
-    /**
-     * Adds the given [value] to the cache and returns its associated [Index].
-     *
-     * @return The [Index] associated with the added [value].
-     */
-    override suspend fun put(value: Value): Index {
-        val index = indexFactory(value)
-        source[index] = value
-        return index
+    override suspend fun put(key: Key, value: Value) {
+        source[key] = value
     }
+
 
     /**
      * removes all entries from this cache.
@@ -85,7 +76,7 @@ public class IndexCache<Value : Any>(
      *
      * @return A defensive copy of the underlying [ConcurrentMutableMap].
      */
-    override suspend fun asMap(): Map<Index, Value> {
+    override suspend fun getAll(): Map<Key, Value> {
         return source
     }
 }
