@@ -3,14 +3,14 @@ package dev.kord.cache.api.observables
 import co.touchlab.stately.collections.ConcurrentMutableMap
 
 /**
- * An implementation of the [EntryCache] interface that uses an index system based on the [IndexFactory] provided.
+ * An implementation of the [DataCache] with [ConcurrentMutableMap].
  * This implementation is thread-safe.
  *
  * @param relation The relation between this cache and other caches, used to remove related entries.
  */
-public class IndexCache<Key: Any, Value : Any>(
+public class ConcurrentCache<Key: Any, Value : Any>(
     public val relation: Relation<Value>,
-) : MapEntryCache<Key, Value> {
+) : DataCache<Key, Value> {
 
     private val source: ConcurrentMutableMap<Key, Value> = ConcurrentMutableMap()
 
@@ -24,21 +24,21 @@ public class IndexCache<Key: Any, Value : Any>(
     }
 
     /**
-     * Gets the first value that matches the [transform] function.
+     * Gets the first value that matches the [predicate] function.
      *
-     * @return The first value that matches the [transform] function, or `null` if not found.
+     * @return The first value that matches the [predicate] function, or `null` if not found.
      */
-    override suspend fun firstOrNull(transform: (Value) -> Boolean): Value? {
-        return source.values.find(transform)
+    override suspend fun firstOrNull(predicate: (Value) -> Boolean): Value? {
+        return source.values.find(predicate)
     }
 
     /**
-     * removes all values that match the [transform] function.
+     * removes all values that match the [predicate] function.
      *
-     * @param transform The function used to determine which values to remove.
+     * @param predicate The function used to determine which values to remove.
      */
-    override suspend fun removeIf(transform: (Value) -> Boolean) {
-        val entry = source.entries.find { (_, value) ->  transform(value) } ?: return
+    override suspend fun removeIf(predicate: (Value) -> Boolean) {
+        val entry = source.entries.find { (_, value) ->  predicate(value) } ?: return
         relation.remove(entry.value)
         source.remove(entry.key)
     }
@@ -66,7 +66,7 @@ public class IndexCache<Key: Any, Value : Any>(
         source.clear()
     }
 
-    override suspend fun <R : Any> relatesTo(other: EntryCache<R>, handler: RelationHandler<Value, R>) {
+    override suspend fun <R : Any> relatesTo(other: DataCache<*, R>, handler: RelationHandler<Value, R>) {
         relation.to(other, handler)
     }
 

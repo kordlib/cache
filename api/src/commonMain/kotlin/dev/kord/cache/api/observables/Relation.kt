@@ -26,10 +26,10 @@ public interface Relation<T: Any> {
 
 
     /**
-     * Associates an [EntryCache] of type `T` with this relation.
+     * Associates an [DataCache] of type `T` with this relation.
      *
      * @param cache the cache to associate with this relation.
      * @param handler the `RelationHandler` that defines the relationship between entities of type `T` and `R`.
      */
-    public suspend fun <R: Any> to(cache: EntryCache<R>, handler: RelationHandler<T, R>)
+    public suspend fun <R: Any> to(cache: DataCache<*, R>, handler: RelationHandler<T, R>)
 }
