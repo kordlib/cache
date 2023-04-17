@@ -38,8 +38,7 @@ public class ConcurrentCache<Key: Any, Value : Any>(
      * @param predicate The function used to determine which values to remove.
      */
     override suspend fun removeAny(predicate: (Value) -> Boolean) {
-        source.entries
-            .asSequence()
+        source.asSequence()
             .filter { (_, value) -> predicate(value) }
             .forEach { (key, _) -> remove(key) }
     }
