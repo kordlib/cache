@@ -1,16 +1,19 @@
 package dev.kord.cache.api.observables
 
 import co.touchlab.stately.collections.ConcurrentMutableMap
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 
 /**
- * An implementation of the [DataCache] with [ConcurrentMutableMap].
+ * An implementation of the [Cache] with [ConcurrentMutableMap].
  * This implementation is thread-safe.
  *
  * @param relation The relation between this cache and other caches, used to remove related entries.
  */
 public class ConcurrentCache<Key: Any, Value : Any>(
     public val relation: Relation<Value>,
-) : DataCache<Key, Value> {
+) : Cache<Key, Value> {
 
     private val source: ConcurrentMutableMap<Key, Value> = ConcurrentMutableMap()
 
@@ -37,11 +40,18 @@ public class ConcurrentCache<Key: Any, Value : Any>(
      *
      * @param predicate The function used to determine which values to remove.
      */
-    override suspend fun removeIf(predicate: (Value) -> Boolean) {
+    override suspend fun removeAny(predicate: (Value) -> Boolean) {
         val entry = source.entries.find { (_, value) ->  predicate(value) } ?: return
         relation.remove(entry.value)
         source.remove(entry.key)
     }
+
+    override suspend fun filter(predicate: (Value) -> Boolean): Flow<Value> = flow {
+        for(value in source.values) {
+            if(predicate(value)) { emit(value) }
+        }
+    }
+
 
 
     /**
@@ -53,7 +63,7 @@ public class ConcurrentCache<Key: Any, Value : Any>(
         source.remove(key)
     }
 
-    override suspend fun put(key: Key, value: Value) {
+    override suspend fun set(key: Key, value: Value) {
         source[key] = value
     }
 
@@ -66,17 +76,8 @@ public class ConcurrentCache<Key: Any, Value : Any>(
         source.clear()
     }
 
-    override suspend fun <R : Any> relatesTo(other: DataCache<*, R>, handler: RelationHandler<Value, R>) {
+    override suspend fun <R : Any> relatesTo(other: Cache<*, R>, handler: RelationHandler<Value, R>) {
         relation.to(other, handler)
     }
 
-
-    /**
-     * Returns a defensive copy of the underlying [ConcurrentMutableMap].
-     *
-     * @return A defensive copy of the underlying [ConcurrentMutableMap].
-     */
-    override suspend fun getAll(): Map<Key, Value> {
-        return source
-    }
 }

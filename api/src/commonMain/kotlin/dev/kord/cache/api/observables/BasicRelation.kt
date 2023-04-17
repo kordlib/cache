@@ -2,16 +2,16 @@ package dev.kord.cache.api.observables
 
 class BasicRelation<T: Any> : Relation<T> {
     private val relations = mutableSetOf<RelationHandler<T, Any>>()
-    private val caches = mutableSetOf<DataCache<*, T>>()
+    private val caches = mutableSetOf<Cache<*, *>>()
 
     override suspend fun remove(value: T) {
         relations.onEach { relatesTo ->
-            caches.onEach { other -> other.removeIf { friend -> relatesTo(value, friend) } }
+            caches.onEach { other -> other.removeAny { friend -> relatesTo(value, friend) } }
         }
     }
 
-    override suspend fun <R : Any> to(cache: DataCache<*, R>, handler: RelationHandler<T, R>) {
-        caches.add(cache as DataCache<*, T>)
+    override suspend fun <R : Any> to(cache: Cache<*, R>, handler: RelationHandler<T, R>) {
+        caches.add(cache)
         relations.add(safe(handler))
     }
 
@@ -19,8 +19,7 @@ class BasicRelation<T: Any> : Relation<T> {
         return obj@{ value: T, friend: Any ->
             @Suppress("UNCHECKED_CAST")
             val safeCast = friend as? R
-            if(safeCast != null) return@obj relationHandler(value, safeCast)
-            else return@obj false
+            safeCast != null && relationHandler(value, safeCast)
         }
     }
 }

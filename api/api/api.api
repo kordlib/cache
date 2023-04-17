@@ -216,3 +216,137 @@ public final class dev/kord/cache/api/meta/TypeStatisticsLogger {
 	public final fun logQuery ()V
 }
 
+public final class dev/kord/cache/api/observables/BasicRelation : dev/kord/cache/api/observables/Relation {
+	public fun <init> ()V
+	public fun remove (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun to (Ldev/kord/cache/api/observables/Cache;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/kord/cache/api/observables/Cache {
+	public abstract fun filter (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun firstOrNull (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun get (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun relatesTo (Ldev/kord/cache/api/observables/Cache;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun remove (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun removeAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun removeAny (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun set (Ljava/lang/Object;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/kord/cache/api/observables/ConcurrentCache : dev/kord/cache/api/observables/Cache {
+	public fun <init> (Ldev/kord/cache/api/observables/Relation;)V
+	public fun filter (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun firstOrNull (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun get (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getRelation ()Ldev/kord/cache/api/observables/Relation;
+	public fun relatesTo (Ldev/kord/cache/api/observables/Cache;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun remove (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun removeAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun removeAny (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun set (Ljava/lang/Object;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/kord/cache/api/observables/DataCache {
+	public abstract fun firstOrNull (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun get (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun put (Ljava/lang/Object;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun relatesTo (Ldev/kord/cache/api/observables/DataCache;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun remove (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun removeAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun removeIf (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/kord/cache/api/observables/EntryCache {
+	public abstract fun asMap (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun firstOrNull (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun get (Ldev/kord/cache/api/observables/Index;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun put (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun relatesTo (Ldev/kord/cache/api/observables/EntryCache;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun remove (Ldev/kord/cache/api/observables/Index;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun removeAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun removeIf (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/kord/cache/api/observables/Index : java/lang/Comparable {
+	public abstract fun hashCode ()I
+}
+
+public final class dev/kord/cache/api/observables/IndexCache : dev/kord/cache/api/observables/EntryCache {
+	public fun <init> (Ldev/kord/cache/api/observables/Relation;Lkotlin/jvm/functions/Function1;)V
+	public fun asMap (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun firstOrNull (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun get (Ldev/kord/cache/api/observables/Index;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getIndexFactory ()Lkotlin/jvm/functions/Function1;
+	public final fun getRelation ()Ldev/kord/cache/api/observables/Relation;
+	public fun put (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun relatesTo (Ldev/kord/cache/api/observables/EntryCache;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun remove (Ldev/kord/cache/api/observables/Index;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun removeAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun removeIf (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/kord/cache/api/observables/IndexFactory {
+	public abstract fun createIndexFor (Ljava/lang/Object;)Ldev/kord/cache/api/observables/Index;
+}
+
+public final class dev/kord/cache/api/observables/MemberData {
+	public fun <init> (II)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun copy (II)Ldev/kord/cache/api/observables/MemberData;
+	public static synthetic fun copy$default (Ldev/kord/cache/api/observables/MemberData;IIILjava/lang/Object;)Ldev/kord/cache/api/observables/MemberData;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getGuildId ()I
+	public final fun getUserId ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/kord/cache/api/observables/MemberDataIndexFactory : dev/kord/cache/api/observables/IndexFactory {
+	public static final field INSTANCE Ldev/kord/cache/api/observables/MemberDataIndexFactory;
+	public fun createIndexFor (Ldev/kord/cache/api/observables/MemberData;)Ldev/kord/cache/api/observables/Index;
+	public synthetic fun createIndexFor (Ljava/lang/Object;)Ldev/kord/cache/api/observables/Index;
+}
+
+public abstract interface class dev/kord/cache/api/observables/Relation {
+	public abstract fun remove (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun to (Ldev/kord/cache/api/observables/Cache;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/kord/cache/api/observables/SnowflakeSetIndex : dev/kord/cache/api/observables/Index {
+	public fun <init> (Ljava/util/Set;)V
+	public fun compareTo (Ldev/kord/cache/api/observables/Index;)I
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public final fun getSnowflakes ()Ljava/util/Set;
+	public fun hashCode ()I
+}
+
+public final class dev/kord/cache/api/observables/TestKt {
+	public static final fun main (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun main ([Ljava/lang/String;)V
+}
+
+public abstract interface class dev/kord/cache/api/observables/TypedCache {
+	public abstract fun getType (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putCache (Ldev/kord/cache/api/observables/EntryCache;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun toSet (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/kord/cache/api/observables/UserData {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Ldev/kord/cache/api/observables/UserData;
+	public static synthetic fun copy$default (Ldev/kord/cache/api/observables/UserData;IILjava/lang/Object;)Ldev/kord/cache/api/observables/UserData;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getUserId ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/kord/cache/api/observables/UserIndexFactory : dev/kord/cache/api/observables/IndexFactory {
+	public static final field INSTANCE Ldev/kord/cache/api/observables/UserIndexFactory;
+	public fun createIndexFor (Ldev/kord/cache/api/observables/UserData;)Ldev/kord/cache/api/observables/Index;
+	public synthetic fun createIndexFor (Ljava/lang/Object;)Ldev/kord/cache/api/observables/Index;
+}
+
