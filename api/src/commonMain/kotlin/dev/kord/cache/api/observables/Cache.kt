@@ -21,7 +21,7 @@ interface Cache<Key : Any, Value : Any> {
      * Filters [Value]s by the given [predicate]
      * Returns a lazy [Flow] of [Value]s
      */
-    suspend fun filter(predicate: (Value) -> Boolean): Flow<Value>
+    suspend fun filter(predicate: (Value) -> Boolean): Sequence<Value>
 
     /**
      * Sets the [value] into the cache associated with a [key].

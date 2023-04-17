@@ -1,8 +1,6 @@
 package dev.kord.cache.api.observables
 
 import co.touchlab.stately.collections.ConcurrentMutableMap
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 /**
  * An implementation of the [Cache] with [ConcurrentMutableMap].
@@ -46,12 +44,10 @@ public class ConcurrentCache<Key: Any, Value : Any>(
             .forEach { (key, _) -> remove(key) }
     }
 
-    override suspend fun filter(predicate: (Value) -> Boolean): Flow<Value> = flow {
-        for(value in source.values) {
-            if(predicate(value)) { emit(value) }
-        }
-    }
-
+    override suspend fun filter(predicate: (Value) -> Boolean): Sequence<Value> =
+        source.asSequence()
+            .filter { (_, value) -> predicate(value) }
+            .map { it.value }
 
 
     /**
