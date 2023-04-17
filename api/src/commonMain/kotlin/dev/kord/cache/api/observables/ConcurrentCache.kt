@@ -2,7 +2,6 @@ package dev.kord.cache.api.observables
 
 import co.touchlab.stately.collections.ConcurrentMutableMap
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 
 /**
@@ -32,7 +31,7 @@ public class ConcurrentCache<Key: Any, Value : Any>(
      * @return The first value that matches the [predicate] function, or `null` if not found.
      */
     override suspend fun firstOrNull(predicate: (Value) -> Boolean): Value? {
-        return source.values.find(predicate)
+        return source.values.firstOrNull(predicate)
     }
 
     /**
@@ -41,9 +40,10 @@ public class ConcurrentCache<Key: Any, Value : Any>(
      * @param predicate The function used to determine which values to remove.
      */
     override suspend fun removeAny(predicate: (Value) -> Boolean) {
-        val entry = source.entries.find { (_, value) ->  predicate(value) } ?: return
-        relation.remove(entry.value)
-        source.remove(entry.key)
+        source.entries
+            .asSequence()
+            .filter { (_, value) -> predicate(value) }
+            .forEach { (key, _) -> remove(key) }
     }
 
     override suspend fun filter(predicate: (Value) -> Boolean): Flow<Value> = flow {
@@ -60,6 +60,8 @@ public class ConcurrentCache<Key: Any, Value : Any>(
      * @return The value associated with the given [key], or `null` if not found.
      */
     override suspend fun remove(key: Key) {
+        val value = source[key] ?: return
+        relation.remove(value)
         source.remove(key)
     }
 
@@ -72,9 +74,14 @@ public class ConcurrentCache<Key: Any, Value : Any>(
      * removes all entries from this cache.
      */
     override suspend fun removeAll() {
-        source.onEach { relation.remove(it.value) }
-        source.clear()
+        val iterator = source.iterator()
+        while (iterator.hasNext()) {
+            val (_, value) = iterator.next()
+            relation.remove(value)
+            iterator.remove()
+        }
     }
+
 
     override suspend fun <R : Any> relatesTo(other: Cache<*, R>, handler: RelationHandler<Value, R>) {
         relation.to(other, handler)
