@@ -3,8 +3,9 @@ plugins {
 }
 
 mavenPublishing {
+    coordinates(Library.group, "cache-${project.name}", Library.version)
     publishToMavenCentral(automaticRelease = true)
-    //signAllPublications()
+    signAllPublications()
 
     pom {
         name = Library.name
