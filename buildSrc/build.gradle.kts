@@ -1,15 +1,12 @@
 plugins {
-    groovy
     `kotlin-dsl`
 }
 
 repositories {
-    mavenCentral()
     gradlePluginPortal()
+    mavenCentral()
 }
 
 dependencies {
     implementation(libs.bundles.gradlePlugins)
-    implementation(gradleApi())
-    implementation(localGroovy())
 }
