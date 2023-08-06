@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     `jvm-module`
-    `maven-publish`
+    `kord-publishing`
 }
 
 kotlin {

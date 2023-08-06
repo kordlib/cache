@@ -1,10 +1,11 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinJvm
 
 plugins {
     org.jetbrains.kotlin.jvm
     org.jetbrains.kotlinx.`binary-compatibility-validator`
     org.jetbrains.dokka
-    `maven-publish`
+    id("com.vanniktech.maven.publish.base")
 }
 
 tasks {
@@ -17,17 +18,6 @@ tasks {
     }
 }
 
-tasks {
-    withType<KotlinCompile> {
-        compilerOptions {
-            jvmTarget.set(Jvm.target)
-        }
-    }
-}
-
-publishing {
-    publications.register<MavenPublication>(Library.name) {
-        from(components["java"])
-        artifact(tasks.kotlinSourcesJar)
-    }
+mavenPublishing {
+    configure(KotlinJvm(JavadocJar.Dokka("dokkaHtml")))
 }

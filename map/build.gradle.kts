@@ -1,6 +1,6 @@
 plugins {
     `multiplatform-module`
-    `maven-publish`
+    `kord-publishing`
 }
 
 kotlin {
@@ -18,6 +18,12 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(projects.tck)
+            }
+        }
+
+        nonJvmMain {
+            dependencies {
+                implementation(libs.bundles.stately)
             }
         }
 

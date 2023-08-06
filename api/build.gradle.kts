@@ -1,7 +1,7 @@
 plugins {
     `multiplatform-module`
     `kotlinx-atomicfu`
-    `maven-publish`
+    `kord-publishing`
 }
 
 kotlin {

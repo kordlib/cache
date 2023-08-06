@@ -39,6 +39,7 @@ kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-p
 # Do not update until https://github.com/Kotlin/kotlinx-atomicfu/issues/281 is fixed
 binary-compatibility-validator-plugin = { module = "org.jetbrains.kotlinx:binary-compatibility-validator", version = "0.13.2" }
 dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version = "1.8.20" }
+maven-publish-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.25.3" }
 
 [bundles]
 stately = ["stately-collections", "stately-concurrency"]
@@ -48,7 +49,8 @@ gradlePlugins = [
     "atomicfu-plugin",
     "kotlin-gradle-plugin",
     "binary-compatibility-validator-plugin",
-    "dokka-plugin"
+    "dokka-plugin",
+    "maven-publish-plugin"
 ]
 
 [plugins]
