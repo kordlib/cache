@@ -1,5 +1,3 @@
-import dev.kord.gradle.KotlinMultiplatformProjectExtension
-
 /**
  * whether the process has been invoked by JitPack
  */
@@ -17,9 +15,3 @@ object Repo {
     const val snapshotsUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
 }
 
-fun KotlinMultiplatformProjectExtension.configure() {
-    projectName.set(Library.name)
-    description.set(Library.description)
-    snapshotRepository.set(Repo.snapshotsUrl)
-    releaseRepository.set(Repo.releasesUrl)
-}

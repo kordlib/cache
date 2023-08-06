@@ -1,12 +1,11 @@
 [versions]
-coroutines = "1.6.4"
+coroutines = "1.7.3"
 stately = "2.0.0-rc1"
-kotlinx-atomicfu = "0.20.1"
-kotlin = "1.8.10"
-kotlin-serialization = "1.5.0"
-kotlinx-benchmark = "0.4.7"
-jmh = "1.21"
-kord-gradle-plugin = "1.1.0-SNAPSHOT"
+kotlinx-atomicfu = "0.21.0"
+kotlin = "1.9.0"
+kotlin-serialization = "1.6.0-RC"
+kotlinx-benchmark = "0.4.9"
+jmh = "1.37"
 
 [libraries]
 kotlin-logging = { group = "io.github.microutils", name = "kotlin-logging", version = "3.0.5" }
@@ -14,8 +13,8 @@ kotlin-logging = { group = "io.github.microutils", name = "kotlin-logging", vers
 # implementations
 stately-collections = { module = "co.touchlab:stately-concurrent-collections", version.ref = "stately" }
 stately-concurrency = { module = "co.touchlab:stately-concurrency", version.ref = "stately" }
-caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version = "3.1.5" }
-lettuce = { module = "io.lettuce:lettuce-core", version = "6.2.3.RELEASE" }
+caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version = "3.1.7" }
+lettuce = { module = "io.lettuce:lettuce-core", version = "6.2.5.RELEASE" }
 
 
 # tests
@@ -23,7 +22,7 @@ kotlin-test-annotations = { group = "org.jetbrains.kotlin", name = "kotlin-test-
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test-common", version.ref = "kotlin" }
 kotlin-test-js = { group = "org.jetbrains.kotlin", name = "kotlin-test-js", version.ref = "kotlin" }
 kotlin-test-junit5 = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit5", version.ref = "kotlin" }
-embedded-redis = { module = "it.ozimov:embedded-redis", version = "0.7.2" }
+embedded-redis = { module = "it.ozimov:embedded-redis", version = "0.7.3" }
 
 # Kotlinx
 kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
@@ -38,10 +37,8 @@ kotlinx-benchmark = { group = "org.jetbrains.kotlinx", name = "kotlinx-benchmark
 atomicfu-plugin = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "kotlinx-atomicfu" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 # Do not update until https://github.com/Kotlin/kotlinx-atomicfu/issues/281 is fixed
-binary-compatibility-validator-plugin = { module = "org.jetbrains.kotlinx:binary-compatibility-validator", version = "0.12.1" }
-dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version = "1.8.10" }
-kord-plugin = { module = "dev.kord:kotlin-multiplatform-tools", version.ref = "kord-gradle-plugin" }
-
+binary-compatibility-validator-plugin = { module = "org.jetbrains.kotlinx:binary-compatibility-validator", version = "0.13.2" }
+dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version = "1.8.20" }
 
 [bundles]
 stately = ["stately-collections", "stately-concurrency"]
@@ -51,8 +48,7 @@ gradlePlugins = [
     "atomicfu-plugin",
     "kotlin-gradle-plugin",
     "binary-compatibility-validator-plugin",
-    "dokka-plugin",
-    "kord-plugin"
+    "dokka-plugin"
 ]
 
 [plugins]

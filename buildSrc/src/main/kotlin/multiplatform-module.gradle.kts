@@ -1,34 +1,54 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
-import dev.kord.gradle.model.*
-import dev.kord.gradle.model.targets.*
-import dev.kord.gradle.model.targets.native.*
 
 plugins {
     org.jetbrains.kotlin.multiplatform
     org.jetbrains.kotlinx.`binary-compatibility-validator`
     org.jetbrains.dokka
-    dev.kord.`kotlin-multiplatform-plugin`
 }
 
+@OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-    configureTargets {
-        jvm {
-            kotlinCompile {
-                jvmTarget.set(Jvm.target)
+    targetHierarchy.default {
+        common {
+            group("nonJvm") {
+                withJs()
+                withNative()
             }
         }
-        group("nonJvm") {
-            fullJs()
-            mingwX64()
-            linuxX64()
-            darwin()
+    }
+
+    jvm {
+        compilations.all {
+            compilerOptions.configure {
+                jvmTarget = JvmTarget.JVM_1_8
+            }
         }
     }
+
+    js(IR) {
+        browser()
+        nodejs()
+    }
+
+    linuxX64()
+
+    mingwX64()
+
+    iosArm64()
+    iosX64()
+    iosSimulatorArm64()
+
+    watchosX64()
+    watchosArm64()
+    watchosSimulatorArm64()
+
+    tvosX64()
+    tvosArm64()
+    tvosSimulatorArm64()
 }
 
-kotlinMultiplatformProject {
-    configure()
-}
 
 tasks {
     getByName<KotlinJvmTest>("jvmTest") {

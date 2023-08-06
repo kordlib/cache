@@ -1,7 +1,6 @@
 import kotlinx.benchmark.gradle.JvmBenchmarkTarget
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     org.jetbrains.dokka
     org.jetbrains.kotlin.multiplatform
@@ -12,8 +11,6 @@ plugins {
 allprojects {
     repositories {
         mavenCentral()
-        // until Dokka 1.8.0 is released and we no longer need dev builds, see https://github.com/kordlib/kord/pull/755
-        maven("https://maven.pkg.jetbrains.space/kotlin/p/dokka/dev")
     }
 
     group = Library.group

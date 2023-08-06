@@ -4,11 +4,10 @@ plugins {
     `jvm-module`
     `maven-publish`
 }
-tasks {
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11) // Caffeine uses Java 11
-        }
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_11 // Caffeine uses Java 11
     }
 }
 

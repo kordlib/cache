@@ -21,7 +21,7 @@ dependencies {
 tasks {
     withType<KotlinCompile> {
         compilerOptions {
-            freeCompilerArgs.add("-opt-in=${OptIns.serialization}")
+            optIn.add(OptIns.serialization)
         }
     }
 }
