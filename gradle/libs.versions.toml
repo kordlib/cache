@@ -8,14 +8,13 @@ kotlinx-benchmark = "0.4.10"
 jmh = "1.37"
 
 [libraries]
-kotlin-logging = { group = "io.github.microutils", name = "kotlin-logging", version = "3.0.5" }
+kotlin-logging = { group = "io.github.oshai", name = "kotlin-logging", version = "6.0.3" }
 
 # implementations
 stately-collections = { module = "co.touchlab:stately-concurrent-collections", version.ref = "stately" }
 stately-concurrency = { module = "co.touchlab:stately-concurrency", version.ref = "stately" }
-caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version = "3.1.7" }
-lettuce = { module = "io.lettuce:lettuce-core", version = "6.2.5.RELEASE" }
-
+caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version = "3.1.8" }
+lettuce = { module = "io.lettuce:lettuce-core", version = "6.3.1.RELEASE" }
 
 # tests
 kotlin-test-annotations = { group = "org.jetbrains.kotlin", name = "kotlin-test-annotations-common", version.ref = "kotlin" }
