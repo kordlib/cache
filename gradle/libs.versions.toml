@@ -1,10 +1,10 @@
 [versions]
 coroutines = "1.7.3"
-stately = "2.0.0-rc1"
-kotlinx-atomicfu = "0.21.0"
-kotlin = "1.9.0"
-kotlin-serialization = "1.6.0-RC"
-kotlinx-benchmark = "0.4.9"
+stately = "2.0.6"
+kotlinx-atomicfu = "0.23.2"
+kotlin = "1.9.22"
+kotlin-serialization = "1.6.2"
+kotlinx-benchmark = "0.4.10"
 jmh = "1.37"
 
 [libraries]
@@ -36,10 +36,9 @@ kotlinx-benchmark = { group = "org.jetbrains.kotlinx", name = "kotlinx-benchmark
 # plugins
 atomicfu-plugin = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "kotlinx-atomicfu" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-# Do not update until https://github.com/Kotlin/kotlinx-atomicfu/issues/281 is fixed
 binary-compatibility-validator-plugin = { module = "org.jetbrains.kotlinx:binary-compatibility-validator", version = "0.13.2" }
-dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version = "1.8.20" }
-maven-publish-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.25.3" }
+dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version = "1.9.10" }
+maven-publish-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.27.0" }
 
 [bundles]
 stately = ["stately-collections", "stately-concurrency"]
