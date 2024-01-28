@@ -1,9 +1,10 @@
 plugins {
     id("com.vanniktech.maven.publish.base")
+    dev.kord.`gradle-tools`
 }
 
 mavenPublishing {
-    coordinates(Library.group, "cache-${project.name}", Library.version)
+    coordinates(Library.group, "cache-${project.name}", project.version.toString())
     publishToMavenCentral(automaticRelease = true)
     signAllPublications()
 

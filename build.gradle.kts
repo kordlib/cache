@@ -14,7 +14,6 @@ allprojects {
     }
 
     group = Library.group
-    version = Library.version
 }
 
 kotlin {
