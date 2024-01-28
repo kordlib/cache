@@ -9,6 +9,7 @@ jmh = "1.37"
 
 [libraries]
 kotlin-logging = { group = "io.github.oshai", name = "kotlin-logging", version = "6.0.3" }
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version = "2.0.11" }
 
 # implementations
 stately-collections = { module = "co.touchlab:stately-concurrent-collections", version.ref = "stately" }

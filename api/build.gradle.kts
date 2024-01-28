@@ -25,6 +25,12 @@ kotlin {
             }
         }
 
+        jvmMain {
+            dependencies {
+                api(libs.slf4j.api)
+            }
+        }
+
         nonJvmMain {
             dependencies {
                 implementation(libs.bundles.stately)
