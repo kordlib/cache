@@ -1,9 +1,9 @@
 package dev.kord.cache.api
 
 import dev.kord.cache.api.data.DataDescription
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import mu.KotlinLogging
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 

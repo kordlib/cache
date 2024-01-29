@@ -62,7 +62,7 @@ internal class KeyValueQueryBuilder<KEY, VALUE : Any>(
         }
 
         val action = actions.removeAt(index) as Action.SelectByIds
-        actions += Action.SelectByIds(action.keys intersect keys)
+        actions += Action.SelectByIds(action.keys intersect keys.toSet())
     }
 
     private fun addNotId(keys: Iterable<KEY>) {

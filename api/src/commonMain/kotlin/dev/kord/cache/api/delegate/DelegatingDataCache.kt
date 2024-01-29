@@ -1,7 +1,7 @@
 package dev.kord.cache.api.delegate
 
 
-import co.touchlab.stately.collections.ConcurrentMutableMap
+import dev.kord.cache.api.ConcurrentHashMap
 import dev.kord.cache.api.DataCache
 import dev.kord.cache.api.DataEntryCache
 import dev.kord.cache.api.data.DataDescription
@@ -32,7 +32,7 @@ interface EntrySupplier {
  */
 class DelegatingDataCache(private val supplier: EntrySupplier) : DataCache {
 
-    private val caches = ConcurrentMutableMap<KType, DataEntryCache<Any>>()
+    private val caches = ConcurrentHashMap<KType, DataEntryCache<Any>>()
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any> getEntry(type: KType): DataEntryCache<T>? {

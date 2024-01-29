@@ -16,7 +16,7 @@ public final class dev/kord/cache/api/DataCache$DefaultImpls {
 }
 
 public final class dev/kord/cache/api/DataCacheKt {
-	public static final fun getLogger ()Lmu/KLogger;
+	public static final fun getLogger ()Lio/github/oshai/kotlinlogging/KLogger;
 	public static final fun put (Ldev/kord/cache/api/DataCache;Lkotlin/reflect/KType;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
