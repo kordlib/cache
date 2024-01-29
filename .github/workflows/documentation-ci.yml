@@ -11,4 +11,4 @@ jobs:
   docs:
     uses: kordlib/.teamcity/.github/workflows/documentation.yml@main
     with:
-      main-branch: "refs/heads/feature/native"
+      main-branch: "refs/heads/master"
