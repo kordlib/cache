@@ -1,6 +1,5 @@
 package dev.kord.cache.map
 
-import dev.kord.cache.api.ConcurrentHashMap
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
@@ -44,7 +43,7 @@ interface MapLikeCollection<KEY, VALUE> {
         /**
          * Wraps the [map] in a [MapLikeCollection].
          */
-        fun <K, V : Any> concurrentHashMap(map: ConcurrentHashMap<K, V> = ConcurrentHashMap()) = from(map)
+        fun <K, V : Any> concurrentHashMap(map: MutableMap<K, V> = dev.kord.cache.api.concurrentHashMap()) = from(map)
 
         /**
          * Wraps the [map] in a [MapLikeCollection] that ignores inserted values.

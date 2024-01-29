@@ -1,3 +1,7 @@
+public final class dev/kord/cache/api/ConcurrentHashMapKt {
+	public static final fun concurrentHashMap ()Ljava/util/Map;
+}
+
 public abstract interface class dev/kord/cache/api/DataCache {
 	public static final field Companion Ldev/kord/cache/api/DataCache$Companion;
 	public abstract fun getEntry (Lkotlin/reflect/KType;)Ldev/kord/cache/api/DataEntryCache;

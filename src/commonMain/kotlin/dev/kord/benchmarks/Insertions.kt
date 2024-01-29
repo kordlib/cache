@@ -1,7 +1,7 @@
 package dev.kord.benchmarks
 
-import dev.kord.cache.api.ConcurrentHashMap
 import dev.kord.cache.api.DataCache
+import dev.kord.cache.api.concurrentHashMap
 import dev.kord.cache.api.data.description
 import dev.kord.cache.api.put
 import dev.kord.cache.map.MapDataCache
@@ -17,7 +17,7 @@ import kotlin.random.Random
 open class Insertions {
 
     lateinit var cache: DataCache
-    lateinit var map: ConcurrentHashMap<Long, Data>
+    lateinit var map: MutableMap<Long, Data>
     lateinit var random: Random
 
     @Setup
@@ -25,7 +25,8 @@ open class Insertions {
         cache = MapDataCache()
         cache.register(Data.description)
         random = Random(1337)
-        map = ConcurrentHashMap()
+
+        map = concurrentHashMap()
     }
 
     @Benchmark
