@@ -3,6 +3,10 @@ plugins {
     dev.kord.`gradle-tools`
 }
 
+kord {
+    publicationName = "mavenCentral"
+}
+
 mavenPublishing {
     coordinates(Library.group, "cache-${project.name}", project.version.toString())
     publishToMavenCentral(automaticRelease = true)
