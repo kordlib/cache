@@ -30,7 +30,6 @@ kotlin {
             dependencies {
                 implementation(libs.kotlinx.benchmark)
                 implementation(projects.map)
-                implementation(libs.bundles.stately)
                 implementation(libs.kotlinx.coroutines.test)
             }
         }
