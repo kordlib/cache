@@ -11,4 +11,4 @@ jobs:
   mikbot:
     uses: kordlib/.teamcity/.github/workflows/documentation.yml@main
     with:
-      main-branch: "feature/native"
+      main-branch: "refs/heads/feature/native"
