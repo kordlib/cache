@@ -8,8 +8,10 @@ kord {
 }
 
 mavenPublishing {
-    coordinates(Library.group, "cache-${project.name}", project.version.toString())
-    publishToMavenCentral(automaticRelease = true)
+    afterEvaluate {
+        coordinates(Library.group, "cache-${project.name}", project.version.toString())
+    }
+    publishToMavenCentral()
     signAllPublications()
 
     pom {
