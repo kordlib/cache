@@ -35,6 +35,10 @@ kotlin {
         nodejs()
     }
 
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
     linuxX64()
     linuxArm64()
 

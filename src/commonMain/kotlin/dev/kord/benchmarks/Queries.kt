@@ -1,7 +1,10 @@
 package dev.kord.benchmarks
 
-import dev.kord.cache.api.*
+import dev.kord.cache.api.ConcurrentHashMap
+import dev.kord.cache.api.DataCache
 import dev.kord.cache.api.data.description
+import dev.kord.cache.api.put
+import dev.kord.cache.api.query
 import dev.kord.cache.map.MapDataCache
 import kotlinx.benchmark.*
 import kotlinx.coroutines.test.runTest
@@ -22,7 +25,7 @@ open class Queries {
     @Setup
     fun setup() = runTest {
         cache = MapDataCache()
-        map = concurrentHashMap()
+        map = ConcurrentHashMap()
 
         cache.register(Data.description)
         val random = Random(seed)

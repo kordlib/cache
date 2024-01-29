@@ -1,3 +1,3 @@
 package dev.kord.cache.api
 
-expect fun <K, V> concurrentHashMap(): MutableMap<K, V>
+expect class ConcurrentHashMap<K, V>() : MutableMap<K, V>
