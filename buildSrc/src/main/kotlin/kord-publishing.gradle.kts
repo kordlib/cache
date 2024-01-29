@@ -5,6 +5,7 @@ plugins {
 
 kord {
     publicationName = "mavenCentral"
+    mainBranchName = "master"
 }
 
 mavenPublishing {
