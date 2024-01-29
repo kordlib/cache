@@ -1,8 +1,7 @@
 name: Documentation CI
 on:
   push:
-    branches:
-      - main
+  pull_request:
 
 permissions:
   id-token: write
@@ -10,6 +9,6 @@ permissions:
 
 jobs:
   mikbot:
-    uses: kordlib/.teamcity/.github/workflows/deployment-ci.yml@main
+    uses: kordlib/.teamcity/.github/workflows/documentation.yml@main
     with:
       main-branch: "feature/native"
