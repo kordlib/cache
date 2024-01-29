@@ -10,6 +10,6 @@ permissions:
 
 jobs:
   mikbot:
-    uses: kordlib/.teamcity/.github/workflows/documentation.yml@main
+    uses: kordlib/.teamcity/.github/workflows/deployment-ci.yml@main
     with:
       main-branch: "feature/native"
