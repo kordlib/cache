@@ -39,7 +39,7 @@ kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-p
 binary-compatibility-validator-plugin = { module = "org.jetbrains.kotlinx:binary-compatibility-validator", version = "0.14.0" }
 dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version = "1.9.10" }
 maven-publish-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.27.0" }
-kord-gradle-plugin = { module = "dev.kord:gradle-tools", version = "1.2.4" }
+kord-gradle-plugin = { module = "dev.kord:gradle-tools", version = "1.2.5" }
 
 [bundles]
 stately = ["stately-collections", "stately-concurrency"]
