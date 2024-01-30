@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.target.KonanTarget
+
 plugins {
     id("com.vanniktech.maven.publish.base")
     dev.kord.`gradle-tools`
@@ -5,12 +7,12 @@ plugins {
 
 kord {
     publicationName = "mavenCentral"
+    metadataHost = KonanTarget.MACOS_ARM64
 }
 
+
 mavenPublishing {
-    afterEvaluate {
-        coordinates(Library.group, "cache-${project.name}", project.version.toString())
-    }
+    coordinates(Library.group, "cache-${project.name}")
     publishToMavenCentral()
     signAllPublications()
 
