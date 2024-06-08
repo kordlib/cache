@@ -48,4 +48,8 @@ kotlin {
             }
         }
     }
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xdont-warn-on-error-suppression")
+    }
 }
