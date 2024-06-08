@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+
 plugins {
     `multiplatform-module`
     `kotlinx-atomicfu`
@@ -47,5 +49,10 @@ kotlin {
                 implementation(libs.kotlin.test.js)
             }
         }
+    }
+
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        freeCompilerArgs.add("-Xdont-warn-on-error-suppression")
     }
 }

@@ -25,7 +25,7 @@ const val SHORT_DISPLAY_NAME: String = "repetition {currentRepetition} of {total
 
 @OptIn(ExperimentalMultiplatform::class)
 @OptionalExpectation
-expect annotation class RepeatedTest(val value: Int, val name: String)
+expect annotation class RepeatedTest(val value: Int, val name: String, val failureThreshold: Int = Int.MAX_VALUE)
 
 @Serializable
 private data class DataSource1(val id: Long, val fieldOne: String, val fieldTwo: Boolean) {

@@ -1,8 +1,10 @@
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
+import kotlinx.validation.ExperimentalBCVApi
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
+import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeSimulatorTest
 
 plugins {
     org.jetbrains.kotlin.multiplatform
@@ -23,10 +25,8 @@ kotlin {
     }
 
     jvm {
-        compilations.all {
-            compilerOptions.configure {
-                jvmTarget = JvmTarget.JVM_1_8
-            }
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
         }
     }
 
@@ -64,8 +64,18 @@ tasks {
     getByName<KotlinJvmTest>("jvmTest") {
         useJUnitPlatform()
     }
+    withType<KotlinNativeSimulatorTest>() {
+        enabled = false
+    }
 }
 
 mavenPublishing {
     configure(KotlinMultiplatform(JavadocJar.Dokka("dokkaHtml")))
+}
+
+apiValidation {
+    @OptIn(ExperimentalBCVApi::class)
+    klib {
+        enabled = true
+    }
 }
