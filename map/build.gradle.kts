@@ -21,12 +21,6 @@ kotlin {
             }
         }
 
-        nonJvmMain {
-            dependencies {
-                implementation(libs.bundles.stately)
-            }
-        }
-
         jvmTest {
             dependencies {
                 implementation(libs.kotlin.test.junit5)

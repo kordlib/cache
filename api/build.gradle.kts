@@ -35,7 +35,7 @@ kotlin {
 
         nonJvmMain {
             dependencies {
-                implementation(libs.bundles.stately)
+                api(libs.bundles.stately)
             }
         }
 
