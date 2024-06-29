@@ -5,10 +5,8 @@ plugins {
     `kord-publishing`
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.JVM_11 // Caffeine uses Java 11
-    }
+kord {
+    jvmTarget = JvmTarget.JVM_11 // Caffeine uses Java 11
 }
 
 dependencies {

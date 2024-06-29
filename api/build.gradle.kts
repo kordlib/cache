@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
     `multiplatform-module`
-    `kotlinx-atomicfu`
+    org.jetbrains.kotlinx.atomicfu
     `kord-publishing`
 }
 

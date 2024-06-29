@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.KonanTarget
 
 plugins {
@@ -7,7 +8,7 @@ plugins {
 
 kord {
     publicationName = "mavenCentral"
-    metadataHost = KonanTarget.MACOS_ARM64
+    metadataHost = Family.OSX
 }
 
 

@@ -1,9 +1,9 @@
 [versions]
 coroutines = "1.8.1"
 stately = "2.0.7"
-kotlinx-atomicfu = "0.24.0"
+kotlinx-atomicfu = "0.25.0"
 kotlin = "2.0.0"
-kotlin-serialization = "1.7.0"
+kotlin-serialization = "1.7.1"
 kotlinx-benchmark = "0.4.11"
 jmh = "1.37"
 
@@ -39,7 +39,7 @@ kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-p
 binary-compatibility-validator-plugin = { module = "org.jetbrains.kotlinx:binary-compatibility-validator", version = "0.15.0-Beta.2" }
 dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version = "1.9.20" }
 maven-publish-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.28.0" }
-kord-gradle-plugin = { module = "dev.kord:gradle-tools", version = "1.2.5" }
+kord-gradle-plugin = { module = "dev.kord:gradle-tools", version = "1.6.0" }
 
 [bundles]
 stately = ["stately-collections", "stately-concurrency"]
