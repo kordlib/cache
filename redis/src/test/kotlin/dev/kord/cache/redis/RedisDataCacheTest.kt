@@ -9,10 +9,14 @@ import kotlinx.serialization.serializer
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 import redis.embedded.RedisServer
 import redis.embedded.RedisServerBuilder
 import kotlin.concurrent.thread
 
+// Seemingly mac runners have issues
+@DisabledOnOs(OS.MAC)
 class RedisDataCacheTest : DataCacheVerifier() {
 
     lateinit var configuration: RedisConfiguration
