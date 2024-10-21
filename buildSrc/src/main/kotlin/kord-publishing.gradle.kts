@@ -11,7 +11,6 @@ kord {
     metadataHost = Family.OSX
 }
 
-
 mavenPublishing {
     coordinates(Library.group, "cache-${project.name}")
     publishToMavenCentral()

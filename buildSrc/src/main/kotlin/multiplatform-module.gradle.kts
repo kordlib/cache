@@ -70,7 +70,11 @@ tasks {
 }
 
 mavenPublishing {
-    configure(KotlinMultiplatform(JavadocJar.Dokka("dokkaHtml")))
+    configure(KotlinMultiplatform(JavadocJar.Dokka("dokkaGeneratePublicationHtml")))
+}
+
+dokka {
+    configure(project)
 }
 
 apiValidation {

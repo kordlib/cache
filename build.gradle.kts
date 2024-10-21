@@ -36,6 +36,13 @@ kotlin {
     }
 }
 
+dependencies {
+    dokka(projects.api)
+    dokka(projects.caffeine)
+    dokka(projects.map)
+    dokka(projects.redis)
+}
+
 allOpen {
     // Required by JMH
     annotation("org.openjdk.jmh.annotations.State")

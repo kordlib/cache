@@ -12,12 +12,12 @@ tasks {
     test {
         useJUnitPlatform()
     }
+}
 
-    dokkaHtml {
-        configure()
-    }
+dokka {
+    configure(project)
 }
 
 mavenPublishing {
-    configure(KotlinJvm(JavadocJar.Dokka("dokkaHtml")))
+    configure(KotlinJvm(JavadocJar.Dokka("dokkaGeneratePublicationHtml")))
 }
