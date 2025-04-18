@@ -1,5 +1,5 @@
 // Klib ABI Dump
-// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, watchosArm64, watchosSimulatorArm64, watchosX64]
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, watchosArm64, watchosSimulatorArm64, watchosX64]
 // Alias: native => [iosArm64, iosSimulatorArm64, iosX64, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, watchosArm64, watchosSimulatorArm64, watchosX64]
 // Rendering settings:
 // - Signature version: 2
@@ -8,10 +8,16 @@
 
 // Library unique name: <dev.kord.cache:tck>
 abstract class dev.kord.cache.tck/DataCacheVerifier { // dev.kord.cache.tck/DataCacheVerifier|null[0]
-    abstract fun newCache(): dev.kord.cache.api/DataCache // dev.kord.cache.tck/DataCacheVerifier.newCache|newCache(){}[0]
     constructor <init>() // dev.kord.cache.tck/DataCacheVerifier.<init>|<init>(){}[0]
+
+    final val serializers // dev.kord.cache.tck/DataCacheVerifier.serializers|{}serializers[0]
+        final fun <get-serializers>(): kotlin.collections/Map<dev.kord.cache.api.data/DataDescription<*, *>, kotlinx.serialization/KSerializer<*>> // dev.kord.cache.tck/DataCacheVerifier.serializers.<get-serializers>|<get-serializers>(){}[0]
+
+    abstract fun newCache(): dev.kord.cache.api/DataCache // dev.kord.cache.tck/DataCacheVerifier.newCache|newCache(){}[0]
+
     final class Context : kotlinx.coroutines/CoroutineScope { // dev.kord.cache.tck/DataCacheVerifier.Context|null[0]
         constructor <init>(dev.kord.cache.api/DataCache, kotlinx.coroutines/CoroutineScope) // dev.kord.cache.tck/DataCacheVerifier.Context.<init>|<init>(dev.kord.cache.api.DataCache;kotlinx.coroutines.CoroutineScope){}[0]
+
         final val coroutineContext // dev.kord.cache.tck/DataCacheVerifier.Context.coroutineContext|{}coroutineContext[0]
             final fun <get-coroutineContext>(): kotlin.coroutines/CoroutineContext // dev.kord.cache.tck/DataCacheVerifier.Context.coroutineContext.<get-coroutineContext>|<get-coroutineContext>(){}[0]
         final val datacache // dev.kord.cache.tck/DataCacheVerifier.Context.datacache|{}datacache[0]
@@ -19,50 +25,69 @@ abstract class dev.kord.cache.tck/DataCacheVerifier { // dev.kord.cache.tck/Data
         final val scope // dev.kord.cache.tck/DataCacheVerifier.Context.scope|{}scope[0]
             final fun <get-scope>(): kotlinx.coroutines/CoroutineScope // dev.kord.cache.tck/DataCacheVerifier.Context.scope.<get-scope>|<get-scope>(){}[0]
     }
-    final val serializers // dev.kord.cache.tck/DataCacheVerifier.serializers|{}serializers[0]
-        final fun <get-serializers>(): kotlin.collections/Map<dev.kord.cache.api.data/DataDescription<*, *>, kotlinx.serialization/KSerializer<*>> // dev.kord.cache.tck/DataCacheVerifier.serializers.<get-serializers>|<get-serializers>(){}[0]
+
     // Targets: [native]
     final fun concurrent reading and writing should be allowed() // dev.kord.cache.tck/DataCacheVerifier.concurrent reading and writing should be allowed|concurrent reading and writing should be allowed(){}[0]
+
     // Targets: [native]
     final fun cyclical remove should not hang() // dev.kord.cache.tck/DataCacheVerifier.cyclical remove should not hang|cyclical remove should not hang(){}[0]
+
     // Targets: [native]
     final fun delete should cascade() // dev.kord.cache.tck/DataCacheVerifier.delete should cascade|delete should cascade(){}[0]
+
     // Targets: [native]
     final fun delete should not cascade nullable() // dev.kord.cache.tck/DataCacheVerifier.delete should not cascade nullable|delete should not cascade nullable(){}[0]
+
     // Targets: [native]
     final fun insert should be queryable() // dev.kord.cache.tck/DataCacheVerifier.insert should be queryable|insert should be queryable(){}[0]
+
     // Targets: [native]
     final fun removed entry should not be found() // dev.kord.cache.tck/DataCacheVerifier.removed entry should not be found|removed entry should not be found(){}[0]
+
     // Targets: [native]
     final fun runTestWithDataCache(kotlin.coroutines/SuspendFunction1<dev.kord.cache.tck/DataCacheVerifier.Context, kotlin/Unit>) // dev.kord.cache.tck/DataCacheVerifier.runTestWithDataCache|runTestWithDataCache(kotlin.coroutines.SuspendFunction1<dev.kord.cache.tck.DataCacheVerifier.Context,kotlin.Unit>){}[0]
+
     // Targets: [native]
     final fun update should modify correctly() // dev.kord.cache.tck/DataCacheVerifier.update should modify correctly|update should modify correctly(){}[0]
+
     // Targets: [native]
     final fun update that changes identity throws() // dev.kord.cache.tck/DataCacheVerifier.update that changes identity throws|update that changes identity throws(){}[0]
-    // Targets: [js]
-    final fun concurrent reading and writing should be allowed(): kotlin.js/Promise<kotlin/Unit> // dev.kord.cache.tck/DataCacheVerifier.concurrent reading and writing should be allowed|concurrent reading and writing should be allowed(){}[0]
-    // Targets: [js]
-    final fun cyclical remove should not hang(): kotlin.js/Promise<kotlin/Unit> // dev.kord.cache.tck/DataCacheVerifier.cyclical remove should not hang|cyclical remove should not hang(){}[0]
-    // Targets: [js]
-    final fun delete should cascade(): kotlin.js/Promise<kotlin/Unit> // dev.kord.cache.tck/DataCacheVerifier.delete should cascade|delete should cascade(){}[0]
-    // Targets: [js]
-    final fun delete should not cascade nullable(): kotlin.js/Promise<kotlin/Unit> // dev.kord.cache.tck/DataCacheVerifier.delete should not cascade nullable|delete should not cascade nullable(){}[0]
-    // Targets: [js]
-    final fun insert should be queryable(): kotlin.js/Promise<kotlin/Unit> // dev.kord.cache.tck/DataCacheVerifier.insert should be queryable|insert should be queryable(){}[0]
-    // Targets: [js]
-    final fun removed entry should not be found(): kotlin.js/Promise<kotlin/Unit> // dev.kord.cache.tck/DataCacheVerifier.removed entry should not be found|removed entry should not be found(){}[0]
-    // Targets: [js]
-    final fun runTestWithDataCache(kotlin.coroutines/SuspendFunction1<dev.kord.cache.tck/DataCacheVerifier.Context, kotlin/Unit>): kotlin.js/Promise<kotlin/Unit> // dev.kord.cache.tck/DataCacheVerifier.runTestWithDataCache|runTestWithDataCache(kotlin.coroutines.SuspendFunction1<dev.kord.cache.tck.DataCacheVerifier.Context,kotlin.Unit>){}[0]
-    // Targets: [js]
-    final fun update should modify correctly(): kotlin.js/Promise<kotlin/Unit> // dev.kord.cache.tck/DataCacheVerifier.update should modify correctly|update should modify correctly(){}[0]
-    // Targets: [js]
-    final fun update that changes identity throws(): kotlin.js/Promise<kotlin/Unit> // dev.kord.cache.tck/DataCacheVerifier.update that changes identity throws|update that changes identity throws(){}[0]
+
+    // Targets: [js, wasmJs]
+    final fun concurrent reading and writing should be allowed(): kotlinx.coroutines.test.internal/JsPromiseInterfaceForTesting // dev.kord.cache.tck/DataCacheVerifier.concurrent reading and writing should be allowed|concurrent reading and writing should be allowed(){}[0]
+
+    // Targets: [js, wasmJs]
+    final fun cyclical remove should not hang(): kotlinx.coroutines.test.internal/JsPromiseInterfaceForTesting // dev.kord.cache.tck/DataCacheVerifier.cyclical remove should not hang|cyclical remove should not hang(){}[0]
+
+    // Targets: [js, wasmJs]
+    final fun delete should cascade(): kotlinx.coroutines.test.internal/JsPromiseInterfaceForTesting // dev.kord.cache.tck/DataCacheVerifier.delete should cascade|delete should cascade(){}[0]
+
+    // Targets: [js, wasmJs]
+    final fun delete should not cascade nullable(): kotlinx.coroutines.test.internal/JsPromiseInterfaceForTesting // dev.kord.cache.tck/DataCacheVerifier.delete should not cascade nullable|delete should not cascade nullable(){}[0]
+
+    // Targets: [js, wasmJs]
+    final fun insert should be queryable(): kotlinx.coroutines.test.internal/JsPromiseInterfaceForTesting // dev.kord.cache.tck/DataCacheVerifier.insert should be queryable|insert should be queryable(){}[0]
+
+    // Targets: [js, wasmJs]
+    final fun removed entry should not be found(): kotlinx.coroutines.test.internal/JsPromiseInterfaceForTesting // dev.kord.cache.tck/DataCacheVerifier.removed entry should not be found|removed entry should not be found(){}[0]
+
+    // Targets: [js, wasmJs]
+    final fun runTestWithDataCache(kotlin.coroutines/SuspendFunction1<dev.kord.cache.tck/DataCacheVerifier.Context, kotlin/Unit>): kotlinx.coroutines.test.internal/JsPromiseInterfaceForTesting // dev.kord.cache.tck/DataCacheVerifier.runTestWithDataCache|runTestWithDataCache(kotlin.coroutines.SuspendFunction1<dev.kord.cache.tck.DataCacheVerifier.Context,kotlin.Unit>){}[0]
+
+    // Targets: [js, wasmJs]
+    final fun update should modify correctly(): kotlinx.coroutines.test.internal/JsPromiseInterfaceForTesting // dev.kord.cache.tck/DataCacheVerifier.update should modify correctly|update should modify correctly(){}[0]
+
+    // Targets: [js, wasmJs]
+    final fun update that changes identity throws(): kotlinx.coroutines.test.internal/JsPromiseInterfaceForTesting // dev.kord.cache.tck/DataCacheVerifier.update that changes identity throws|update that changes identity throws(){}[0]
 }
+
 final const val dev.kord.cache.tck/SHORT_DISPLAY_NAME // dev.kord.cache.tck/SHORT_DISPLAY_NAME|{}SHORT_DISPLAY_NAME[0]
     final fun <get-SHORT_DISPLAY_NAME>(): kotlin/String // dev.kord.cache.tck/SHORT_DISPLAY_NAME.<get-SHORT_DISPLAY_NAME>|<get-SHORT_DISPLAY_NAME>(){}[0]
-// Targets: [native]
+
+// Targets: [native, wasmJs]
 open annotation class dev.kord.cache.tck/RepeatedTest : kotlin/Annotation { // dev.kord.cache.tck/RepeatedTest|null[1]
     constructor <init>(kotlin/Int, kotlin/String, kotlin/Int = ...) // dev.kord.cache.tck/RepeatedTest.<init>|<init>(kotlin.Int;kotlin.String;kotlin.Int){}[1]
+
     final val failureThreshold // dev.kord.cache.tck/RepeatedTest.failureThreshold|{}failureThreshold[1]
         final fun <get-failureThreshold>(): kotlin/Int // dev.kord.cache.tck/RepeatedTest.failureThreshold.<get-failureThreshold>|<get-failureThreshold>(){}[1]
     final val name // dev.kord.cache.tck/RepeatedTest.name|{}name[1]
@@ -70,9 +95,11 @@ open annotation class dev.kord.cache.tck/RepeatedTest : kotlin/Annotation { // d
     final val value // dev.kord.cache.tck/RepeatedTest.value|{}value[1]
         final fun <get-value>(): kotlin/Int // dev.kord.cache.tck/RepeatedTest.value.<get-value>|<get-value>(){}[1]
 }
+
 // Targets: [js]
 open annotation class dev.kord.cache.tck/RepeatedTest : kotlin/Annotation { // dev.kord.cache.tck/RepeatedTest|null[0]
     constructor <init>(kotlin/Int, kotlin/String, kotlin/Int = ...) // dev.kord.cache.tck/RepeatedTest.<init>|<init>(kotlin.Int;kotlin.String;kotlin.Int){}[0]
+
     final val failureThreshold // dev.kord.cache.tck/RepeatedTest.failureThreshold|{}failureThreshold[0]
         final fun <get-failureThreshold>(): kotlin/Int // dev.kord.cache.tck/RepeatedTest.failureThreshold.<get-failureThreshold>|<get-failureThreshold>(){}[0]
     final val name // dev.kord.cache.tck/RepeatedTest.name|{}name[0]

@@ -49,6 +49,11 @@ kotlin {
                 implementation(libs.kotlin.test.js)
             }
         }
+        wasmJsTest {
+            dependencies {
+                implementation(libs.kotlin.test.wasmJs)
+            }
+        }
     }
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
