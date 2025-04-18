@@ -32,5 +32,11 @@ kotlin {
                 api(libs.kotlin.test.js)
             }
         }
+
+        wasmJsMain {
+            dependencies {
+                api(libs.kotlin.test.wasmJs)
+            }
+        }
     }
 }

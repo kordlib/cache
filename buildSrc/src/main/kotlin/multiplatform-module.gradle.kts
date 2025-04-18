@@ -1,7 +1,10 @@
+@file:OptIn(ExperimentalWasmDsl::class)
+
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import kotlinx.validation.ExperimentalBCVApi
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeSimulatorTest
@@ -19,6 +22,7 @@ kotlin {
         common {
             group("nonJvm") {
                 withJs()
+                withWasmJs()
                 withNative()
             }
         }
@@ -31,6 +35,11 @@ kotlin {
     }
 
     js(IR) {
+        browser()
+        nodejs()
+    }
+
+    wasmJs {
         browser()
         nodejs()
     }
@@ -64,7 +73,7 @@ tasks {
     getByName<KotlinJvmTest>("jvmTest") {
         useJUnitPlatform()
     }
-    withType<KotlinNativeSimulatorTest>() {
+    withType<KotlinNativeSimulatorTest> {
         enabled = false
     }
 }
