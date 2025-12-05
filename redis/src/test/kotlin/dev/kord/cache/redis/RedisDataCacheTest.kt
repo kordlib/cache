@@ -1,65 +1,42 @@
 package dev.kord.cache.redis
 
+import com.redis.testcontainers.RedisContainer
 import dev.kord.cache.api.DataCache
 import dev.kord.cache.api.delegate.DelegatingDataCache
-import dev.kord.cache.tck.DataCacheVerifier
+import dev.kord.cache.tck.TTLDataCacheVerifier
+import io.lettuce.core.RedisClient
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.condition.DisabledOnOs
-import org.junit.jupiter.api.condition.OS
-import redis.embedded.RedisServer
-import redis.embedded.RedisServerBuilder
-import kotlin.concurrent.thread
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 
-// Seemingly mac runners have issues
-@DisabledOnOs(OS.MAC)
-class RedisDataCacheTest : DataCacheVerifier() {
-
-    lateinit var configuration: RedisConfiguration
-
+@Testcontainers
+class RedisDataCacheTest : TTLDataCacheVerifier() {
     companion object {
-        lateinit var server: RedisServer
-
+        @Container
         @JvmStatic
-        @BeforeAll
-        fun beforeAll() {
-            println("starting server...")
-            server = RedisServerBuilder()
-                    .port(6379)
-                    .setting("maxmemory 128M")
-                    .build()
-
-            server.start()
-            Runtime.getRuntime().addShutdownHook(thread(false) {
-                server.stop()
-            })
-        }
-
+        private val redis = RedisContainer("redis:8")
     }
 
     @OptIn(InternalSerializationApi::class)
     override fun newCache(): DataCache {
-        configuration = RedisConfiguration()
+        val configuration = RedisConfiguration {
+            client = RedisClient.create(redis.redisURI)
+        }
+
         return DelegatingDataCache {
             default { cache, description ->
                 @Suppress("UNCHECKED_CAST")
                 RedisEntryCache(
-                        cache,
-                        description,
-                        configuration,
-                        serializers.get<Any,Any>(description.type) as? KSerializer<Any> ?: description.klass.serializer()
+                    cache,
+                    description,
+                    configuration,
+                    serializers.get<Any, Any>(description.type) as? KSerializer<Any> ?: description.klass.serializer()
                 )
             }
         }
     }
 
-    @AfterEach
-    fun tearDown() {
-        configuration.client.shutdown()
-    }
 
 }

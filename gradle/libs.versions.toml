@@ -22,7 +22,8 @@ kotlin-test-annotations = { group = "org.jetbrains.kotlin", name = "kotlin-test-
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test-common", version.ref = "kotlin" }
 kotlin-test-js = { group = "org.jetbrains.kotlin", name = "kotlin-test-js", version.ref = "kotlin" }
 kotlin-test-junit5 = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit5", version.ref = "kotlin" }
-embedded-redis = { module = "it.ozimov:embedded-redis", version = "0.7.3" }
+testcontainers-redis = { module = "com.redis:testcontainers-redis", version = "2.2.2" }
+testcontainers-junit-jupiter = { module = "org.testcontainers:testcontainers-junit-jupiter", version = "2.0.2" }
 
 # Kotlinx
 kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }

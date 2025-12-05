@@ -4,6 +4,7 @@ import dev.kord.cache.api.ConcurrentHashMap
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
+import kotlin.time.Duration
 
 interface MapLikeCollection<KEY, VALUE> {
 
@@ -12,6 +13,9 @@ interface MapLikeCollection<KEY, VALUE> {
     suspend fun contains(key: KEY): Boolean = get(key) != null
 
     suspend fun put(key: KEY, value: VALUE)
+
+    suspend fun put(key: KEY, value: VALUE, ttl: Duration?): Unit =
+        throw UnsupportedOperationException("This implementation does not support TTLs")
 
     fun values(): Flow<VALUE>
 

@@ -21,7 +21,8 @@ dependencies {
     api(libs.kotlinx.coroutines.reactive)
 
     testImplementation(projects.tck)
-    testImplementation(libs.embedded.redis)
+    testImplementation(libs.testcontainers.redis)
+    testImplementation(libs.testcontainers.junit.jupiter)
 }
 
 tasks {

@@ -1,10 +1,9 @@
 package caffeine
 
-import dev.kord.cache.tck.DataCacheVerifier
 import dev.kord.cache.api.DataCache
 import dev.kord.cache.caffeine.CaffeineDataCache
-import org.junit.jupiter.api.BeforeEach
+import dev.kord.cache.tck.TTLDataCacheVerifier
 
-class CaffeineDataCacheTest : DataCacheVerifier() {
+class CaffeineDataCacheTest : TTLDataCacheVerifier() {
     override fun newCache(): DataCache = CaffeineDataCache()
 }

@@ -28,7 +28,7 @@ const val SHORT_DISPLAY_NAME: String = "repetition {currentRepetition} of {total
 expect annotation class RepeatedTest(val value: Int, val name: String, val failureThreshold: Int = Int.MAX_VALUE)
 
 @Serializable
-private data class DataSource1(val id: Long, val fieldOne: String, val fieldTwo: Boolean) {
+internal data class DataSource1(val id: Long, val fieldOne: String, val fieldTwo: Boolean) {
     companion object {
         fun random(): DataSource1 {
             val id = Random.nextLong()

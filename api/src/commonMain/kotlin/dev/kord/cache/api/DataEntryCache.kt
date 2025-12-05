@@ -37,7 +37,7 @@ interface DataEntryCache<VALUE : Any> {
     suspend fun put(items: Flow<VALUE>) = items.collect { put(it) }
 
     companion object {
-        private val empty = object: DataEntryCache<Any> {
+        private val empty = object : DataEntryCache<Any> {
             override suspend fun put(item: Any) {}
             override fun query(): QueryBuilder<Any> = QueryBuilder.none()
         }
@@ -55,28 +55,28 @@ interface DataEntryCache<VALUE : Any> {
  */
 @Deprecated("use query instead", ReplaceWith("query<T>(block)"), DeprecationLevel.WARNING)
 inline fun <reified T : Any> DataEntryCache<T>.find(block: QueryBuilder<T>.() -> Unit = {}) =
-        query().apply(block).build()
+    query().apply(block).build()
 
 /**
  * Creates a new [Query] configured with the [block].
  */
 inline fun <reified T : Any> DataEntryCache<T>.query(block: QueryBuilder<T>.() -> Unit = {}) =
-        query().apply(block).build()
+    query().apply(block).build()
 
 /**
  * Removes all the values that match the [block].
  */
 suspend inline fun <reified T : Any> DataEntryCache<T>.remove(block: QueryBuilder<T>.() -> Unit = {}) =
-        query(block).remove()
+    query(block).remove()
 
 /**
  * Returns the amount of values that match the [block].
  */
 suspend inline fun <reified T : Any> DataEntryCache<T>.count(block: QueryBuilder<T>.() -> Unit = {}) =
-        query(block).count()
+    query(block).count()
 
 /**
  * Executes a query with the [block] and returns the values as a [Flow].
  */
 inline fun <reified T : Any> DataEntryCache<T>.flow(block: QueryBuilder<T>.() -> Unit = {}) =
-        query(block).asFlow()
+    query(block).asFlow()
