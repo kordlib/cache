@@ -7,6 +7,7 @@ import dev.kord.cache.api.annotation.CacheExperimental
 import dev.kord.cache.api.data.DataDescription
 import dev.kord.cache.redis.internal.builder.QueryInfo
 import dev.kord.cache.redis.internal.builder.RedisQueryBuilder
+import io.lettuce.core.api.coroutines
 import kotlinx.coroutines.reactive.awaitSingle
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -27,7 +28,7 @@ class RedisEntryCache<T : Any, I>(
         description = description,
         binarySerializer = configuration.binaryFormat,
         cache = cache,
-        commands = configuration.connection.reactive(),
+        commands = configuration.connection.coroutines(),
         keySerializer = keySerializer,
         valueSerializer = serializer
     )
@@ -38,10 +39,10 @@ class RedisEntryCache<T : Any, I>(
     override suspend fun put(item: T, ttl: Duration?) {
         val key = info.keySerializer(info.description.indexField.property.get(item))
         val value = info.binarySerializer.encodeToByteArray(info.valueSerializer, item)
-        info.commands.hset(info.entryName, key, value).awaitSingle()
+        info.commands.hset(info.entryName, key, value)
 
         if (ttl != null) {
-            info.commands.hexpire(info.entryName, ttl.inWholeSeconds, key).awaitSingle()
+            info.commands.hexpire(info.entryName, ttl.inWholeSeconds, key)
         }
     }
 }

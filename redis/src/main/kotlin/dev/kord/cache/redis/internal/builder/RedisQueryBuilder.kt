@@ -8,6 +8,7 @@ import io.lettuce.core.api.reactive.RedisReactiveCommands
 import io.lettuce.core.cluster.api.reactive.RedisClusterReactiveCommands
 import dev.kord.cache.redis.internal.query.RedisEmptyQuery
 import dev.kord.cache.redis.internal.query.RedisFilterQuery
+import io.lettuce.core.api.coroutines.RedisCoroutinesCommands
 import kotlinx.serialization.BinaryFormat
 import kotlinx.serialization.KSerializer
 import reactor.core.publisher.Flux
@@ -18,7 +19,7 @@ internal class QueryInfo<T : Any, I>(
         val binarySerializer: BinaryFormat,
         val valueSerializer: KSerializer<T>,
         val description: DataDescription<T, I>,
-        val commands: RedisReactiveCommands<ByteArray, ByteArray>,
+        val commands: RedisCoroutinesCommands<ByteArray, ByteArray>,
         val keySerializer: (I) -> ByteArray,
         val cache: DataCache
 )

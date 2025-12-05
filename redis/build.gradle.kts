@@ -10,6 +10,7 @@ plugins {
 kotlin {
     compilerOptions {
         jvmTarget = JvmTarget.JVM_1_8
+        optIn.add("io.lettuce.core.ExperimentalLettuceCoroutinesApi")
     }
 }
 

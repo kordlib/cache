@@ -5,6 +5,7 @@ import dev.kord.cache.api.query
 import dev.kord.cache.redis.internal.builder.QueryInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitLast
 import kotlinx.coroutines.reactive.awaitSingle
@@ -15,13 +16,13 @@ internal class RedisEmptyQuery<T : Any, I>(val info: QueryInfo<T, I>) : Query<T>
         return super.toCollection()
     }
 
-    override suspend fun count(): Long = info.commands.hlen(info.entryName).awaitSingle()
+    override suspend fun count(): Long = info.commands.hlen(info.entryName) ?: 0
 
     override fun asFlow(): Flow<T> =
-            info.commands.hvals(info.entryName).map { info.binarySerializer.decodeFromByteArray(info.valueSerializer, it) }.asFlow()
+            info.commands.hvals(info.entryName).map { info.binarySerializer.decodeFromByteArray(info.valueSerializer, it) }
 
     override suspend fun remove() {
-        info.commands.del(info.entryName).awaitLast()
+        info.commands.del(info.entryName)
         if (info.description.links.isEmpty()) return
 
         info.description.links.forEach { link ->
@@ -42,7 +43,7 @@ internal class RedisEmptyQuery<T : Any, I>(val info: QueryInfo<T, I>) : Query<T>
                         info.entryName,
                         info.keySerializer(info.description.indexField.property.get(new)),
                         info.binarySerializer.encodeToByteArray(info.valueSerializer, new)
-                ).awaitLast()
+                )
             }
         }
     }
