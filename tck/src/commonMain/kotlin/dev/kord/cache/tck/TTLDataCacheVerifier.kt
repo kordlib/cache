@@ -17,7 +17,7 @@ import kotlin.time.Duration.Companion.seconds
 abstract class TTLDataCacheVerifier : DataCacheVerifier() {
     @Test
     @RepeatedTest(10, SHORT_DISPLAY_NAME)
-    @JsName("test8")
+    @JsName("test9")
     fun `test value correctly expires`() = runTestWithDataCache {
         val one = DataSource1.random()
         datacache.register(DataSource1.description)
