@@ -7,7 +7,7 @@ plugins {
 }
 
 kord {
-    publicationName = "mavenCentral"
+    //publicationName = "mavenCentral"
     metadataHost = Family.OSX
 }
 

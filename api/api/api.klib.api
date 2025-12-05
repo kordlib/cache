@@ -6,34 +6,63 @@
 // - Show declarations: true
 
 // Library unique name: <dev.kord.cache:api>
+open annotation class dev.kord.cache.api/CacheExperimental : kotlin/Annotation { // dev.kord.cache.api/CacheExperimental|null[0]
+    constructor <init>() // dev.kord.cache.api/CacheExperimental.<init>|<init>(){}[0]
+}
+
+open annotation class dev.kord.cache.api/Identity : kotlin/Annotation { // dev.kord.cache.api/Identity|null[0]
+    constructor <init>() // dev.kord.cache.api/Identity.<init>|<init>(){}[0]
+}
+
+open annotation class dev.kord.cache.api/Link : kotlin/Annotation { // dev.kord.cache.api/Link|null[0]
+    constructor <init>(kotlin.reflect/KClass<*>, kotlin/String) // dev.kord.cache.api/Link.<init>|<init>(kotlin.reflect.KClass<*>;kotlin.String){}[0]
+
+    final val name // dev.kord.cache.api/Link.name|{}name[0]
+        final fun <get-name>(): kotlin/String // dev.kord.cache.api/Link.name.<get-name>|<get-name>(){}[0]
+    final val to // dev.kord.cache.api/Link.to|{}to[0]
+        final fun <get-to>(): kotlin.reflect/KClass<*> // dev.kord.cache.api/Link.to.<get-to>|<get-to>(){}[0]
+}
+
 abstract interface <#A: kotlin/Any> dev.kord.cache.api/DataEntryCache { // dev.kord.cache.api/DataEntryCache|null[0]
     abstract fun query(): dev.kord.cache.api/QueryBuilder<#A> // dev.kord.cache.api/DataEntryCache.query|query(){}[0]
     abstract suspend fun put(#A) // dev.kord.cache.api/DataEntryCache.put|put(1:0){}[0]
-    final object Companion { // dev.kord.cache.api/DataEntryCache.Companion|null[0]
-        final fun <#A2: kotlin/Any> none(): dev.kord.cache.api/DataEntryCache<#A2> // dev.kord.cache.api/DataEntryCache.Companion.none|none(){0§<kotlin.Any>}[0]
-    }
     open suspend fun put(kotlin.collections/Iterable<#A>) // dev.kord.cache.api/DataEntryCache.put|put(kotlin.collections.Iterable<1:0>){}[0]
     open suspend fun put(kotlin/Array<out #A>...) // dev.kord.cache.api/DataEntryCache.put|put(kotlin.Array<out|1:0>...){}[0]
     open suspend fun put(kotlinx.coroutines.flow/Flow<#A>) // dev.kord.cache.api/DataEntryCache.put|put(kotlinx.coroutines.flow.Flow<1:0>){}[0]
+
+    final object Companion { // dev.kord.cache.api/DataEntryCache.Companion|null[0]
+        final fun <#A2: kotlin/Any> none(): dev.kord.cache.api/DataEntryCache<#A2> // dev.kord.cache.api/DataEntryCache.Companion.none|none(){0§<kotlin.Any>}[0]
+    }
 }
+
+abstract interface <#A: kotlin/Any> dev.kord.cache.api/DataEntryCacheWithTTL : dev.kord.cache.api/DataEntryCache<#A> { // dev.kord.cache.api/DataEntryCacheWithTTL|null[0]
+    abstract suspend fun put(#A, kotlin.time/Duration) // dev.kord.cache.api/DataEntryCacheWithTTL.put|put(1:0;kotlin.time.Duration){}[0]
+    open suspend fun put(#A, kotlin.time/Instant, kotlin.time/Clock = ...) // dev.kord.cache.api/DataEntryCacheWithTTL.put|put(1:0;kotlin.time.Instant;kotlin.time.Clock){}[0]
+    open suspend fun put(kotlin.collections/Iterable<#A>, kotlin.time/Duration) // dev.kord.cache.api/DataEntryCacheWithTTL.put|put(kotlin.collections.Iterable<1:0>;kotlin.time.Duration){}[0]
+    open suspend fun put(kotlin.collections/Iterable<#A>, kotlin.time/Instant, kotlin.time/Clock = ...) // dev.kord.cache.api/DataEntryCacheWithTTL.put|put(kotlin.collections.Iterable<1:0>;kotlin.time.Instant;kotlin.time.Clock){}[0]
+    open suspend fun put(kotlin/Array<out #A>..., kotlin.time/Duration) // dev.kord.cache.api/DataEntryCacheWithTTL.put|put(kotlin.Array<out|1:0>...;kotlin.time.Duration){}[0]
+    open suspend fun put(kotlin/Array<out #A>..., kotlin.time/Instant, kotlin.time/Clock = ...) // dev.kord.cache.api/DataEntryCacheWithTTL.put|put(kotlin.Array<out|1:0>...;kotlin.time.Instant;kotlin.time.Clock){}[0]
+    open suspend fun put(kotlinx.coroutines.flow/Flow<#A>, kotlin.time/Duration) // dev.kord.cache.api/DataEntryCacheWithTTL.put|put(kotlinx.coroutines.flow.Flow<1:0>;kotlin.time.Duration){}[0]
+    open suspend fun put(kotlinx.coroutines.flow/Flow<#A>, kotlin.time/Instant, kotlin.time/Clock = ...) // dev.kord.cache.api/DataEntryCacheWithTTL.put|put(kotlinx.coroutines.flow.Flow<1:0>;kotlin.time.Instant;kotlin.time.Clock){}[0]
+}
+
 abstract interface <#A: kotlin/Any> dev.kord.cache.api/Query { // dev.kord.cache.api/Query|null[0]
     abstract fun asFlow(): kotlinx.coroutines.flow/Flow<#A> // dev.kord.cache.api/Query.asFlow|asFlow(){}[0]
     abstract suspend fun remove() // dev.kord.cache.api/Query.remove|remove(){}[0]
     abstract suspend fun update(kotlin.coroutines/SuspendFunction1<#A, #A>) // dev.kord.cache.api/Query.update|update(kotlin.coroutines.SuspendFunction1<1:0,1:0>){}[0]
-    final object Companion { // dev.kord.cache.api/Query.Companion|null[0]
-        final fun <#A2: kotlin/Any> none(): dev.kord.cache.api/Query<#A2> // dev.kord.cache.api/Query.Companion.none|none(){0§<kotlin.Any>}[0]
-    }
     open suspend fun count(): kotlin/Long // dev.kord.cache.api/Query.count|count(){}[0]
     open suspend fun single(): #A // dev.kord.cache.api/Query.single|single(){}[0]
     open suspend fun singleOrNull(): #A? // dev.kord.cache.api/Query.singleOrNull|singleOrNull(){}[0]
     open suspend fun toCollection(): kotlin.collections/Collection<#A> // dev.kord.cache.api/Query.toCollection|toCollection(){}[0]
+
+    final object Companion { // dev.kord.cache.api/Query.Companion|null[0]
+        final fun <#A2: kotlin/Any> none(): dev.kord.cache.api/Query<#A2> // dev.kord.cache.api/Query.Companion.none|none(){0§<kotlin.Any>}[0]
+    }
 }
+
 abstract interface <#A: kotlin/Any> dev.kord.cache.api/QueryBuilder { // dev.kord.cache.api/QueryBuilder|null[0]
     abstract fun <#A1: kotlin/Any?> (kotlin.reflect/KProperty1<#A, #A1>).predicate(kotlin/Function1<#A1, kotlin/Boolean>) // dev.kord.cache.api/QueryBuilder.predicate|predicate@kotlin.reflect.KProperty1<1:0,0:0>(kotlin.Function1<0:0,kotlin.Boolean>){0§<kotlin.Any?>}[0]
     abstract fun build(): dev.kord.cache.api/Query<#A> // dev.kord.cache.api/QueryBuilder.build|build(){}[0]
-    final object Companion { // dev.kord.cache.api/QueryBuilder.Companion|null[0]
-        final fun <#A2: kotlin/Any> none(): dev.kord.cache.api/QueryBuilder<#A2> // dev.kord.cache.api/QueryBuilder.Companion.none|none(){0§<kotlin.Any>}[0]
-    }
     open fun <#A1: kotlin/Any?> (kotlin.reflect/KProperty1<#A, #A1>).eq(#A1) // dev.kord.cache.api/QueryBuilder.eq|eq@kotlin.reflect.KProperty1<1:0,0:0>(0:0){0§<kotlin.Any?>}[0]
     open fun <#A1: kotlin/Any?> (kotlin.reflect/KProperty1<#A, #A1>).in(kotlin.collections/Iterable<#A1>) // dev.kord.cache.api/QueryBuilder.in|in@kotlin.reflect.KProperty1<1:0,0:0>(kotlin.collections.Iterable<0:0>){0§<kotlin.Any?>}[0]
     open fun <#A1: kotlin/Any?> (kotlin.reflect/KProperty1<#A, #A1>).ne(#A1) // dev.kord.cache.api/QueryBuilder.ne|ne@kotlin.reflect.KProperty1<1:0,0:0>(0:0){0§<kotlin.Any?>}[0]
@@ -45,24 +74,34 @@ abstract interface <#A: kotlin/Any> dev.kord.cache.api/QueryBuilder { // dev.kor
     open fun <#A1: kotlin/Comparable<#A1>> (kotlin.reflect/KProperty1<#A, #A1>).gte(#A1) // dev.kord.cache.api/QueryBuilder.gte|gte@kotlin.reflect.KProperty1<1:0,0:0>(0:0){0§<kotlin.Comparable<0:0>>}[0]
     open fun <#A1: kotlin/Comparable<#A1>> (kotlin.reflect/KProperty1<#A, #A1>).lt(#A1) // dev.kord.cache.api/QueryBuilder.lt|lt@kotlin.reflect.KProperty1<1:0,0:0>(0:0){0§<kotlin.Comparable<0:0>>}[0]
     open fun <#A1: kotlin/Comparable<#A1>> (kotlin.reflect/KProperty1<#A, #A1>).lte(#A1) // dev.kord.cache.api/QueryBuilder.lte|lte@kotlin.reflect.KProperty1<1:0,0:0>(0:0){0§<kotlin.Comparable<0:0>>}[0]
+
+    final object Companion { // dev.kord.cache.api/QueryBuilder.Companion|null[0]
+        final fun <#A2: kotlin/Any> none(): dev.kord.cache.api/QueryBuilder<#A2> // dev.kord.cache.api/QueryBuilder.Companion.none|none(){0§<kotlin.Any>}[0]
+    }
 }
+
 abstract interface dev.kord.cache.api.delegate/EntrySupplier { // dev.kord.cache.api.delegate/EntrySupplier|null[0]
     abstract suspend fun <#A1: kotlin/Any> supply(dev.kord.cache.api/DataCache, dev.kord.cache.api.data/DataDescription<#A1, out kotlin/Any>): dev.kord.cache.api/DataEntryCache<#A1> // dev.kord.cache.api.delegate/EntrySupplier.supply|supply(dev.kord.cache.api.DataCache;dev.kord.cache.api.data.DataDescription<0:0,out|kotlin.Any>){0§<kotlin.Any>}[0]
+
     final object Companion { // dev.kord.cache.api.delegate/EntrySupplier.Companion|null[0]
         final fun invoke(kotlin/Function2<dev.kord.cache.api/DataCache, dev.kord.cache.api.data/DataDescription<kotlin/Any, kotlin/Any>, dev.kord.cache.api/DataEntryCache<*>>): dev.kord.cache.api.delegate/EntrySupplier // dev.kord.cache.api.delegate/EntrySupplier.Companion.invoke|invoke(kotlin.Function2<dev.kord.cache.api.DataCache,dev.kord.cache.api.data.DataDescription<kotlin.Any,kotlin.Any>,dev.kord.cache.api.DataEntryCache<*>>){}[0]
     }
 }
+
 abstract interface dev.kord.cache.api/DataCache { // dev.kord.cache.api/DataCache|null[0]
     abstract fun <#A1: kotlin/Any> getEntry(kotlin.reflect/KType): dev.kord.cache.api/DataEntryCache<#A1>? // dev.kord.cache.api/DataCache.getEntry|getEntry(kotlin.reflect.KType){0§<kotlin.Any>}[0]
     abstract suspend fun register(dev.kord.cache.api.data/DataDescription<out kotlin/Any, out kotlin/Any>) // dev.kord.cache.api/DataCache.register|register(dev.kord.cache.api.data.DataDescription<out|kotlin.Any,out|kotlin.Any>){}[0]
+    open suspend fun register(kotlin.collections/Iterable<dev.kord.cache.api.data/DataDescription<out kotlin/Any, out kotlin/Any>>) // dev.kord.cache.api/DataCache.register|register(kotlin.collections.Iterable<dev.kord.cache.api.data.DataDescription<out|kotlin.Any,out|kotlin.Any>>){}[0]
+    open suspend fun register(kotlin/Array<out dev.kord.cache.api.data/DataDescription<out kotlin/Any, out kotlin/Any>>...) // dev.kord.cache.api/DataCache.register|register(kotlin.Array<out|dev.kord.cache.api.data.DataDescription<out|kotlin.Any,out|kotlin.Any>>...){}[0]
+
     final object Companion { // dev.kord.cache.api/DataCache.Companion|null[0]
         final fun none(): dev.kord.cache.api/DataCache // dev.kord.cache.api/DataCache.Companion.none|none(){}[0]
     }
-    open suspend fun register(kotlin.collections/Iterable<dev.kord.cache.api.data/DataDescription<out kotlin/Any, out kotlin/Any>>) // dev.kord.cache.api/DataCache.register|register(kotlin.collections.Iterable<dev.kord.cache.api.data.DataDescription<out|kotlin.Any,out|kotlin.Any>>){}[0]
-    open suspend fun register(kotlin/Array<out dev.kord.cache.api.data/DataDescription<out kotlin/Any, out kotlin/Any>>...) // dev.kord.cache.api/DataCache.register|register(kotlin.Array<out|dev.kord.cache.api.data.DataDescription<out|kotlin.Any,out|kotlin.Any>>...){}[0]
 }
+
 final class <#A: kotlin/Any, #B: kotlin/Any, #C: kotlin/Any?> dev.kord.cache.api.data/DataLink { // dev.kord.cache.api.data/DataLink|null[0]
     constructor <init>(kotlin.reflect/KProperty1<#A, #C>, kotlin.reflect/KType, kotlin.reflect/KProperty1<#B, #C>) // dev.kord.cache.api.data/DataLink.<init>|<init>(kotlin.reflect.KProperty1<1:0,1:2>;kotlin.reflect.KType;kotlin.reflect.KProperty1<1:1,1:2>){}[0]
+
     final val linkedField // dev.kord.cache.api.data/DataLink.linkedField|{}linkedField[0]
         final fun <get-linkedField>(): kotlin.reflect/KProperty1<#B, #C> // dev.kord.cache.api.data/DataLink.linkedField.<get-linkedField>|<get-linkedField>(){}[0]
     final val source // dev.kord.cache.api.data/DataLink.source|{}source[0]
@@ -70,8 +109,10 @@ final class <#A: kotlin/Any, #B: kotlin/Any, #C: kotlin/Any?> dev.kord.cache.api
     final val target // dev.kord.cache.api.data/DataLink.target|{}target[0]
         final fun <get-target>(): kotlin.reflect/KType // dev.kord.cache.api.data/DataLink.target.<get-target>|<get-target>(){}[0]
 }
+
 final class <#A: kotlin/Any, #B: kotlin/Any?> dev.kord.cache.api.data/DataDescription { // dev.kord.cache.api.data/DataDescription|null[0]
     constructor <init>(kotlin.reflect/KType, kotlin.reflect/KClass<#A>, dev.kord.cache.api.data/IndexField<#A, #B>, kotlin.collections/List<dev.kord.cache.api.data/DataLink<#A, kotlin/Any, kotlin/Any?>> = ...) // dev.kord.cache.api.data/DataDescription.<init>|<init>(kotlin.reflect.KType;kotlin.reflect.KClass<1:0>;dev.kord.cache.api.data.IndexField<1:0,1:1>;kotlin.collections.List<dev.kord.cache.api.data.DataLink<1:0,kotlin.Any,kotlin.Any?>>){}[0]
+
     final val indexField // dev.kord.cache.api.data/DataDescription.indexField|{}indexField[0]
         final fun <get-indexField>(): dev.kord.cache.api.data/IndexField<#A, #B> // dev.kord.cache.api.data/DataDescription.indexField.<get-indexField>|<get-indexField>(){}[0]
     final val klass // dev.kord.cache.api.data/DataDescription.klass|{}klass[0]
@@ -81,37 +122,49 @@ final class <#A: kotlin/Any, #B: kotlin/Any?> dev.kord.cache.api.data/DataDescri
     final val type // dev.kord.cache.api.data/DataDescription.type|{}type[0]
         final fun <get-type>(): kotlin.reflect/KType // dev.kord.cache.api.data/DataDescription.type.<get-type>|<get-type>(){}[0]
 }
+
 final class <#A: kotlin/Any> dev.kord.cache.api.data/LinkBuilder { // dev.kord.cache.api.data/LinkBuilder|null[0]
     constructor <init>(kotlin.collections/MutableList<dev.kord.cache.api.data/DataLink<#A, kotlin/Any, kotlin/Any?>> = ...) // dev.kord.cache.api.data/LinkBuilder.<init>|<init>(kotlin.collections.MutableList<dev.kord.cache.api.data.DataLink<1:0,kotlin.Any,kotlin.Any?>>){}[0]
-    final inline fun <#A1: reified kotlin/Any, #B1: kotlin/Any?> link(kotlin/Pair<kotlin.reflect/KProperty1<#A, #B1>, kotlin.reflect/KProperty1<#A1, #B1>>) // dev.kord.cache.api.data/LinkBuilder.link|link(kotlin.Pair<kotlin.reflect.KProperty1<1:0,0:1>,kotlin.reflect.KProperty1<0:0,0:1>>){0§<kotlin.Any>;1§<kotlin.Any?>}[0]
+
     final val links // dev.kord.cache.api.data/LinkBuilder.links|{}links[0]
         final fun <get-links>(): kotlin.collections/MutableList<dev.kord.cache.api.data/DataLink<#A, kotlin/Any, kotlin/Any?>> // dev.kord.cache.api.data/LinkBuilder.links.<get-links>|<get-links>(){}[0]
+
+    final inline fun <#A1: reified kotlin/Any, #B1: kotlin/Any?> link(kotlin/Pair<kotlin.reflect/KProperty1<#A, #B1>, kotlin.reflect/KProperty1<#A1, #B1>>) // dev.kord.cache.api.data/LinkBuilder.link|link(kotlin.Pair<kotlin.reflect.KProperty1<1:0,0:1>,kotlin.reflect.KProperty1<0:0,0:1>>){0§<kotlin.Any>;1§<kotlin.Any?>}[0]
 }
+
 final class <#A: kotlin/Any?, #B: kotlin/Any?> dev.kord.cache.api.data/IndexField { // dev.kord.cache.api.data/IndexField|null[0]
     constructor <init>(kotlin.reflect/KProperty1<#A, #B>) // dev.kord.cache.api.data/IndexField.<init>|<init>(kotlin.reflect.KProperty1<1:0,1:1>){}[0]
+
     final val property // dev.kord.cache.api.data/IndexField.property|{}property[0]
         final fun <get-property>(): kotlin.reflect/KProperty1<#A, #B> // dev.kord.cache.api.data/IndexField.property.<get-property>|<get-property>(){}[0]
 }
+
 final class dev.kord.cache.api.delegate/DelegatingDataCache : dev.kord.cache.api/DataCache { // dev.kord.cache.api.delegate/DelegatingDataCache|null[0]
     constructor <init>(dev.kord.cache.api.delegate/EntrySupplier) // dev.kord.cache.api.delegate/DelegatingDataCache.<init>|<init>(dev.kord.cache.api.delegate.EntrySupplier){}[0]
+
     final fun <#A1: kotlin/Any> getEntry(kotlin.reflect/KType): dev.kord.cache.api/DataEntryCache<#A1>? // dev.kord.cache.api.delegate/DelegatingDataCache.getEntry|getEntry(kotlin.reflect.KType){0§<kotlin.Any>}[0]
+    final suspend fun register(dev.kord.cache.api.data/DataDescription<out kotlin/Any, out kotlin/Any>) // dev.kord.cache.api.delegate/DelegatingDataCache.register|register(dev.kord.cache.api.data.DataDescription<out|kotlin.Any,out|kotlin.Any>){}[0]
+
     final object Companion { // dev.kord.cache.api.delegate/DelegatingDataCache.Companion|null[0]
+        final inline fun invoke(kotlin/Function1<dev.kord.cache.api.delegate/DelegatingDataCache.Companion.Builder, kotlin/Unit> = ...): dev.kord.cache.api/DataCache // dev.kord.cache.api.delegate/DelegatingDataCache.Companion.invoke|invoke(kotlin.Function1<dev.kord.cache.api.delegate.DelegatingDataCache.Companion.Builder,kotlin.Unit>){}[0]
+
         final class Builder { // dev.kord.cache.api.delegate/DelegatingDataCache.Companion.Builder|null[0]
             constructor <init>() // dev.kord.cache.api.delegate/DelegatingDataCache.Companion.Builder.<init>|<init>(){}[0]
+
+            final val suppliers // dev.kord.cache.api.delegate/DelegatingDataCache.Companion.Builder.suppliers|{}suppliers[0]
+                final fun <get-suppliers>(): kotlin.collections/MutableMap<kotlin.reflect/KType, kotlin/Function2<dev.kord.cache.api/DataCache, dev.kord.cache.api.data/DataDescription<*, *>, dev.kord.cache.api/DataEntryCache<*>>> // dev.kord.cache.api.delegate/DelegatingDataCache.Companion.Builder.suppliers.<get-suppliers>|<get-suppliers>(){}[0]
+
             final fun <#A3: kotlin/Any, #B3: kotlin/Any?> forDescription(dev.kord.cache.api.data/DataDescription<#A3, #B3>, kotlin/Function2<dev.kord.cache.api/DataCache, dev.kord.cache.api.data/DataDescription<#A3, #B3>, dev.kord.cache.api/DataEntryCache<#A3>>) // dev.kord.cache.api.delegate/DelegatingDataCache.Companion.Builder.forDescription|forDescription(dev.kord.cache.api.data.DataDescription<0:0,0:1>;kotlin.Function2<dev.kord.cache.api.DataCache,dev.kord.cache.api.data.DataDescription<0:0,0:1>,dev.kord.cache.api.DataEntryCache<0:0>>){0§<kotlin.Any>;1§<kotlin.Any?>}[0]
             final fun build(): dev.kord.cache.api/DataCache // dev.kord.cache.api.delegate/DelegatingDataCache.Companion.Builder.build|build(){}[0]
             final fun default(kotlin/Function2<dev.kord.cache.api/DataCache, dev.kord.cache.api.data/DataDescription<kotlin/Any, *>, dev.kord.cache.api/DataEntryCache<kotlin/Any>>) // dev.kord.cache.api.delegate/DelegatingDataCache.Companion.Builder.default|default(kotlin.Function2<dev.kord.cache.api.DataCache,dev.kord.cache.api.data.DataDescription<kotlin.Any,*>,dev.kord.cache.api.DataEntryCache<kotlin.Any>>){}[0]
             final inline fun <#A3: reified kotlin/Any> forType(noinline kotlin/Function2<dev.kord.cache.api/DataCache, dev.kord.cache.api.data/DataDescription<#A3, *>, dev.kord.cache.api/DataEntryCache<#A3>>) // dev.kord.cache.api.delegate/DelegatingDataCache.Companion.Builder.forType|forType(kotlin.Function2<dev.kord.cache.api.DataCache,dev.kord.cache.api.data.DataDescription<0:0,*>,dev.kord.cache.api.DataEntryCache<0:0>>){0§<kotlin.Any>}[0]
-            final val suppliers // dev.kord.cache.api.delegate/DelegatingDataCache.Companion.Builder.suppliers|{}suppliers[0]
-                final fun <get-suppliers>(): kotlin.collections/MutableMap<kotlin.reflect/KType, kotlin/Function2<dev.kord.cache.api/DataCache, dev.kord.cache.api.data/DataDescription<*, *>, dev.kord.cache.api/DataEntryCache<*>>> // dev.kord.cache.api.delegate/DelegatingDataCache.Companion.Builder.suppliers.<get-suppliers>|<get-suppliers>(){}[0]
         }
-        final inline fun invoke(kotlin/Function1<dev.kord.cache.api.delegate/DelegatingDataCache.Companion.Builder, kotlin/Unit> = ...): dev.kord.cache.api/DataCache // dev.kord.cache.api.delegate/DelegatingDataCache.Companion.invoke|invoke(kotlin.Function1<dev.kord.cache.api.delegate.DelegatingDataCache.Companion.Builder,kotlin.Unit>){}[0]
     }
-    final suspend fun register(dev.kord.cache.api.data/DataDescription<out kotlin/Any, out kotlin/Any>) // dev.kord.cache.api.delegate/DelegatingDataCache.register|register(dev.kord.cache.api.data.DataDescription<out|kotlin.Any,out|kotlin.Any>){}[0]
 }
+
 final class dev.kord.cache.api.meta/CacheStatistics { // dev.kord.cache.api.meta/CacheStatistics|null[0]
     constructor <init>(kotlin.collections/Map<kotlin.reflect/KType, dev.kord.cache.api.meta/TypeStatistics> = ...) // dev.kord.cache.api.meta/CacheStatistics.<init>|<init>(kotlin.collections.Map<kotlin.reflect.KType,dev.kord.cache.api.meta.TypeStatistics>){}[0]
-    final inline fun <#A1: reified kotlin/Any?> getForType(): dev.kord.cache.api.meta/TypeStatistics? // dev.kord.cache.api.meta/CacheStatistics.getForType|getForType(){0§<kotlin.Any?>}[0]
+
     final val hitRatio // dev.kord.cache.api.meta/CacheStatistics.hitRatio|{}hitRatio[0]
         final fun <get-hitRatio>(): kotlin/Double // dev.kord.cache.api.meta/CacheStatistics.hitRatio.<get-hitRatio>|<get-hitRatio>(){}[0]
     final val hits // dev.kord.cache.api.meta/CacheStatistics.hits|{}hits[0]
@@ -122,25 +175,35 @@ final class dev.kord.cache.api.meta/CacheStatistics { // dev.kord.cache.api.meta
         final fun <get-queries>(): kotlin/Long // dev.kord.cache.api.meta/CacheStatistics.queries.<get-queries>|<get-queries>(){}[0]
     final val typeData // dev.kord.cache.api.meta/CacheStatistics.typeData|{}typeData[0]
         final fun <get-typeData>(): kotlin.collections/Map<kotlin.reflect/KType, dev.kord.cache.api.meta/TypeStatistics> // dev.kord.cache.api.meta/CacheStatistics.typeData.<get-typeData>|<get-typeData>(){}[0]
+
+    final inline fun <#A1: reified kotlin/Any?> getForType(): dev.kord.cache.api.meta/TypeStatistics? // dev.kord.cache.api.meta/CacheStatistics.getForType|getForType(){0§<kotlin.Any?>}[0]
 }
+
 final class dev.kord.cache.api.meta/MetricsCache : dev.kord.cache.api/DataCache { // dev.kord.cache.api.meta/MetricsCache|null[0]
     constructor <init>(dev.kord.cache.api/DataCache, dev.kord.cache.api.meta/StatisticsLogger = ...) // dev.kord.cache.api.meta/MetricsCache.<init>|<init>(dev.kord.cache.api.DataCache;dev.kord.cache.api.meta.StatisticsLogger){}[0]
+
+    final val statistics // dev.kord.cache.api.meta/MetricsCache.statistics|{}statistics[0]
+        final fun <get-statistics>(): dev.kord.cache.api.meta/CacheStatistics // dev.kord.cache.api.meta/MetricsCache.statistics.<get-statistics>|<get-statistics>(){}[0]
+
     final fun <#A1: kotlin/Any> getEntry(kotlin.reflect/KType): dev.kord.cache.api/DataEntryCache<#A1>? // dev.kord.cache.api.meta/MetricsCache.getEntry|getEntry(kotlin.reflect.KType){0§<kotlin.Any>}[0]
     final suspend fun register(dev.kord.cache.api.data/DataDescription<out kotlin/Any, out kotlin/Any>) // dev.kord.cache.api.meta/MetricsCache.register|register(dev.kord.cache.api.data.DataDescription<out|kotlin.Any,out|kotlin.Any>){}[0]
     final suspend fun register(kotlin.collections/Iterable<dev.kord.cache.api.data/DataDescription<out kotlin/Any, out kotlin/Any>>) // dev.kord.cache.api.meta/MetricsCache.register|register(kotlin.collections.Iterable<dev.kord.cache.api.data.DataDescription<out|kotlin.Any,out|kotlin.Any>>){}[0]
     final suspend fun register(kotlin/Array<out dev.kord.cache.api.data/DataDescription<out kotlin/Any, out kotlin/Any>>...) // dev.kord.cache.api.meta/MetricsCache.register|register(kotlin.Array<out|dev.kord.cache.api.data.DataDescription<out|kotlin.Any,out|kotlin.Any>>...){}[0]
-    final val statistics // dev.kord.cache.api.meta/MetricsCache.statistics|{}statistics[0]
-        final fun <get-statistics>(): dev.kord.cache.api.meta/CacheStatistics // dev.kord.cache.api.meta/MetricsCache.statistics.<get-statistics>|<get-statistics>(){}[0]
 }
+
 final class dev.kord.cache.api.meta/StatisticsLogger { // dev.kord.cache.api.meta/StatisticsLogger|null[0]
     constructor <init>() // dev.kord.cache.api.meta/StatisticsLogger.<init>|<init>(){}[0]
-    final fun getForType(kotlin.reflect/KType): dev.kord.cache.api.meta/TypeStatisticsLogger // dev.kord.cache.api.meta/StatisticsLogger.getForType|getForType(kotlin.reflect.KType){}[0]
-    final inline fun <#A1: reified kotlin/Any?> getForType(): dev.kord.cache.api.meta/TypeStatisticsLogger // dev.kord.cache.api.meta/StatisticsLogger.getForType|getForType(){0§<kotlin.Any?>}[0]
+
     final val metaData // dev.kord.cache.api.meta/StatisticsLogger.metaData|{}metaData[0]
         final fun <get-metaData>(): dev.kord.cache.api.meta/CacheStatistics // dev.kord.cache.api.meta/StatisticsLogger.metaData.<get-metaData>|<get-metaData>(){}[0]
+
+    final fun getForType(kotlin.reflect/KType): dev.kord.cache.api.meta/TypeStatisticsLogger // dev.kord.cache.api.meta/StatisticsLogger.getForType|getForType(kotlin.reflect.KType){}[0]
+    final inline fun <#A1: reified kotlin/Any?> getForType(): dev.kord.cache.api.meta/TypeStatisticsLogger // dev.kord.cache.api.meta/StatisticsLogger.getForType|getForType(){0§<kotlin.Any?>}[0]
 }
+
 final class dev.kord.cache.api.meta/TypeStatistics { // dev.kord.cache.api.meta/TypeStatistics|null[0]
     constructor <init>(kotlin.reflect/KType, kotlin/Long, kotlin/Long) // dev.kord.cache.api.meta/TypeStatistics.<init>|<init>(kotlin.reflect.KType;kotlin.Long;kotlin.Long){}[0]
+
     final val hitRatio // dev.kord.cache.api.meta/TypeStatistics.hitRatio|{}hitRatio[0]
         final fun <get-hitRatio>(): kotlin/Double // dev.kord.cache.api.meta/TypeStatistics.hitRatio.<get-hitRatio>|<get-hitRatio>(){}[0]
     final val hits // dev.kord.cache.api.meta/TypeStatistics.hits|{}hits[0]
@@ -152,12 +215,18 @@ final class dev.kord.cache.api.meta/TypeStatistics { // dev.kord.cache.api.meta/
     final val type // dev.kord.cache.api.meta/TypeStatistics.type|{}type[0]
         final fun <get-type>(): kotlin.reflect/KType // dev.kord.cache.api.meta/TypeStatistics.type.<get-type>|<get-type>(){}[0]
 }
+
 final class dev.kord.cache.api.meta/TypeStatisticsLogger { // dev.kord.cache.api.meta/TypeStatisticsLogger|null[0]
-    final fun logHit() // dev.kord.cache.api.meta/TypeStatisticsLogger.logHit|logHit(){}[0]
-    final fun logQuery() // dev.kord.cache.api.meta/TypeStatisticsLogger.logQuery|logQuery(){}[0]
     final val type // dev.kord.cache.api.meta/TypeStatisticsLogger.type|{}type[0]
         final fun <get-type>(): kotlin.reflect/KType // dev.kord.cache.api.meta/TypeStatisticsLogger.type.<get-type>|<get-type>(){}[0]
+
+    final fun logHit() // dev.kord.cache.api.meta/TypeStatisticsLogger.logHit|logHit(){}[0]
+    final fun logQuery() // dev.kord.cache.api.meta/TypeStatisticsLogger.logQuery|logQuery(){}[0]
 }
+
+final val dev.kord.cache.api/logger // dev.kord.cache.api/logger|{}logger[0]
+    final fun <get-logger>(): io.github.oshai.kotlinlogging/KLogger // dev.kord.cache.api/logger.<get-logger>|<get-logger>(){}[0]
+
 final fun (dev.kord.cache.api/DataCache).dev.kord.cache.api.meta/withMetrics(): dev.kord.cache.api.meta/MetricsCache // dev.kord.cache.api.meta/withMetrics|withMetrics@dev.kord.cache.api.DataCache(){}[0]
 final inline fun <#A: reified kotlin/Any, #B: kotlin/Any?> dev.kord.cache.api.data/description(kotlin.reflect/KProperty1<#A, #B>, kotlin/Function1<dev.kord.cache.api.data/LinkBuilder<#A>, kotlin/Unit> = ...): dev.kord.cache.api.data/DataDescription<#A, #B> // dev.kord.cache.api.data/description|description(kotlin.reflect.KProperty1<0:0,0:1>;kotlin.Function1<dev.kord.cache.api.data.LinkBuilder<0:0>,kotlin.Unit>){0§<kotlin.Any>;1§<kotlin.Any?>}[0]
 final inline fun <#A: reified kotlin/Any> (dev.kord.cache.api/DataCache).dev.kord.cache.api/find(kotlin/Function1<dev.kord.cache.api/QueryBuilder<#A>, kotlin/Unit> = ...): dev.kord.cache.api/Query<#A> // dev.kord.cache.api/find|find@dev.kord.cache.api.DataCache(kotlin.Function1<dev.kord.cache.api.QueryBuilder<0:0>,kotlin.Unit>){0§<kotlin.Any>}[0]
@@ -176,15 +245,3 @@ final suspend inline fun <#A: reified kotlin/Any> (dev.kord.cache.api/DataCache)
 final suspend inline fun <#A: reified kotlin/Any> (dev.kord.cache.api/DataCache).dev.kord.cache.api/remove(kotlin/Function1<dev.kord.cache.api/QueryBuilder<#A>, kotlin/Unit> = ...) // dev.kord.cache.api/remove|remove@dev.kord.cache.api.DataCache(kotlin.Function1<dev.kord.cache.api.QueryBuilder<0:0>,kotlin.Unit>){0§<kotlin.Any>}[0]
 final suspend inline fun <#A: reified kotlin/Any> (dev.kord.cache.api/DataEntryCache<#A>).dev.kord.cache.api/count(kotlin/Function1<dev.kord.cache.api/QueryBuilder<#A>, kotlin/Unit> = ...): kotlin/Long // dev.kord.cache.api/count|count@dev.kord.cache.api.DataEntryCache<0:0>(kotlin.Function1<dev.kord.cache.api.QueryBuilder<0:0>,kotlin.Unit>){0§<kotlin.Any>}[0]
 final suspend inline fun <#A: reified kotlin/Any> (dev.kord.cache.api/DataEntryCache<#A>).dev.kord.cache.api/remove(kotlin/Function1<dev.kord.cache.api/QueryBuilder<#A>, kotlin/Unit> = ...) // dev.kord.cache.api/remove|remove@dev.kord.cache.api.DataEntryCache<0:0>(kotlin.Function1<dev.kord.cache.api.QueryBuilder<0:0>,kotlin.Unit>){0§<kotlin.Any>}[0]
-final val dev.kord.cache.api/logger // dev.kord.cache.api/logger|{}logger[0]
-    final fun <get-logger>(): io.github.oshai.kotlinlogging/KLogger // dev.kord.cache.api/logger.<get-logger>|<get-logger>(){}[0]
-open annotation class dev.kord.cache.api/Identity : kotlin/Annotation { // dev.kord.cache.api/Identity|null[0]
-    constructor <init>() // dev.kord.cache.api/Identity.<init>|<init>(){}[0]
-}
-open annotation class dev.kord.cache.api/Link : kotlin/Annotation { // dev.kord.cache.api/Link|null[0]
-    constructor <init>(kotlin.reflect/KClass<*>, kotlin/String) // dev.kord.cache.api/Link.<init>|<init>(kotlin.reflect.KClass<*>;kotlin.String){}[0]
-    final val name // dev.kord.cache.api/Link.name|{}name[0]
-        final fun <get-name>(): kotlin/String // dev.kord.cache.api/Link.name.<get-name>|<get-name>(){}[0]
-    final val to // dev.kord.cache.api/Link.to|{}to[0]
-        final fun <get-to>(): kotlin.reflect/KClass<*> // dev.kord.cache.api/Link.to.<get-to>|<get-to>(){}[0]
-}

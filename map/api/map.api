@@ -18,7 +18,7 @@ public final class dev/kord/cache/map/MapDataCache$Builder {
 public abstract interface class dev/kord/cache/map/MapLikeCollection {
 	public static final field Companion Ldev/kord/cache/map/MapLikeCollection$Companion;
 	public abstract fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun contains (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun contains (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun get (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getByKey (Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/flow/Flow;
 	public abstract fun getByValue (Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/flow/Flow;
@@ -28,8 +28,8 @@ public abstract interface class dev/kord/cache/map/MapLikeCollection {
 }
 
 public final class dev/kord/cache/map/MapLikeCollection$Companion {
-	public final fun concurrentHashMap (Ljava/util/concurrent/ConcurrentHashMap;)Ldev/kord/cache/map/MapLikeCollection;
-	public static synthetic fun concurrentHashMap$default (Ldev/kord/cache/map/MapLikeCollection$Companion;Ljava/util/concurrent/ConcurrentHashMap;ILjava/lang/Object;)Ldev/kord/cache/map/MapLikeCollection;
+	public final fun concurrentHashMap (Ldev/kord/cache/api/ConcurrentHashMap;)Ldev/kord/cache/map/MapLikeCollection;
+	public static synthetic fun concurrentHashMap$default (Ldev/kord/cache/map/MapLikeCollection$Companion;Ldev/kord/cache/api/ConcurrentHashMap;ILjava/lang/Object;)Ldev/kord/cache/map/MapLikeCollection;
 	public final fun from (Ljava/util/Map;)Ldev/kord/cache/map/MapLikeCollection;
 	public final fun fromThreadSafe (Ljava/util/Map;)Ldev/kord/cache/map/MapLikeCollection;
 	public final fun none ()Ldev/kord/cache/map/MapLikeCollection;

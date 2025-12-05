@@ -1,14 +1,15 @@
+@file:OptIn(ExperimentalAbiValidation::class)
+
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
-import kotlinx.validation.ExperimentalBCVApi
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeSimulatorTest
 
 plugins {
     org.jetbrains.kotlin.multiplatform
-    org.jetbrains.kotlinx.`binary-compatibility-validator`
     org.jetbrains.dokka
     id("com.vanniktech.maven.publish.base")
 }
@@ -37,6 +38,7 @@ kotlin {
 
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
+        optIn.add(OptIns.time)
     }
 
     linuxX64()
@@ -58,6 +60,13 @@ kotlin {
     tvosX64()
     tvosArm64()
     tvosSimulatorArm64()
+
+    abiValidation {
+        enabled = true
+        klib {
+            enabled = true
+        }
+    }
 }
 
 tasks {
@@ -75,11 +84,4 @@ mavenPublishing {
 
 dokka {
     configure(project)
-}
-
-apiValidation {
-    @OptIn(ExperimentalBCVApi::class)
-    klib {
-        enabled = true
-    }
 }

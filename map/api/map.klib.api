@@ -14,6 +14,8 @@ abstract interface <#A: kotlin/Any?, #B: kotlin/Any?> dev.kord.cache.map/MapLike
     abstract suspend fun get(#A): #B? // dev.kord.cache.map/MapLikeCollection.get|get(1:0){}[0]
     abstract suspend fun put(#A, #B) // dev.kord.cache.map/MapLikeCollection.put|put(1:0;1:1){}[0]
     abstract suspend fun remove(#A) // dev.kord.cache.map/MapLikeCollection.remove|remove(1:0){}[0]
+    open suspend fun contains(#A): kotlin/Boolean // dev.kord.cache.map/MapLikeCollection.contains|contains(1:0){}[0]
+
     final object Companion { // dev.kord.cache.map/MapLikeCollection.Companion|null[0]
         final fun <#A2: kotlin/Any?, #B2: kotlin/Any> concurrentHashMap(co.touchlab.stately.collections/ConcurrentMutableMap<#A2, #B2> = ...): dev.kord.cache.map/MapLikeCollection<#A2, #B2> // dev.kord.cache.map/MapLikeCollection.Companion.concurrentHashMap|concurrentHashMap(co.touchlab.stately.collections.ConcurrentMutableMap<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any>}[0]
         final fun <#A2: kotlin/Any?, #B2: kotlin/Any> from(kotlin.collections/MutableMap<#A2, #B2>): dev.kord.cache.map/MapLikeCollection<#A2, #B2> // dev.kord.cache.map/MapLikeCollection.Companion.from|from(kotlin.collections.MutableMap<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any>}[0]
@@ -21,22 +23,28 @@ abstract interface <#A: kotlin/Any?, #B: kotlin/Any?> dev.kord.cache.map/MapLike
         final fun <#A2: kotlin/Any?, #B2: kotlin/Any> none(): dev.kord.cache.map/MapLikeCollection<#A2, #B2> // dev.kord.cache.map/MapLikeCollection.Companion.none|none(){0§<kotlin.Any?>;1§<kotlin.Any>}[0]
         final fun <#A2: kotlin/Any?, #B2: kotlin/Any> readOnly(kotlin.collections/Map<#A2, #B2>): dev.kord.cache.map/MapLikeCollection<#A2, #B2> // dev.kord.cache.map/MapLikeCollection.Companion.readOnly|readOnly(kotlin.collections.Map<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any>}[0]
     }
-    open suspend fun contains(#A): kotlin/Boolean // dev.kord.cache.map/MapLikeCollection.contains|contains(1:0){}[0]
 }
+
 final class <#A: kotlin/Any?, #B: kotlin/Any> dev.kord.cache.map.internal/MapEntryCache : dev.kord.cache.api/DataEntryCache<#B> { // dev.kord.cache.map.internal/MapEntryCache|null[0]
     constructor <init>(dev.kord.cache.api/DataCache, dev.kord.cache.api.data/DataDescription<#B, #A>, dev.kord.cache.map/MapLikeCollection<#A, #B>) // dev.kord.cache.map.internal/MapEntryCache.<init>|<init>(dev.kord.cache.api.DataCache;dev.kord.cache.api.data.DataDescription<1:1,1:0>;dev.kord.cache.map.MapLikeCollection<1:0,1:1>){}[0]
+
     final fun query(): dev.kord.cache.api/QueryBuilder<#B> // dev.kord.cache.map.internal/MapEntryCache.query|query(){}[0]
     final suspend fun put(#B) // dev.kord.cache.map.internal/MapEntryCache.put|put(1:1){}[0]
 }
-final fun <#A: kotlin/Any?, #B: kotlin/Any> (kotlin.collections/MutableMap<#A, #B>).dev.kord.cache.map/toMapLike(kotlin/Boolean): dev.kord.cache.map/MapLikeCollection<#A, #B> // dev.kord.cache.map/toMapLike|toMapLike@kotlin.collections.MutableMap<0:0,0:1>(kotlin.Boolean){0§<kotlin.Any?>;1§<kotlin.Any>}[0]
+
 final object dev.kord.cache.map/MapDataCache { // dev.kord.cache.map/MapDataCache|null[0]
+    final inline fun invoke(kotlin/Function1<dev.kord.cache.map/MapDataCache.Builder, kotlin/Unit> = ...): dev.kord.cache.api/DataCache // dev.kord.cache.map/MapDataCache.invoke|invoke(kotlin.Function1<dev.kord.cache.map.MapDataCache.Builder,kotlin.Unit>){}[0]
+
     final class Builder { // dev.kord.cache.map/MapDataCache.Builder|null[0]
         constructor <init>() // dev.kord.cache.map/MapDataCache.Builder.<init>|<init>(){}[0]
+
+        final val suppliers // dev.kord.cache.map/MapDataCache.Builder.suppliers|{}suppliers[0]
+            final fun <get-suppliers>(): kotlin.collections/MutableMap<kotlin.reflect/KType, kotlin/Function2<dev.kord.cache.map/MapLikeCollection.Companion, dev.kord.cache.api.data/DataDescription<*, *>, dev.kord.cache.map/MapLikeCollection<out kotlin/Any, *>>> // dev.kord.cache.map/MapDataCache.Builder.suppliers.<get-suppliers>|<get-suppliers>(){}[0]
+
         final fun build(): dev.kord.cache.api/DataCache // dev.kord.cache.map/MapDataCache.Builder.build|build(){}[0]
         final fun default(kotlin/Function2<dev.kord.cache.map/MapLikeCollection.Companion, dev.kord.cache.api.data/DataDescription<kotlin/Any, *>, dev.kord.cache.map/MapLikeCollection<out kotlin/Any, kotlin/Any>>) // dev.kord.cache.map/MapDataCache.Builder.default|default(kotlin.Function2<dev.kord.cache.map.MapLikeCollection.Companion,dev.kord.cache.api.data.DataDescription<kotlin.Any,*>,dev.kord.cache.map.MapLikeCollection<out|kotlin.Any,kotlin.Any>>){}[0]
         final inline fun <#A2: reified kotlin/Any> forType(noinline kotlin/Function2<dev.kord.cache.map/MapLikeCollection.Companion, dev.kord.cache.api.data/DataDescription<#A2, *>, dev.kord.cache.map/MapLikeCollection<out kotlin/Any, #A2>>?) // dev.kord.cache.map/MapDataCache.Builder.forType|forType(kotlin.Function2<dev.kord.cache.map.MapLikeCollection.Companion,dev.kord.cache.api.data.DataDescription<0:0,*>,dev.kord.cache.map.MapLikeCollection<out|kotlin.Any,0:0>>?){0§<kotlin.Any>}[0]
-        final val suppliers // dev.kord.cache.map/MapDataCache.Builder.suppliers|{}suppliers[0]
-            final fun <get-suppliers>(): kotlin.collections/MutableMap<kotlin.reflect/KType, kotlin/Function2<dev.kord.cache.map/MapLikeCollection.Companion, dev.kord.cache.api.data/DataDescription<*, *>, dev.kord.cache.map/MapLikeCollection<out kotlin/Any, *>>> // dev.kord.cache.map/MapDataCache.Builder.suppliers.<get-suppliers>|<get-suppliers>(){}[0]
     }
-    final inline fun invoke(kotlin/Function1<dev.kord.cache.map/MapDataCache.Builder, kotlin/Unit> = ...): dev.kord.cache.api/DataCache // dev.kord.cache.map/MapDataCache.invoke|invoke(kotlin.Function1<dev.kord.cache.map.MapDataCache.Builder,kotlin.Unit>){}[0]
 }
+
+final fun <#A: kotlin/Any?, #B: kotlin/Any> (kotlin.collections/MutableMap<#A, #B>).dev.kord.cache.map/toMapLike(kotlin/Boolean): dev.kord.cache.map/MapLikeCollection<#A, #B> // dev.kord.cache.map/toMapLike|toMapLike@kotlin.collections.MutableMap<0:0,0:1>(kotlin.Boolean){0§<kotlin.Any?>;1§<kotlin.Any>}[0]

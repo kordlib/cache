@@ -1,9 +1,32 @@
+public abstract interface annotation class dev/kord/cache/api/CacheExperimental : java/lang/annotation/Annotation {
+}
+
+public final class dev/kord/cache/api/ConcurrentHashMap : java/util/Map, kotlin/jvm/internal/markers/KMutableMap {
+	public fun <init> ()V
+	public fun clear ()V
+	public fun containsKey (Ljava/lang/Object;)Z
+	public fun containsValue (Ljava/lang/Object;)Z
+	public final fun entrySet ()Ljava/util/Set;
+	public fun get (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun getEntries ()Ljava/util/Set;
+	public fun getKeys ()Ljava/util/Set;
+	public fun getSize ()I
+	public fun getValues ()Ljava/util/Collection;
+	public fun isEmpty ()Z
+	public final fun keySet ()Ljava/util/Set;
+	public fun put (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+	public fun putAll (Ljava/util/Map;)V
+	public fun remove (Ljava/lang/Object;)Ljava/lang/Object;
+	public final fun size ()I
+	public final fun values ()Ljava/util/Collection;
+}
+
 public abstract interface class dev/kord/cache/api/DataCache {
 	public static final field Companion Ldev/kord/cache/api/DataCache$Companion;
 	public abstract fun getEntry (Lkotlin/reflect/KType;)Ldev/kord/cache/api/DataEntryCache;
 	public abstract fun register (Ldev/kord/cache/api/data/DataDescription;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun register (Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun register ([Ldev/kord/cache/api/data/DataDescription;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun register (Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun register ([Ldev/kord/cache/api/data/DataDescription;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class dev/kord/cache/api/DataCache$Companion {
@@ -22,10 +45,10 @@ public final class dev/kord/cache/api/DataCacheKt {
 
 public abstract interface class dev/kord/cache/api/DataEntryCache {
 	public static final field Companion Ldev/kord/cache/api/DataEntryCache$Companion;
-	public abstract fun put (Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put (Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun put (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun put (Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun put ([Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put (Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put ([Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun query ()Ldev/kord/cache/api/QueryBuilder;
 }
 
@@ -37,6 +60,38 @@ public final class dev/kord/cache/api/DataEntryCache$DefaultImpls {
 	public static fun put (Ldev/kord/cache/api/DataEntryCache;Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static fun put (Ldev/kord/cache/api/DataEntryCache;Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static fun put (Ldev/kord/cache/api/DataEntryCache;[Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/kord/cache/api/DataEntryCacheWithTTL : dev/kord/cache/api/DataEntryCache {
+	public fun put (Ljava/lang/Iterable;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put (Ljava/lang/Object;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put (Lkotlinx/coroutines/flow/Flow;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put ([Ljava/lang/Object;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun put$default (Ldev/kord/cache/api/DataEntryCacheWithTTL;Ljava/lang/Iterable;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun put$default (Ldev/kord/cache/api/DataEntryCacheWithTTL;Ljava/lang/Object;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun put$default (Ldev/kord/cache/api/DataEntryCacheWithTTL;Lkotlinx/coroutines/flow/Flow;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun put$default (Ldev/kord/cache/api/DataEntryCacheWithTTL;[Ljava/lang/Object;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public fun put-8Mi8wO0 (Ljava/lang/Iterable;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun put-8Mi8wO0 (Ljava/lang/Object;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put-8Mi8wO0 (Lkotlinx/coroutines/flow/Flow;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun put-8Mi8wO0 ([Ljava/lang/Object;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/kord/cache/api/DataEntryCacheWithTTL$DefaultImpls {
+	public static fun put (Ldev/kord/cache/api/DataEntryCacheWithTTL;Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun put (Ldev/kord/cache/api/DataEntryCacheWithTTL;Ljava/lang/Iterable;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun put (Ldev/kord/cache/api/DataEntryCacheWithTTL;Ljava/lang/Object;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun put (Ldev/kord/cache/api/DataEntryCacheWithTTL;Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun put (Ldev/kord/cache/api/DataEntryCacheWithTTL;Lkotlinx/coroutines/flow/Flow;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun put (Ldev/kord/cache/api/DataEntryCacheWithTTL;[Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun put (Ldev/kord/cache/api/DataEntryCacheWithTTL;[Ljava/lang/Object;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun put$default (Ldev/kord/cache/api/DataEntryCacheWithTTL;Ljava/lang/Iterable;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun put$default (Ldev/kord/cache/api/DataEntryCacheWithTTL;Ljava/lang/Object;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun put$default (Ldev/kord/cache/api/DataEntryCacheWithTTL;Lkotlinx/coroutines/flow/Flow;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun put$default (Ldev/kord/cache/api/DataEntryCacheWithTTL;[Ljava/lang/Object;Lkotlin/time/Instant;Lkotlin/time/Clock;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static fun put-8Mi8wO0 (Ldev/kord/cache/api/DataEntryCacheWithTTL;Ljava/lang/Iterable;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun put-8Mi8wO0 (Ldev/kord/cache/api/DataEntryCacheWithTTL;Lkotlinx/coroutines/flow/Flow;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun put-8Mi8wO0 (Ldev/kord/cache/api/DataEntryCacheWithTTL;[Ljava/lang/Object;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface annotation class dev/kord/cache/api/Identity : java/lang/annotation/Annotation {
@@ -54,11 +109,11 @@ public abstract interface annotation class dev/kord/cache/api/Link$Container : j
 public abstract interface class dev/kord/cache/api/Query {
 	public static final field Companion Ldev/kord/cache/api/Query$Companion;
 	public abstract fun asFlow ()Lkotlinx/coroutines/flow/Flow;
-	public abstract fun count (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun count (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun remove (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun single (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun singleOrNull (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun toCollection (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun single (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun singleOrNull (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun toCollection (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun update (Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
@@ -76,18 +131,21 @@ public final class dev/kord/cache/api/Query$DefaultImpls {
 public abstract interface class dev/kord/cache/api/QueryBuilder {
 	public static final field Companion Ldev/kord/cache/api/QueryBuilder$Companion;
 	public abstract fun build ()Ldev/kord/cache/api/Query;
-	public abstract fun contains (Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;Z)V
-	public abstract fun endsWith (Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;Z)V
-	public abstract fun eq (Lkotlin/reflect/KProperty1;Ljava/lang/Object;)V
-	public abstract fun gt (Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
-	public abstract fun gte (Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
-	public abstract fun in (Lkotlin/reflect/KProperty1;Ljava/lang/Iterable;)V
-	public abstract fun lt (Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
-	public abstract fun lte (Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
-	public abstract fun ne (Lkotlin/reflect/KProperty1;Ljava/lang/Object;)V
-	public abstract fun notIn (Lkotlin/reflect/KProperty1;Ljava/lang/Iterable;)V
+	public fun contains (Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;Z)V
+	public static synthetic fun contains$default (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;ZILjava/lang/Object;)V
+	public fun endsWith (Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;Z)V
+	public static synthetic fun endsWith$default (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;ZILjava/lang/Object;)V
+	public fun eq (Lkotlin/reflect/KProperty1;Ljava/lang/Object;)V
+	public fun gt (Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
+	public fun gte (Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
+	public fun in (Lkotlin/reflect/KProperty1;Ljava/lang/Iterable;)V
+	public fun lt (Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
+	public fun lte (Lkotlin/reflect/KProperty1;Ljava/lang/Comparable;)V
+	public fun ne (Lkotlin/reflect/KProperty1;Ljava/lang/Object;)V
+	public fun notIn (Lkotlin/reflect/KProperty1;Ljava/lang/Iterable;)V
 	public abstract fun predicate (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)V
-	public abstract fun startsWith (Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;Z)V
+	public fun startsWith (Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;Z)V
+	public static synthetic fun startsWith$default (Ldev/kord/cache/api/QueryBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/CharSequence;ZILjava/lang/Object;)V
 }
 
 public final class dev/kord/cache/api/QueryBuilder$Companion {
