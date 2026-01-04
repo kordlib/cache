@@ -40,7 +40,7 @@ public final class dev/kord/cache/map/MapLikeCollection$DefaultImpls {
 	public static fun contains (Ldev/kord/cache/map/MapLikeCollection;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class dev/kord/cache/map/MapLikeCollectionJvm {
+public final class dev/kord/cache/map/MapLikeCollectionJvmx {
 	public static final fun weakHashMap (Ldev/kord/cache/map/MapLikeCollection$Companion;)Ldev/kord/cache/map/MapLikeCollection;
 }
 
